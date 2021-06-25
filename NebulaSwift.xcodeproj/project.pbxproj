@@ -7,20 +7,49 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B0508A2A26856E1D006FED7E /* MyShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A2926856E1D006FED7E /* MyShows.swift */; };
+		B0508A2B26856E1D006FED7E /* MyShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A2926856E1D006FED7E /* MyShows.swift */; };
+		B0508A2E26856FC9006FED7E /* Browse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A2D26856FC9006FED7E /* Browse.swift */; };
+		B0508A2F26856FC9006FED7E /* Browse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A2D26856FC9006FED7E /* Browse.swift */; };
+		B0508A3126856FDA006FED7E /* Downloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A3026856FDA006FED7E /* Downloads.swift */; };
+		B0508A3226856FDA006FED7E /* Downloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A3026856FDA006FED7E /* Downloads.swift */; };
+		B0508A3426856FEB006FED7E /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A3326856FEB006FED7E /* Search.swift */; };
+		B0508A3526856FEB006FED7E /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A3326856FEB006FED7E /* Search.swift */; };
 		B079EF2F26853A57009EFBAA /* NebulaSwiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF2126853A57009EFBAA /* NebulaSwiftApp.swift */; };
 		B079EF3026853A57009EFBAA /* NebulaSwiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF2126853A57009EFBAA /* NebulaSwiftApp.swift */; };
 		B079EF3126853A57009EFBAA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF2226853A57009EFBAA /* ContentView.swift */; };
 		B079EF3226853A57009EFBAA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF2226853A57009EFBAA /* ContentView.swift */; };
 		B079EF3326853A57009EFBAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B079EF2326853A57009EFBAA /* Assets.xcassets */; };
 		B079EF3426853A57009EFBAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B079EF2326853A57009EFBAA /* Assets.xcassets */; };
+		B079EF3E26855A50009EFBAA /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF3D26855A50009EFBAA /* API.swift */; };
+		B079EF3F26855A50009EFBAA /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF3D26855A50009EFBAA /* API.swift */; };
+		B079EF42268560A4009EFBAA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF41268560A4009EFBAA /* Config.swift */; };
+		B079EF43268560A4009EFBAA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF41268560A4009EFBAA /* Config.swift */; };
+		B079EF45268560D6009EFBAA /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF44268560D6009EFBAA /* Settings.swift */; };
+		B079EF46268560D6009EFBAA /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF44268560D6009EFBAA /* Settings.swift */; };
+		B079EF4826856116009EFBAA /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF4726856116009EFBAA /* Defaults.swift */; };
+		B079EF4926856116009EFBAA /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF4726856116009EFBAA /* Defaults.swift */; };
+		B079EF4C268562B8009EFBAA /* Featured.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF4B268562B8009EFBAA /* Featured.swift */; };
+		B079EF4D268562B8009EFBAA /* Featured.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF4B268562B8009EFBAA /* Featured.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B0508A2826856B60006FED7E /* NebulaSwift.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NebulaSwift.entitlements; sourceTree = "<group>"; };
+		B0508A2926856E1D006FED7E /* MyShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyShows.swift; sourceTree = "<group>"; };
+		B0508A2C26856F95006FED7E /* NebulaSwift--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "NebulaSwift--iOS--Info.plist"; sourceTree = "<group>"; };
+		B0508A2D26856FC9006FED7E /* Browse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browse.swift; sourceTree = "<group>"; };
+		B0508A3026856FDA006FED7E /* Downloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloads.swift; sourceTree = "<group>"; };
+		B0508A3326856FEB006FED7E /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		B079EF2126853A57009EFBAA /* NebulaSwiftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NebulaSwiftApp.swift; sourceTree = "<group>"; };
 		B079EF2226853A57009EFBAA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B079EF2326853A57009EFBAA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B079EF2826853A57009EFBAA /* NebulaSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NebulaSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B079EF2E26853A57009EFBAA /* NebulaSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NebulaSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B079EF3D26855A50009EFBAA /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		B079EF41268560A4009EFBAA /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		B079EF44268560D6009EFBAA /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		B079EF4726856116009EFBAA /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
+		B079EF4B268562B8009EFBAA /* Featured.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Featured.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +73,8 @@
 		B079EF1B26853A57009EFBAA = {
 			isa = PBXGroup;
 			children = (
+				B0508A2C26856F95006FED7E /* NebulaSwift--iOS--Info.plist */,
+				B0508A2826856B60006FED7E /* NebulaSwift.entitlements */,
 				B079EF2026853A57009EFBAA /* Shared */,
 				B079EF2926853A57009EFBAA /* Products */,
 			);
@@ -52,8 +83,11 @@
 		B079EF2026853A57009EFBAA /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				B079EF4026855B0A009EFBAA /* API */,
+				B079EF4A26856283009EFBAA /* Views */,
 				B079EF2126853A57009EFBAA /* NebulaSwiftApp.swift */,
-				B079EF2226853A57009EFBAA /* ContentView.swift */,
+				B079EF44268560D6009EFBAA /* Settings.swift */,
+				B079EF4726856116009EFBAA /* Defaults.swift */,
 				B079EF2326853A57009EFBAA /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -66,6 +100,28 @@
 				B079EF2E26853A57009EFBAA /* NebulaSwift.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B079EF4026855B0A009EFBAA /* API */ = {
+			isa = PBXGroup;
+			children = (
+				B079EF3D26855A50009EFBAA /* API.swift */,
+				B079EF41268560A4009EFBAA /* Config.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		B079EF4A26856283009EFBAA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B079EF2226853A57009EFBAA /* ContentView.swift */,
+				B079EF4B268562B8009EFBAA /* Featured.swift */,
+				B0508A2926856E1D006FED7E /* MyShows.swift */,
+				B0508A2D26856FC9006FED7E /* Browse.swift */,
+				B0508A3026856FDA006FED7E /* Downloads.swift */,
+				B0508A3326856FEB006FED7E /* Search.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,8 +222,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0508A3426856FEB006FED7E /* Search.swift in Sources */,
+				B079EF4C268562B8009EFBAA /* Featured.swift in Sources */,
+				B0508A3126856FDA006FED7E /* Downloads.swift in Sources */,
+				B0508A2E26856FC9006FED7E /* Browse.swift in Sources */,
 				B079EF3126853A57009EFBAA /* ContentView.swift in Sources */,
+				B0508A2A26856E1D006FED7E /* MyShows.swift in Sources */,
+				B079EF42268560A4009EFBAA /* Config.swift in Sources */,
+				B079EF3E26855A50009EFBAA /* API.swift in Sources */,
+				B079EF4826856116009EFBAA /* Defaults.swift in Sources */,
 				B079EF2F26853A57009EFBAA /* NebulaSwiftApp.swift in Sources */,
+				B079EF45268560D6009EFBAA /* Settings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,8 +240,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0508A3526856FEB006FED7E /* Search.swift in Sources */,
+				B079EF4D268562B8009EFBAA /* Featured.swift in Sources */,
+				B0508A3226856FDA006FED7E /* Downloads.swift in Sources */,
+				B0508A2F26856FC9006FED7E /* Browse.swift in Sources */,
 				B079EF3226853A57009EFBAA /* ContentView.swift in Sources */,
+				B0508A2B26856E1D006FED7E /* MyShows.swift in Sources */,
+				B079EF43268560A4009EFBAA /* Config.swift in Sources */,
+				B079EF3F26855A50009EFBAA /* API.swift in Sources */,
+				B079EF4926856116009EFBAA /* Defaults.swift in Sources */,
 				B079EF3026853A57009EFBAA /* NebulaSwiftApp.swift in Sources */,
+				B079EF46268560D6009EFBAA /* Settings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,12 +378,15 @@
 				DEVELOPMENT_TEAM = V7E5P7292M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = "NebulaSwift--iOS--Info.plist";
+				INFOPLIST_KEY_CFBundleExecutable = NebulaSwift;
+				INFOPLIST_KEY_CFBundleName = NebulaSwift;
+				INFOPLIST_KEY_CFBundleVersion = 1;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -334,12 +411,15 @@
 				DEVELOPMENT_TEAM = V7E5P7292M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = "NebulaSwift--iOS--Info.plist";
+				INFOPLIST_KEY_CFBundleExecutable = NebulaSwift;
+				INFOPLIST_KEY_CFBundleName = NebulaSwift;
+				INFOPLIST_KEY_CFBundleVersion = 1;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -360,6 +440,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NebulaSwift.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -374,7 +455,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = de.melgu.NebulaSwift;
 				PRODUCT_NAME = NebulaSwift;
@@ -389,6 +470,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NebulaSwift.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -403,7 +485,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = de.melgu.NebulaSwift;
 				PRODUCT_NAME = NebulaSwift;
