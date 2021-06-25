@@ -26,7 +26,7 @@ struct Config: Decodable {
 }
 
 extension API {
-	static func loadConfig() async throws -> Config {
+	static func config() async throws -> Config {
 		let url = URL(string: "https://config.watchnebula.com/ios.prod.json")!
 		let (data, response) = try await URLSession.shared.data(from: url)
 		
