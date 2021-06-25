@@ -48,7 +48,7 @@ extension ContentView {
 	class Model: ObservableObject {
 		func setup() async {
 			do {
-				let config = try await API.loadConfig()
+				let config = try await API.config()
 				Settings.shared.nebulaAuthApi = config.authBaseUrl.absoluteString
 				Settings.shared.nebulaContentApi = config.contentBaseUrl.absoluteString
 			} catch {
