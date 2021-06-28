@@ -14,5 +14,11 @@ extension Defaults {
 	static let bearer = "bearer"
 	static let nebulaAuthApi = "nebulaAuthApi"
 	static let nebulaContentApi = "nebulaContentApi"
-	static let zyneApi = "zyneApi"
+	static let zypeApi = "zypeApi"
+	
+	enum ZypeAuthInfo {
+		static let accessToken = "ZypeAuthInfo-accessToken"
+		static let expiresAt = "ZypeAuthInfo-expiresAt"
+		static let refreshToken = "ZypeAuthInfo-refreshToken"
+	}
 }

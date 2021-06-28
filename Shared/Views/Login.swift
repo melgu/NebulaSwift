@@ -42,6 +42,10 @@ extension Login {
 			Task {
 				do {
 					Settings.shared.token = try await API.login(email: email, password: password)
+					let user = try await API.user()
+					Settings.shared.zypeAuthInfo.accessToken = user.zypeAuthInfo.accessToken
+					Settings.shared.zypeAuthInfo.expiresAt = user.zypeAuthInfo.expiresAt
+					Settings.shared.zypeAuthInfo.refreshToken = user.zypeAuthInfo.refreshToken
 					presentationMode.wrappedValue.dismiss()
 				} catch {
 					wrongCredentials = true
