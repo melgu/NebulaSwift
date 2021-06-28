@@ -21,17 +21,20 @@ extension API {
 		let url = URL(string: "https://api.watchnebula.com/api/v1/auth/login/")!
 		var request = URLRequest(url: url)
 		
-		request.httpMethod = HTTPMethod.get
+		request.httpMethod = HTTPMethod.post
+		request.setValue("application/json;charset=utf-8", forHTTPHeaderField: "Content-Type")
 		
 		let requestBody = LoginRequestBody(email: email, password: password)
 		request.httpBody = try JSONEncoder().encode(requestBody)
 		
 		let (data, response) = try await URLSession.shared.data(for: request)
 		
-		guard let httpResponse = response as? HTTPURLResponse,
-			  httpResponse.statusCode == 200 else {
-				  throw APIError.invalidServerResponse
-			  }
+		guard let httpResponse = response as? HTTPURLResponse else {
+			throw APIError.invalidServerResponse(errorCode: nil)
+		}
+		guard httpResponse.statusCode == 200 else {
+			throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
+		}
 		
 		let loginResponse = try JSONDecoder().decode(LoginResponse.self, from: data)
 		return loginResponse.key

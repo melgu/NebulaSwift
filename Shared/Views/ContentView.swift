@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ContentView: View {
 	@StateObject var model = Model()
@@ -31,6 +32,7 @@ struct ContentView: View {
 		.task {
 			await model.setup()
 		}
+		.onChange(of: Settings.shared.token, perform: model.tokenChanged)
 		.sheet(isPresented: $model.loginIsPresented) {
 			Login()
 		}
@@ -52,6 +54,8 @@ extension ContentView {
 		@Published var tab: Tabs = .browse
 		@Published var loginIsPresented = false
 		
+		private var cancellables = Set<AnyCancellable>()
+		
 		func setup() async {
 			do {
 				let config = try await API.config()
@@ -62,6 +66,12 @@ extension ContentView {
 			}
 			
 			if Settings.shared.token.isEmpty {
+				loginIsPresented = true
+			}
+		}
+		
+		func tokenChanged(to token: String) {
+			if token.isEmpty {
 				loginIsPresented = true
 			}
 		}

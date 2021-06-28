@@ -30,10 +30,12 @@ extension API {
 		let url = URL(string: "https://config.watchnebula.com/ios.prod.json")!
 		let (data, response) = try await URLSession.shared.data(from: url)
 		
-		guard let httpResponse = response as? HTTPURLResponse,
-			  httpResponse.statusCode == 200 else {
-				  throw APIError.invalidServerResponse
-			  }
+		guard let httpResponse = response as? HTTPURLResponse else {
+			throw APIError.invalidServerResponse(errorCode: nil)
+		}
+		guard httpResponse.statusCode == 200 else {
+			throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
+		}
 		
 		let config = try JSONDecoder().decode(Config.self, from: data)
 		return config

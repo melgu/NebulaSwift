@@ -43,7 +43,7 @@ struct ZypeConsumer: Decodable {
 	}
 }
 
-struct ZypeAuthInfo: Decodable {
+struct ZypeAuthInfo: Codable {
 	let accessToken: String
 	let expiresAt: Int
 	let refreshToken: String
@@ -65,10 +65,12 @@ extension API {
 		
 		let (data, response) = try await URLSession.shared.data(from: url)
 		
-		guard let httpResponse = response as? HTTPURLResponse,
-			  httpResponse.statusCode == 200 else {
-				  throw APIError.invalidServerResponse
-			  }
+		guard let httpResponse = response as? HTTPURLResponse else {
+			throw APIError.invalidServerResponse(errorCode: nil)
+		}
+		guard httpResponse.statusCode == 200 else {
+			throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
+		}
 		
 		let userResponse = try JSONDecoder().decode(UserResponse.self, from: data)
 		return userResponse

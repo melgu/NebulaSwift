@@ -10,7 +10,7 @@ import Foundation
 enum API {}
 
 enum APIError: Error {
-	case invalidServerResponse
+	case invalidServerResponse(errorCode: Int?)
 	case missingToken
 }
 
