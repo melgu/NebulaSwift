@@ -23,14 +23,20 @@
 		B079EF3426853A57009EFBAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B079EF2326853A57009EFBAA /* Assets.xcassets */; };
 		B079EF3E26855A50009EFBAA /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF3D26855A50009EFBAA /* API.swift */; };
 		B079EF3F26855A50009EFBAA /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF3D26855A50009EFBAA /* API.swift */; };
-		B079EF42268560A4009EFBAA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF41268560A4009EFBAA /* Config.swift */; };
-		B079EF43268560A4009EFBAA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF41268560A4009EFBAA /* Config.swift */; };
+		B079EF42268560A4009EFBAA /* API+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF41268560A4009EFBAA /* API+Config.swift */; };
+		B079EF43268560A4009EFBAA /* API+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF41268560A4009EFBAA /* API+Config.swift */; };
 		B079EF45268560D6009EFBAA /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF44268560D6009EFBAA /* Settings.swift */; };
 		B079EF46268560D6009EFBAA /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF44268560D6009EFBAA /* Settings.swift */; };
 		B079EF4826856116009EFBAA /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF4726856116009EFBAA /* Defaults.swift */; };
 		B079EF4926856116009EFBAA /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF4726856116009EFBAA /* Defaults.swift */; };
 		B079EF4C268562B8009EFBAA /* Featured.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF4B268562B8009EFBAA /* Featured.swift */; };
 		B079EF4D268562B8009EFBAA /* Featured.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF4B268562B8009EFBAA /* Featured.swift */; };
+		B0DF9FAD268A343700EF9392 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FAC268A343700EF9392 /* Login.swift */; };
+		B0DF9FAE268A343700EF9392 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FAC268A343700EF9392 /* Login.swift */; };
+		B0DF9FB0268A36D900EF9392 /* API+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FAF268A36D900EF9392 /* API+Login.swift */; };
+		B0DF9FB1268A36D900EF9392 /* API+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FAF268A36D900EF9392 /* API+Login.swift */; };
+		B0DF9FB3268A407300EF9392 /* API+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FB2268A3E3700EF9392 /* API+User.swift */; };
+		B0DF9FB4268A407300EF9392 /* API+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FB2268A3E3700EF9392 /* API+User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,10 +52,13 @@
 		B079EF2826853A57009EFBAA /* NebulaSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NebulaSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B079EF2E26853A57009EFBAA /* NebulaSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NebulaSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B079EF3D26855A50009EFBAA /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
-		B079EF41268560A4009EFBAA /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		B079EF41268560A4009EFBAA /* API+Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Config.swift"; sourceTree = "<group>"; };
 		B079EF44268560D6009EFBAA /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B079EF4726856116009EFBAA /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		B079EF4B268562B8009EFBAA /* Featured.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Featured.swift; sourceTree = "<group>"; };
+		B0DF9FAC268A343700EF9392 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		B0DF9FAF268A36D900EF9392 /* API+Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Login.swift"; sourceTree = "<group>"; };
+		B0DF9FB2268A3E3700EF9392 /* API+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+User.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,7 +115,9 @@
 			isa = PBXGroup;
 			children = (
 				B079EF3D26855A50009EFBAA /* API.swift */,
-				B079EF41268560A4009EFBAA /* Config.swift */,
+				B079EF41268560A4009EFBAA /* API+Config.swift */,
+				B0DF9FAF268A36D900EF9392 /* API+Login.swift */,
+				B0DF9FB2268A3E3700EF9392 /* API+User.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -120,6 +131,7 @@
 				B0508A2D26856FC9006FED7E /* Browse.swift */,
 				B0508A3026856FDA006FED7E /* Downloads.swift */,
 				B0508A3326856FEB006FED7E /* Search.swift */,
+				B0DF9FAC268A343700EF9392 /* Login.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -224,11 +236,14 @@
 			files = (
 				B0508A3426856FEB006FED7E /* Search.swift in Sources */,
 				B079EF4C268562B8009EFBAA /* Featured.swift in Sources */,
+				B0DF9FB0268A36D900EF9392 /* API+Login.swift in Sources */,
 				B0508A3126856FDA006FED7E /* Downloads.swift in Sources */,
+				B0DF9FAD268A343700EF9392 /* Login.swift in Sources */,
 				B0508A2E26856FC9006FED7E /* Browse.swift in Sources */,
 				B079EF3126853A57009EFBAA /* ContentView.swift in Sources */,
 				B0508A2A26856E1D006FED7E /* MyShows.swift in Sources */,
-				B079EF42268560A4009EFBAA /* Config.swift in Sources */,
+				B079EF42268560A4009EFBAA /* API+Config.swift in Sources */,
+				B0DF9FB3268A407300EF9392 /* API+User.swift in Sources */,
 				B079EF3E26855A50009EFBAA /* API.swift in Sources */,
 				B079EF4826856116009EFBAA /* Defaults.swift in Sources */,
 				B079EF2F26853A57009EFBAA /* NebulaSwiftApp.swift in Sources */,
@@ -242,11 +257,14 @@
 			files = (
 				B0508A3526856FEB006FED7E /* Search.swift in Sources */,
 				B079EF4D268562B8009EFBAA /* Featured.swift in Sources */,
+				B0DF9FB1268A36D900EF9392 /* API+Login.swift in Sources */,
 				B0508A3226856FDA006FED7E /* Downloads.swift in Sources */,
+				B0DF9FAE268A343700EF9392 /* Login.swift in Sources */,
 				B0508A2F26856FC9006FED7E /* Browse.swift in Sources */,
 				B079EF3226853A57009EFBAA /* ContentView.swift in Sources */,
 				B0508A2B26856E1D006FED7E /* MyShows.swift in Sources */,
-				B079EF43268560A4009EFBAA /* Config.swift in Sources */,
+				B079EF43268560A4009EFBAA /* API+Config.swift in Sources */,
+				B0DF9FB4268A407300EF9392 /* API+User.swift in Sources */,
 				B079EF3F26855A50009EFBAA /* API.swift in Sources */,
 				B079EF4926856116009EFBAA /* Defaults.swift in Sources */,
 				B079EF3026853A57009EFBAA /* NebulaSwiftApp.swift in Sources */,
