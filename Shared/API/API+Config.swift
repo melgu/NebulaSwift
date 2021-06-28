@@ -1,5 +1,5 @@
 //
-//  Config.swift
+//  API+Config.swift
 //  NebulaSwift
 //
 //  Created by Melvin Gundlach on 25.06.21.

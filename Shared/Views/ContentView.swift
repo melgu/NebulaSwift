@@ -11,25 +11,28 @@ struct ContentView: View {
 	@StateObject var model = Model()
 	
     var body: some View {
-		TabView {
+		TabView(selection: $model.tab) {
 			Featured()
 				.tabItem { Label("Featured", systemImage: "star.circle") }
 				.tag(Tabs.featured)
 			MyShows()
 				.tabItem { Label("My Shows", systemImage: "suit.heart") }
 				.tag(Tabs.myShows)
-			Text("Browse")
+			Browse()
 				.tabItem { Label("Browse", systemImage: "list.dash") }
 				.tag(Tabs.browse)
-			Text("Downloads")
+			Downloads()
 				.tabItem { Label("Downloads", systemImage: "arrow.down.circle") }
 				.tag(Tabs.downloads)
-			Text("Search")
+			Search()
 				.tabItem { Label("Search", systemImage: "magnifyingglass") }
-				.tag(Tabs.myShows)
+				.tag(Tabs.search)
 		}
 		.task {
 			await model.setup()
+		}
+		.sheet(isPresented: $model.loginIsPresented) {
+			Login()
 		}
     }
 }
@@ -46,6 +49,9 @@ extension ContentView {
 
 extension ContentView {
 	class Model: ObservableObject {
+		@Published var tab: Tabs = .browse
+		@Published var loginIsPresented = false
+		
 		func setup() async {
 			do {
 				let config = try await API.config()
@@ -53,6 +59,10 @@ extension ContentView {
 				Settings.shared.nebulaContentApi = config.contentBaseUrl.absoluteString
 			} catch {
 				show(error: error)
+			}
+			
+			if Settings.shared.token.isEmpty {
+				loginIsPresented = true
 			}
 		}
 		
