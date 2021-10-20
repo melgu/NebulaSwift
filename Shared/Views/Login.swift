@@ -20,7 +20,9 @@ struct Login: View {
 				.font(.title)
 			TextField("email", text: $email)
 				.textContentType(.username)
+				#if os(iOS)
 				.keyboardType(.emailAddress)
+				#endif
 			TextField("password", text: $password)
 				.textContentType(.password)
 			Text(wrongCredentials ? "Wrong credentials" : " ")
