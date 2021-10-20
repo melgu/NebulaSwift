@@ -9,27 +9,27 @@ import SwiftUI
 
 @main
 struct NebulaSwiftApp: App {
-	@StateObject var model = Model()
+	@StateObject var api = API()
 	
     var body: some Scene {
         WindowGroup {
-            ContentView()
+			if api.isLoggedIn {
+				ContentView()
+					.environmentObject(api)
+			} else {
+				Login()
+					.environmentObject(api)
+			}
         }
+		.commands {
+			CommandMenu("Account") {
+				Button("Logout") {
+					api.logout()
+				}
+			}
+		}
 		#if os(macOS)
 		.windowStyle(.hiddenTitleBar)
 		#endif
-		.commands {
-			CommandMenu("Account") {
-				Button("Logout", action: model.logout)
-			}
-		}
     }
-}
-
-extension NebulaSwiftApp {
-	class Model: ObservableObject {
-		func logout() {
-			Settings.shared.clearAll()
-		}
-	}
 }

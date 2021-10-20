@@ -17,7 +17,7 @@ struct LoginResponse: Decodable {
 }
 
 extension API {
-	static func login(email: String, password: String) async throws -> String {
+	private func _login(email: String, password: String) async throws -> LoginResponse {
 		let url = URL(string: "https://api.watchnebula.com/api/v1/auth/login/")!
 		var request = URLRequest(url: url)
 		
@@ -26,6 +26,8 @@ extension API {
 		
 		let requestBody = LoginRequestBody(email: email, password: password)
 		request.httpBody = try JSONEncoder().encode(requestBody)
+		
+		URLSession.shared.configuration.httpCookieStorage?.removeCookies(since: Date.distantPast)
 		
 		let (data, response) = try await URLSession.shared.data(for: request)
 		
@@ -37,6 +39,31 @@ extension API {
 		}
 		
 		let loginResponse = try JSONDecoder().decode(LoginResponse.self, from: data)
-		return loginResponse.key
+		return loginResponse
+	}
+	
+	func login(email: String, password: String) async throws {
+		// Actual login (get token)
+		let loginResponse = try await self._login(email: email, password: password)
+		storage.token = loginResponse.key
+		
+		// Get Bearer token
+		let authResponse = try await self.authorization
+		storage.bearer = authResponse.token
+		
+		// Fetch additional authorization info
+		let user = try await self.user
+		storage.zypeAuthInfo.accessToken = user.zypeAuthInfo.accessToken
+		storage.zypeAuthInfo.expiresAt = user.zypeAuthInfo.expiresAt
+		storage.zypeAuthInfo.refreshToken = user.zypeAuthInfo.refreshToken
+	}
+	
+	func logout() {
+		URLSession.shared.configuration.httpCookieStorage?.removeCookies(since: Date.distantPast)
+		
+		storage.token = nil
+		storage.bearer = nil
+		storage.zypeAuthInfo.accessToken = nil
+		storage.zypeAuthInfo.refreshToken = nil
 	}
 }

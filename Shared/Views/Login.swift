@@ -8,20 +8,33 @@
 import SwiftUI
 
 struct Login: View {
-	@StateObject var model = Model()
+	@EnvironmentObject var api: API
 	
-	@Environment(\.presentationMode) var presentationMode
+	@State var email = ""
+	@State var password = ""
+	@State var wrongCredentials = false
 	
     var body: some View {
 		VStack {
 			Text("Login")
 				.font(.title)
-			TextField("email", text: $model.email)
-			TextField("password", text: $model.password)
-			Text(model.wrongCredentials ? "Wrong credentials" : " ")
+			TextField("email", text: $email)
+				.textContentType(.username)
+				.keyboardType(.emailAddress)
+			TextField("password", text: $password)
+				.textContentType(.password)
+			Text(wrongCredentials ? "Wrong credentials" : " ")
 				.foregroundColor(.red)
 			Button {
-				model.login(presentationMode: presentationMode)
+				wrongCredentials = false
+				Task {
+					do {
+						try await api.login(email: email, password: password)
+					} catch {
+						print(error)
+						wrongCredentials = true
+					}
+				}
 			} label: {
 				Text("Login")
 			}
@@ -29,35 +42,6 @@ struct Login: View {
 		.padding()
 		.frame(width: 300)
     }
-}
-
-extension Login {
-	@MainActor class Model: ObservableObject {
-		@Published var email = ""
-		@Published var password = ""
-		@Published var wrongCredentials = false
-		
-		func login(presentationMode: Binding<PresentationMode>) {
-			wrongCredentials = false
-			Task {
-				do {
-					Settings.shared.token = try await API.login(email: email, password: password)
-					let user = try await API.user()
-					Settings.shared.zypeAuthInfo.accessToken = user.zypeAuthInfo.accessToken
-					Settings.shared.zypeAuthInfo.expiresAt = user.zypeAuthInfo.expiresAt
-					Settings.shared.zypeAuthInfo.refreshToken = user.zypeAuthInfo.refreshToken
-					presentationMode.wrappedValue.dismiss()
-				} catch {
-					wrongCredentials = true
-					show(error: error)
-				}
-			}
-		}
-		
-		func show(error: Error) {
-			print("Something went wrong:\n\(error)")
-		}
-	}
 }
 
 struct Login_Previews: PreviewProvider {
