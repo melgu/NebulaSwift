@@ -19,12 +19,12 @@ struct Login: View {
 			Text("Login")
 				.font(.title)
 			TextField("email", text: $email)
-				.textContentType(.username)
 				#if os(iOS)
+				// .textContentType works on macOS, but creates a weird box when typing. TODO: Beta bug?
+				.textContentType(.username)
 				.keyboardType(.emailAddress)
 				#endif
-			TextField("password", text: $password)
-				.textContentType(.password)
+			SecureField("password", text: $password, prompt: Text("Ladida"))
 			Text(wrongCredentials ? "Wrong credentials" : " ")
 				.foregroundColor(.red)
 			Button {
