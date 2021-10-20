@@ -8,7 +8,7 @@
 import Foundation
 
 struct UserResponse: Decodable {
-	let createdAt: Date
+	let createdAt: String
 	let pk: Int
 	let email: String
 	let name: String
@@ -38,7 +38,7 @@ struct UserResponse: Decodable {
 struct ZypeConsumer: Decodable {
 	let zypeId: String
 	
-	enum Codingkeys: String, CodingKey {
+	enum CodingKeys: String, CodingKey {
 		case zypeId = "zype_id"
 	}
 }
@@ -57,22 +57,25 @@ struct ZypeAuthInfo: Codable {
 }
 
 extension API {
-	static func user() async throws -> UserResponse {
-		guard !Settings.shared.token.isEmpty else { throw APIError.missingToken }
-		let url = URL(string: "https://api.watchnebula.com/api/v1/auth/login/")!
-		var request = URLRequest(url: url)
-		request.setValue("Token \(Settings.shared.token)", forHTTPHeaderField: "Authorization")
-		
-		let (data, response) = try await URLSession.shared.data(from: url)
-		
-		guard let httpResponse = response as? HTTPURLResponse else {
-			throw APIError.invalidServerResponse(errorCode: nil)
+	var user: UserResponse {
+		get async throws {
+			guard let token = storage.token else { throw APIError.missingToken }
+			
+			let url = URL(string: "https://api.watchnebula.com/api/v1/auth/user/")!
+			var request = URLRequest(url: url)
+			request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
+			
+			let (data, response) = try await URLSession.shared.data(from: url)
+			
+			guard let httpResponse = response as? HTTPURLResponse else {
+				throw APIError.invalidServerResponse(errorCode: nil)
+			}
+			guard httpResponse.statusCode == 200 else {
+				throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
+			}
+			
+			let userResponse = try JSONDecoder().decode(UserResponse.self, from: data)
+			return userResponse
 		}
-		guard httpResponse.statusCode == 200 else {
-			throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
-		}
-		
-		let userResponse = try JSONDecoder().decode(UserResponse.self, from: data)
-		return userResponse
 	}
 }

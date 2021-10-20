@@ -29,13 +29,6 @@ struct ContentView: View {
 				.tabItem { Label("Search", systemImage: "magnifyingglass") }
 				.tag(Tabs.search)
 		}
-		.task {
-			await model.setup()
-		}
-		.onChange(of: Settings.shared.token, perform: model.tokenChanged)
-		.sheet(isPresented: $model.loginIsPresented) {
-			Login()
-		}
     }
 }
 
@@ -51,34 +44,7 @@ extension ContentView {
 
 extension ContentView {
 	class Model: ObservableObject {
-		@Published var tab: Tabs = .browse
-		@Published var loginIsPresented = false
-		
-		private var cancellables = Set<AnyCancellable>()
-		
-		func setup() async {
-			do {
-				let config = try await API.config()
-				Settings.shared.nebulaAuthApi = config.authBaseUrl.absoluteString
-				Settings.shared.nebulaContentApi = config.contentBaseUrl.absoluteString
-			} catch {
-				show(error: error)
-			}
-			
-			if Settings.shared.token.isEmpty {
-				loginIsPresented = true
-			}
-		}
-		
-		func tokenChanged(to token: String) {
-			if token.isEmpty {
-				loginIsPresented = true
-			}
-		}
-		
-		func show(error: Error) {
-			print("Something went wrong:\n\(error)")
-		}
+		@Published var tab: Tabs = .myShows
 	}
 }
 

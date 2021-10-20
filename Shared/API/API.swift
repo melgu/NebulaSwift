@@ -7,19 +7,15 @@
 
 import Foundation
 
-enum API {}
-
-enum APIError: Error {
-	case invalidServerResponse(errorCode: Int?)
-	case missingToken
-}
-
-
-enum HTTPMethod {}
-
-extension HTTPMethod {
-	static let get = "GET"
-	static let post = "POST"
-	static let put = "PUT"
-	static let delete = "DELETE"
+@MainActor class API: ObservableObject {
+	let storage = Storage()
+	
+	@Published var isLoggedIn = false
+	
+	init() {
+		storage.$token
+			.combineLatest(storage.$bearer, storage.zypeAuthInfo.$accessToken)
+			.map { $0 != nil && $1 != nil && $2 != nil }
+			.assign(to: &$isLoggedIn)
+	}
 }
