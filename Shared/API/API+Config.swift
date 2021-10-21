@@ -16,13 +16,6 @@ struct Config: Decodable {
 	let appStoreUrl: URL
 	let authBaseUrl: URL
 	let contentBaseUrl: URL
-	
-	enum CodingKeys: String, CodingKey {
-		case platform, environment, features, recommendedVersion = "recommended_version",
-			 minimumVersion = "minimum_version", appStoreUrl = "app_store_url",
-			 authBaseUrl = "auth_base_url", contentBaseUrl = "content_base_url"
-		
-	}
 }
 
 extension API {
@@ -38,7 +31,7 @@ extension API {
 				throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
 			}
 			
-			let config = try JSONDecoder().decode(Config.self, from: data)
+			let config = try decoder.decode(Config.self, from: data)
 			return config
 		}
 	}

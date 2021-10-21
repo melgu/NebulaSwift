@@ -31,7 +31,7 @@ extension API {
 				throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
 			}
 			
-			let authResponse = try JSONDecoder().decode(AuthorizationResponse.self, from: data)
+			let authResponse = try decoder.decode(AuthorizationResponse.self, from: data)
 			return authResponse
 		}
 	}
