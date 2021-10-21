@@ -24,23 +24,10 @@ struct UserResponse: Decodable {
 	let zypeAuthInfo: ZypeAuthInfo
 	let promotion: String?
 	let iapStatus: String?
-	
-	enum CodingKeys: String, CodingKey {
-		case createdAt = "created_at", pk, email, name, accountType = "account_type",
-			 promoExpiration = "promo_expiration", optInToCommunications = "opt_in_to_communications",
-			 trialCancelled = "trial_cancelled", isSubscribed = "is_subscribed",
-			 isPasswordSet = "is_password_set", hasCuriositystreamSubscription = "has_curiositystream_subscription",
-			 zobjectUserId = "zobject_user_id", zypeConsumer = "zype_consumer",
-			 zypeAuthInfo = "zype_auth_info", promotion, iapStatus = "iap_status"
-	}
 }
 
 struct ZypeConsumer: Decodable {
 	let zypeId: String
-	
-	enum CodingKeys: String, CodingKey {
-		case zypeId = "zype_id"
-	}
 }
 
 struct ZypeAuthInfo: Codable {
@@ -48,12 +35,6 @@ struct ZypeAuthInfo: Codable {
 	let expiresAt: Int
 	let refreshToken: String
 	let zypeCreatedAt: Int
-	
-	enum CodingKeys: String, CodingKey {
-		case accessToken = "access_token", expiresAt = "expires_at",
-		refreshToken = "refresh_token", zypeCreatedAt = "zype_created_at"
-		
-	}
 }
 
 extension API {
@@ -74,7 +55,7 @@ extension API {
 				throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
 			}
 			
-			let userResponse = try JSONDecoder().decode(UserResponse.self, from: data)
+			let userResponse = try decoder.decode(UserResponse.self, from: data)
 			return userResponse
 		}
 	}

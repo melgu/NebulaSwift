@@ -25,7 +25,7 @@ extension API {
 		request.setValue("application/json;charset=utf-8", forHTTPHeaderField: "Content-Type")
 		
 		let requestBody = LoginRequestBody(email: email, password: password)
-		request.httpBody = try JSONEncoder().encode(requestBody)
+		request.httpBody = try encoder.encode(requestBody)
 		
 		URLSession.shared.configuration.httpCookieStorage?.removeCookies(since: Date.distantPast)
 		
@@ -38,7 +38,7 @@ extension API {
 			throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
 		}
 		
-		let loginResponse = try JSONDecoder().decode(LoginResponse.self, from: data)
+		let loginResponse = try decoder.decode(LoginResponse.self, from: data)
 		return loginResponse
 	}
 	
