@@ -14,25 +14,13 @@ struct AuthorizationResponse: Decodable {
 extension API {
 	var authorization: AuthorizationResponse {
 		get async throws {
-			guard let token = storage.token else { throw APIError.missingToken }
-			
 			let url = URL(string: "https://api.watchnebula.com/api/v1/authorization/")!
-			var request = URLRequest(url: url)
-			
-			request.httpMethod = HTTPMethod.post
-			request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
-			
-			let (data, response) = try await URLSession.shared.data(for: request)
-			
-			guard let httpResponse = response as? HTTPURLResponse else {
-				throw APIError.invalidServerResponse(errorCode: nil)
-			}
-			guard httpResponse.statusCode == 200 else {
-				throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
-			}
-			
-			let authResponse = try decoder.decode(AuthorizationResponse.self, from: data)
-			return authResponse
+			return try await request(.post, url: url, parameters: [:], authorization: .token)
 		}
+	}
+	
+	func refreshAuthorization() async throws {
+		let authResponse = try await self.authorization
+		storage.bearer = authResponse.token
 	}
 }

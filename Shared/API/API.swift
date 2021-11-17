@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OSLog
 
 @MainActor class API: ObservableObject {
 	let storage = Storage()
@@ -24,7 +25,15 @@ import Foundation
 	
 	@Published var isLoggedIn = false
 	
+	let logger = Logger(subsystem: "NebulaSwift", category: "API")
+	
 	init() {
+		print("Token: \(storage.token ?? "nil")")
+		print("Authorization: \(storage.bearer ?? "nil")")
+		print("Zype Access Token: \(storage.zypeAuthInfo.accessToken ?? "nil")")
+		print("Zype Refresh: \(storage.zypeAuthInfo.refreshToken ?? "nil")")
+		
+		
 		storage.$token
 			.combineLatest(storage.$bearer, storage.zypeAuthInfo.$accessToken)
 			.map { $0 != nil && $1 != nil && $2 != nil }

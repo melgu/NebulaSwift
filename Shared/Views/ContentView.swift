@@ -9,31 +9,31 @@ import SwiftUI
 import Combine
 
 struct ContentView: View {
-	@StateObject var model = Model()
+	@State private var tab: Tab = .myShows
 	
     var body: some View {
-		TabView(selection: $model.tab) {
+		TabView(selection: $tab) {
 			Featured()
 				.tabItem { Label("Featured", systemImage: "star.circle") }
-				.tag(Tabs.featured)
+				.tag(Tab.featured)
 			MyShows()
 				.tabItem { Label("My Shows", systemImage: "suit.heart") }
-				.tag(Tabs.myShows)
+				.tag(Tab.myShows)
 			Browse()
 				.tabItem { Label("Browse", systemImage: "list.dash") }
-				.tag(Tabs.browse)
+				.tag(Tab.browse)
 			Downloads()
 				.tabItem { Label("Downloads", systemImage: "arrow.down.circle") }
-				.tag(Tabs.downloads)
+				.tag(Tab.downloads)
 			Search()
 				.tabItem { Label("Search", systemImage: "magnifyingglass") }
-				.tag(Tabs.search)
+				.tag(Tab.search)
 		}
     }
 }
 
 extension ContentView {
-	enum Tabs {
+	enum Tab {
 		case featured
 		case myShows
 		case browse
@@ -41,13 +41,6 @@ extension ContentView {
 		case search
 	}
 }
-
-extension ContentView {
-	class Model: ObservableObject {
-		@Published var tab: Tabs = .myShows
-	}
-}
-
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
