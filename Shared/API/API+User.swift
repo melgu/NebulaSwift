@@ -40,23 +40,18 @@ struct ZypeAuthInfo: Codable {
 extension API {
 	var user: UserResponse {
 		get async throws {
-			guard let token = storage.token else { throw APIError.missingToken }
-			
 			let url = URL(string: "https://api.watchnebula.com/api/v1/auth/user/")!
-			var request = URLRequest(url: url)
-			request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
-			
-			let (data, response) = try await URLSession.shared.data(from: url)
-			
-			guard let httpResponse = response as? HTTPURLResponse else {
-				throw APIError.invalidServerResponse(errorCode: nil)
-			}
-			guard httpResponse.statusCode == 200 else {
-				throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
-			}
-			
-			let userResponse = try decoder.decode(UserResponse.self, from: data)
-			return userResponse
+			return try await request(.get, url: url, parameters: [:], authorization: .token)
 		}
+	}
+	
+	func refreshZypeAuthorization() async throws {
+		// TODO: If refresh token exist, use that method
+		
+		// Fetch additional authorization info
+		let user = try await self.user
+		storage.zypeAuthInfo.accessToken = user.zypeAuthInfo.accessToken
+		storage.zypeAuthInfo.expiresAt = user.zypeAuthInfo.expiresAt
+		storage.zypeAuthInfo.refreshToken = user.zypeAuthInfo.refreshToken
 	}
 }

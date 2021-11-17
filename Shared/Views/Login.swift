@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct Login: View {
-	@EnvironmentObject var api: API
+	@EnvironmentObject private var api: API
 	
-	@State var email = ""
-	@State var password = ""
-	@State var wrongCredentials = false
+	@State private var email = ""
+	@State private var password = ""
+	@State private var wrongCredentials = false
 	
     var body: some View {
 		VStack {
@@ -24,7 +24,7 @@ struct Login: View {
 				.textContentType(.username)
 				.keyboardType(.emailAddress)
 				#endif
-			SecureField("password", text: $password, prompt: Text("Ladida"))
+			SecureField("password", text: $password)
 			Text(wrongCredentials ? "Wrong credentials" : " ")
 				.foregroundColor(.red)
 			Button {
