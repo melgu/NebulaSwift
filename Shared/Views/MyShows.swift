@@ -24,6 +24,14 @@ struct MyShows: View {
 				}
 			}
 			.listStyle(.sidebar)
+			.refreshable {
+				print("Refresh Videos")
+				do {
+					videos = try await api.libraryVideos
+				} catch {
+					print(error)
+				}
+			}
 		}
 		.task {
 			print("Load Videos")
