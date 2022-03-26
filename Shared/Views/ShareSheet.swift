@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: Public Interface
+
 extension View {
 	/// Presents a sheet when a binding to a list of items that you provide is non-`nil`.
 	///
@@ -72,6 +74,8 @@ public struct ShareButton<Label: View>: View {
 		.shareSheet(items: $shareItems, onDismiss: onDismiss)
 	}
 }
+
+// MARK: - Platform Specifics
 
 #if canImport(UIKit)
 
@@ -153,6 +157,8 @@ fileprivate struct ShareSheetPresenter: NSViewRepresentable {
 }
 
 #endif
+
+// MARK: - Preview
 
 fileprivate struct ShareSheetDemo: View {
 	@State private var shareItems: [Any]? = nil
