@@ -10,6 +10,19 @@ import SwiftUI
 extension View {
 	/// Presents a sheet when a binding to a list of items that you provide is non-`nil`.
 	///
+	/// ```
+	/// struct MyView {
+	///     @State var itemsToShare: [Any]?
+	///     var body: some View {
+	///         Image(systemName: "square.and.arrow.up")
+	///             .onTapGesture {
+	///                 itemsToShare = ["This text will be shared"]
+	///             }
+	///             .shareSheet(items: $itemsToShare)
+	///     }
+	/// }
+	/// ```
+	///
 	/// On iPadOS and macOS the share sheet or picker will be presented at the position of the modified view.
 	///
 	/// - Parameters:
@@ -30,12 +43,20 @@ public struct ShareButton<Label: View>: View {
 	
 	/// A control that presents the Share Sheet on iOS and Sharing Picker on macOS.
 	///
+	/// ```
+	/// struct MyView: View {
+	///     ShareButton(items: [someText, someURL]) {
+	///         Text("Share")
+	///     }
+	/// }
+	/// ```
+	///
 	/// On iPadOS and macOS the share sheet or picker will be presented at the button's position.
 	///
 	/// - Parameters:
 	///   - items: The items to be shared.
 	///   - onDismiss: The closure to execute when dismissing the sheet or picker.
-	///   - label: A view that describes the purpose of the button’s action.
+	///   - label: A view that describes the purpose of the button.
 	public init(items: @autoclosure @escaping () -> [Any], onDismiss: @escaping () -> Void = {}, @ViewBuilder label: () -> Label) {
 		self.items = items
 		self.onDismiss = onDismiss
