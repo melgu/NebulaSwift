@@ -17,7 +17,7 @@ struct MyShows: View {
 			List {
 				ForEach(videos) { video in
 					NavigationLink {
-						VideoPreview(video: video)
+						VideoView(video: video)
 					} label: {
 						VideoPreview(video: video)
 					}
@@ -51,6 +51,7 @@ struct VideoPreview: View {
 			}
 			.frame(width: 64)
 			.cornerRadius(4)
+			
 			VStack(alignment: .leading) {
 				Text(video.title)
 					.font(.body)
@@ -58,6 +59,51 @@ struct VideoPreview: View {
 					.font(.caption)
 			}
 			.lineLimit(1)
+		}
+	}
+}
+
+struct VideoView: View {
+	var video: Video
+	
+	var body: some View {
+		ScrollView {
+			VStack(alignment: .leading) {
+				#if os(macOS)
+				HStack {
+					Text(video.title)
+						.font(.title)
+					Spacer()
+					ShareButton(items: [video.shareUrl]) {
+						Image(systemName: "square.and.arrow.up")
+					}
+				}
+				#endif
+				Text(video.description)
+				HStack {
+					ForEach(video.categorySlugs, id: \.self) { category in
+						Text(category)
+							.padding(8)
+							.background(
+								RoundedRectangle(cornerRadius: 4)
+									.foregroundColor(.blue)
+									.opacity(0.2)
+							)
+					}
+				}
+			}
+			.padding()
+			.frame(maxWidth: .infinity, alignment: .leading)
+			.navigationTitle(video.title)
+			#if canImport(UIKit)
+			.toolbar {
+				ToolbarItem(placement: .navigationBarTrailing) {
+					ShareButton(items: [video.shareUrl]) {
+						Image(systemName: "square.and.arrow.up")
+					}
+				}
+			}
+			#endif
 		}
 	}
 }
