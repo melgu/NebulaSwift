@@ -11,6 +11,8 @@
 		B0045974271FAD5D002C7974 /* API+Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0045972271FAD5D002C7974 /* API+Authorization.swift */; };
 		B0045976271FB9D9002C7974 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0045975271FB9D9002C7974 /* Network.swift */; };
 		B0045977271FB9D9002C7974 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0045975271FB9D9002C7974 /* Network.swift */; };
+		B04EFE0C27EF276600B901F9 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04EFE0B27EF276600B901F9 /* ShareSheet.swift */; };
+		B04EFE0D27EF276600B901F9 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04EFE0B27EF276600B901F9 /* ShareSheet.swift */; };
 		B0508A2A26856E1D006FED7E /* MyShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A2926856E1D006FED7E /* MyShows.swift */; };
 		B0508A2B26856E1D006FED7E /* MyShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A2926856E1D006FED7E /* MyShows.swift */; };
 		B0508A2E26856FC9006FED7E /* Browse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A2D26856FC9006FED7E /* Browse.swift */; };
@@ -50,6 +52,7 @@
 /* Begin PBXFileReference section */
 		B0045972271FAD5D002C7974 /* API+Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Authorization.swift"; sourceTree = "<group>"; };
 		B0045975271FB9D9002C7974 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		B04EFE0B27EF276600B901F9 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
 		B0508A2926856E1D006FED7E /* MyShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyShows.swift; sourceTree = "<group>"; };
 		B0508A2D26856FC9006FED7E /* Browse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browse.swift; sourceTree = "<group>"; };
 		B0508A3026856FDA006FED7E /* Downloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloads.swift; sourceTree = "<group>"; };
@@ -144,6 +147,7 @@
 				B0508A3026856FDA006FED7E /* Downloads.swift */,
 				B0508A3326856FEB006FED7E /* Search.swift */,
 				B0DF9FAC268A343700EF9392 /* Login.swift */,
+				B04EFE0B27EF276600B901F9 /* ShareSheet.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -262,6 +266,7 @@
 				B079EF3E26855A50009EFBAA /* API.swift in Sources */,
 				B079EF4826856116009EFBAA /* Defaults.swift in Sources */,
 				B079EF2F26853A57009EFBAA /* NebulaSwiftApp.swift in Sources */,
+				B04EFE0C27EF276600B901F9 /* ShareSheet.swift in Sources */,
 				B056F7D827454A71009B92BC /* API+Video.swift in Sources */,
 				B079EF45268560D6009EFBAA /* Storage.swift in Sources */,
 			);
@@ -287,6 +292,7 @@
 				B079EF3F26855A50009EFBAA /* API.swift in Sources */,
 				B079EF4926856116009EFBAA /* Defaults.swift in Sources */,
 				B079EF3026853A57009EFBAA /* NebulaSwiftApp.swift in Sources */,
+				B04EFE0D27EF276600B901F9 /* ShareSheet.swift in Sources */,
 				B056F7D927454A71009B92BC /* API+Video.swift in Sources */,
 				B079EF46268560D6009EFBAA /* Storage.swift in Sources */,
 			);
