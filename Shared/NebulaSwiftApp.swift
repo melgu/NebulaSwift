@@ -9,7 +9,11 @@ import SwiftUI
 
 @main
 struct NebulaSwiftApp: App {
-	@StateObject var api = API()
+	@StateObject var api: API
+	
+	init() {
+		_api = StateObject(wrappedValue: API())
+	}
 	
     var body: some Scene {
         WindowGroup {
