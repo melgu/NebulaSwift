@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: Info
+
 struct VideoList: Decodable {
 	let next: String?
 	let previous: String?
@@ -57,4 +59,35 @@ enum Attribute: Decodable {
 struct Engagement: Decodable {
 //	let updatedAt: Date
 	let progress: Int
+}
+
+// MARK: - Stream
+
+extension API {
+	func stream(for video: Video) async throws -> VideoStream {
+		let url = URL(string: "https://content.watchnebula.com/video/\(video.slug)/stream/")!
+		let parameters: [String: String] = ["page": "1"]
+		return try await request(.get, url: url, parameters: parameters, authorization: .bearer)
+	}
+}
+
+
+struct VideoStream: Decodable {
+	let manifest: URL
+	let download: URL
+	let iframe: URL
+//	let bif: Bif
+	let subtitles: [Subtitle]
+}
+
+//struct Bif: Decodable {
+//	let hd: URL
+//	let sd: URL
+//	let fhd: URL
+//}
+
+struct Subtitle: Decodable {
+	let languageCode: String
+	let url: URL
+	let language: String
 }
