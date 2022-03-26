@@ -33,7 +33,6 @@ import OSLog
 		print("Zype Access Token: \(storage.zypeAuthInfo.accessToken ?? "nil")")
 		print("Zype Refresh: \(storage.zypeAuthInfo.refreshToken ?? "nil")")
 		
-		
 		storage.$token
 			.combineLatest(storage.$bearer, storage.zypeAuthInfo.$accessToken)
 			.map { $0 != nil && $1 != nil && $2 != nil }
