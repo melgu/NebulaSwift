@@ -9,30 +9,44 @@ import SwiftUI
 import AVKit
 
 struct MyShows: View {
+	let player: AVPlayer
+	
 	@EnvironmentObject private var api: API
+	
+	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
 	
 	@State private var videos: [Video] = []
 	@State private var videoSelection: String?
 	
-    var body: some View {
-		NavigationView {
-			List {
+	var body: some View {
+		ScrollView {
+			LazyVGrid(columns: [GridItem(.adaptive(minimum: 240))]) {
 				ForEach(videos) { video in
 					NavigationLink(tag: video.id, selection: $videoSelection) {
-						VideoView(video: video, videoSelection: $videoSelection)
+						VideoView(video: video, player: player)
 					} label: {
 						VideoPreview(video: video)
 					}
+					.buttonStyle(.plain)
+					.contextMenu {
+						Button("Watch later") {
+							print("Watch later")
+						}
+						Button("Download") {
+							print("Download")
+						}
+					}
 				}
 			}
-			.listStyle(.sidebar)
-			.refreshable {
-				print("Refresh Videos")
-				do {
-					videos = try await api.libraryVideos
-				} catch {
-					print(error)
-				}
+			.padding()
+		}
+		.navigationTitle("My Shows")
+		.refreshable {
+			print("Refresh Videos")
+			do {
+				videos = try await api.libraryVideos
+			} catch {
+				print(error)
 			}
 		}
 		.task {
@@ -43,14 +57,18 @@ struct MyShows: View {
 				print(error)
 			}
 		}
-    }
+		.onChange(of: videoSelection) { newSelection in
+			print("Video Selection Changed")
+			player.replaceCurrentItem(with: nil)
+		}
+	}
 }
 
 struct VideoPreview: View {
 	var video: Video
 	
 	var body: some View {
-		HStack {
+		VStack(alignment: .leading) {
 			AsyncImage(url: video.assets.thumbnail["1080"]?.original) { image in
 				image
 					.resizable()
@@ -59,27 +77,23 @@ struct VideoPreview: View {
 				Color.black
 					.aspectRatio(16/9, contentMode: .fit)
 			}
-			.frame(width: 64)
 			.cornerRadius(4)
 			
-			VStack(alignment: .leading) {
-				Text(video.title)
-					.font(.body)
-				Text(video.channelTitle)
-					.font(.caption)
-			}
-			.lineLimit(1)
+			Text(video.title)
+				.font(.body)
+			Text(video.channelTitle)
+				.font(.caption)
 		}
+		.lineLimit(1)
 	}
 }
 
 struct VideoView: View {
 	let video: Video
-	@Binding var videoSelection: String?
+	let player: AVPlayer
 	
 	@EnvironmentObject private var api: API
 	
-	@State private var player = AVPlayer(playerItem: nil)
 	@State private var task: Task<(), Error>?
 	@State private var didAppearOnce = false
 	
@@ -87,7 +101,7 @@ struct VideoView: View {
 		ScrollView {
 			VStack(alignment: .leading) {
 				Color.black
-					.aspectRatio(1.7777777778, contentMode: .fit)
+					.aspectRatio(16/9, contentMode: .fit)
 					.overlay(CustomVideoPlayer(player: player))
 					.task {
 						guard !didAppearOnce else { return }
@@ -106,13 +120,6 @@ struct VideoView: View {
 							print(error)
 						}
 					}
-					#if canImport(UIKit)
-					.onChange(of: videoSelection) { _ in
-						videoSelectionChanged()
-					}
-					#else
-					.onDisappear(perform: videoSelectionChanged)
-					#endif
 				
 				#if os(macOS)
 				HStack {
@@ -191,6 +198,7 @@ struct CustomVideoPlayer: NSViewRepresentable {
 
 struct MyShows_Previews: PreviewProvider {
     static var previews: some View {
-        MyShows()
+        MyShows(player: AVPlayer())
+			.environmentObject(API())
     }
 }

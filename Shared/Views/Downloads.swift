@@ -9,11 +9,7 @@ import SwiftUI
 
 struct Downloads: View {
     var body: some View {
-		NavigationView {
-			List {
-				Text("Downloads")
-			}
-		}
+		Text("Downloads")
     }
 }
 

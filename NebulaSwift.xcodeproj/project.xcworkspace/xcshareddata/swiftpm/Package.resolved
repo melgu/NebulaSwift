@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "swiftui-pull-to-refresh",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/globulus/swiftui-pull-to-refresh",
+      "state" : {
+        "revision" : "5a1e0f8f239381df7e75a63e6d01e42633d0903f",
+        "version" : "1.1.5"
+      }
+    }
+  ],
+  "version" : 2
+}
