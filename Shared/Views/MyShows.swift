@@ -85,7 +85,7 @@ struct VideoPreview: View {
 	
 	var body: some View {
 		VStack(alignment: .leading) {
-			AsyncImage(url: video.assets.thumbnail["1080"]?.original) { image in
+			AsyncImage(url: video.assets.thumbnail["480"]?.original) { image in
 				image
 					.resizable()
 					.scaledToFit()
