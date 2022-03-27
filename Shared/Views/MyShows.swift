@@ -87,7 +87,7 @@ struct VideoView: View {
 		ScrollView {
 			VStack(alignment: .leading) {
 				Color.black
-					.aspectRatio(1.8888888889, contentMode: .fit)
+					.aspectRatio(1.7777777778, contentMode: .fit)
 					.overlay(CustomVideoPlayer(player: player))
 					.task {
 						guard !didAppearOnce else { return }
