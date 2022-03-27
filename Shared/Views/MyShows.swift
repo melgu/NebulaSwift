@@ -17,6 +17,7 @@ struct MyShows: View {
 	
 	@State private var videos: [Video] = []
 	@State private var videoSelection: String?
+	@State private var page = 1
 	
 	var body: some View {
 		ScrollView {
@@ -36,6 +37,17 @@ struct MyShows: View {
 							print("Download")
 						}
 					}
+					.task {
+						if video == videos.last {
+							print("Last video did appear, loading next page")
+							do {
+								videos += try await api.libraryVideos(page: page + 1)
+								page += 1
+							} catch {
+								print(error)
+							}
+						}
+					}
 				}
 			}
 			.padding()
@@ -44,7 +56,11 @@ struct MyShows: View {
 		.refreshable {
 			print("Refresh Videos")
 			do {
-				videos = try await api.libraryVideos
+				let newVideos = try await api.libraryVideos
+				if newVideos.first != videos.first {
+					page = 1
+					videos = try await api.libraryVideos
+				}
 			} catch {
 				print(error)
 			}
