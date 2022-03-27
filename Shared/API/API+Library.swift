@@ -10,10 +10,13 @@ import Foundation
 extension API {
 	var libraryVideos: [Video] {
 		get async throws {
-			let url = URL(string: "https://content.watchnebula.com/library/video/?page=1")!
-			let parameters: [String: String] = ["page": "1"]
-			let response: VideoList = try await request(.get, url: url, parameters: parameters, authorization: .bearer)
-			return response.results
+			try await libraryVideos(page: 1)
 		}
+	}
+	
+	func libraryVideos(page: Int) async throws -> [Video] {
+		let url = URL(string: "https://content.watchnebula.com/library/video/?page=\(page)")!
+		let response: VideoList = try await request(.get, url: url, parameters: [:], authorization: .bearer)
+		return response.results
 	}
 }

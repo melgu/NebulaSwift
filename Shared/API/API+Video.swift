@@ -15,7 +15,7 @@ struct VideoList: Decodable {
 	let results: [Video]
 }
 
-struct Video: Decodable {
+struct Video: Decodable, Equatable {
 	let slug: String
 	let title: String
 	let description: String
@@ -37,26 +37,26 @@ extension Video: Identifiable {
 	var id: String { zypeId }
 }
 
-struct Assets: Decodable {
+struct Assets: Decodable, Equatable {
 	let channelAvatar: [String: ChannelAvatar]
 	let thumbnail: [String: Thumbnail]
 }
 
-struct ChannelAvatar: Decodable {
+struct ChannelAvatar: Decodable, Equatable {
 	let original: URL
 	let webp: URL
 }
 
-struct Thumbnail: Decodable {
+struct Thumbnail: Decodable, Equatable {
 	let original: URL
 }
 
-enum Attribute: Decodable {
+enum Attribute: Decodable, Equatable {
 	case freeSampleEligible
 	case isNebulaPlus
 }
 
-struct Engagement: Decodable {
+struct Engagement: Decodable, Equatable {
 //	let updatedAt: Date
 	let progress: Int
 }
