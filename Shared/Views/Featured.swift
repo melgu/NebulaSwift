@@ -11,10 +11,7 @@ struct Featured: View {
 	@StateObject var model = Model()
 	
     var body: some View {
-		NavigationView {
-			Text("Featured")
-				.font(.title)
-		}
+		Text("Featured")
     }
 }
 

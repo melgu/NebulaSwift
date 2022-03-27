@@ -9,11 +9,7 @@ import SwiftUI
 
 struct Browse: View {
     var body: some View {
-		NavigationView {
-			List {
-				Text("Browse")
-			}
-		}
+		Text("Browse")
     }
 }
 
