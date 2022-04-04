@@ -13,8 +13,6 @@ struct MyShows: View {
 	
 	@EnvironmentObject private var api: API
 	
-	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
-	
 	@State private var videos: [Video] = []
 	@State private var videoSelection: String?
 	@State private var page = 1

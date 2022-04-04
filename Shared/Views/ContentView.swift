@@ -13,7 +13,9 @@ struct ContentView: View {
 	@State private var tab: Tab? = .myShows
 	@State private var player = AVPlayer()
 	
+	#if canImport(UIKit)
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
+	#endif
 	
 	var body: some View {
 		Group {
