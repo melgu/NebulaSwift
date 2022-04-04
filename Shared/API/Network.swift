@@ -69,7 +69,10 @@ extension API {
 		var request = URLRequest(url: url)
 		
 		request.httpMethod = method.rawValue
-		request.httpBody = body
+		if let body = body {
+			request.httpBody = body
+			request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+		}
 		request.cachePolicy = .reloadIgnoringLocalCacheData
 		request.allHTTPHeaderFields = parameters
 		

@@ -30,7 +30,7 @@ struct Video: Decodable, Equatable {
 //	let attributes: [Attribute]
 	let shareUrl: URL
 //	let channel: NSNull
-	let engagement: Engagement?
+	let engagement: Engagement
 	let zypeId: String
 }
 extension Video: Identifiable {
@@ -57,17 +57,38 @@ enum Attribute: Decodable, Equatable {
 }
 
 struct Engagement: Decodable, Equatable {
-//	let updatedAt: Date
+	let contentSlug: String
+	let updatedAt: Date
 	let progress: Int
+	let completed: Bool
+	let watchLater: Bool
+}
+
+struct Progress: Encodable {
+	let contentSlug: String
+	let value: Int
 }
 
 // MARK: - Stream
 
 extension API {
+	func video(for slug: String) async throws -> Video {
+		let url = URL(string: "https://content.watchnebula.com/video/\(slug)/")!
+		return try await request(.get, url: url, parameters: [:], authorization: .bearer)
+	}
+	
 	func stream(for video: Video) async throws -> VideoStream {
 		let url = URL(string: "https://content.watchnebula.com/video/\(video.slug)/stream/")!
 		let parameters: [String: String] = ["page": "1"]
 		return try await request(.get, url: url, parameters: parameters, authorization: .bearer)
+	}
+	
+	@discardableResult
+	func sendProgress(for video: Video, seconds: Int) async throws -> Engagement {
+		let url = URL(string: "https://content.watchnebula.com/engagement/video/progress/")!
+		let progress = Progress(contentSlug: video.slug, value: seconds)
+		print(String(data: (try! encoder.encode(progress)), encoding: .utf8)!)
+		return try await request(.post, url: url, parameters: [:], body: progress, authorization: .bearer)
 	}
 }
 

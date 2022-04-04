@@ -8,8 +8,14 @@
 import SwiftUI
 
 struct Downloads: View {
+	@EnvironmentObject private var api: API
+	@EnvironmentObject private var player: Player
+	
     var body: some View {
 		Text("Downloads")
+			.onAppear {
+				player.reset()
+			}
 			.settingsSheet()
     }
 }

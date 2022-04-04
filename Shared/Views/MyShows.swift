@@ -10,8 +10,7 @@ import AVKit
 
 struct MyShows: View {
 	@EnvironmentObject private var api: API
-	
-	@Environment(\.player) private var player
+	@EnvironmentObject private var player: Player
 	
 	@State private var videos: [Video] = []
 	@State private var page = 1
@@ -21,7 +20,7 @@ struct MyShows: View {
 			LazyVGrid(columns: [GridItem(.adaptive(minimum: 240))]) {
 				ForEach(videos) { video in
 					NavigationLink {
-						VideoView(video: video, player: player)
+						VideoView(video: video)
 					} label: {
 						VideoPreview(video: video)
 					}
@@ -49,7 +48,7 @@ struct MyShows: View {
 			}
 			.padding()
 			.onAppear {
-				player.replaceCurrentItem(with: nil)
+				player.reset()
 			}
 		}
 		.navigationTitle("My Shows")
@@ -57,9 +56,10 @@ struct MyShows: View {
 			print("Refresh Videos")
 			do {
 				let newVideos = try await api.libraryVideos
-				if newVideos.first != videos.first {
+				if newVideos != videos {
+					print("Video list changed")
 					page = 1
-					videos = try await api.libraryVideos
+					videos = newVideos
 				}
 			} catch {
 				print(error)
@@ -103,11 +103,10 @@ struct VideoPreview: View {
 
 struct VideoView: View {
 	let video: Video
-	let player: AVPlayer
 	
 	@EnvironmentObject private var api: API
+	@EnvironmentObject private var player: Player
 	
-	@State private var task: Task<(), Error>?
 	@State private var didAppearOnce = false
 	
 	var body: some View {
@@ -115,20 +114,14 @@ struct VideoView: View {
 			VStack(alignment: .leading) {
 				Color.black
 					.aspectRatio(16/9, contentMode: .fit)
-					.overlay(CustomVideoPlayer(player: player))
+					.overlay(CustomVideoPlayer())
 					.task {
 						guard !didAppearOnce else { return }
 						didAppearOnce = true
 						print("Load Video Stream Info")
-						task = Task {
-							let stream = try await api.stream(for: video)
-							let item = AVPlayerItem(url: stream.manifest)
-							try Task.checkCancellation()
-							player.replaceCurrentItem(with: item)
-							player.play()
-						}
 						do {
-							try await task?.value
+							try await player.replaceVideo(with: video)
+							player.play()
 						} catch {
 							print(error)
 						}
@@ -170,24 +163,15 @@ struct VideoView: View {
 			#endif
 		}
 	}
-	
-	func videoSelectionChanged() {
-		print("Video selection changed")
-		task?.cancel()
-		if let item = player.currentItem {
-			print("Video stopped at \(player.currentTime().seconds)/\(item.duration.seconds)")
-		}
-		player.replaceCurrentItem(with: nil)
-	}
 }
 
 #if canImport(UIKit)
 struct CustomVideoPlayer: UIViewControllerRepresentable {
-	let player: AVPlayer
+	@EnvironmentObject private var player: Player
 	
 	func makeUIViewController(context: Context) -> AVPlayerViewController {
 		let playerViewController = AVPlayerViewController()
-		playerViewController.player = player
+		playerViewController.player = player.player
 		return playerViewController
 	}
 	
@@ -195,11 +179,11 @@ struct CustomVideoPlayer: UIViewControllerRepresentable {
 }
 #else
 struct CustomVideoPlayer: NSViewRepresentable {
-	let player: AVPlayer
+	@EnvironmentObject private var player: Player
 	
 	func makeNSView(context: Context) -> AVPlayerView {
 		let playerView = AVPlayerView()
-		playerView.player = player
+		playerView.player = player.player
 		playerView.showsFullScreenToggleButton = true
 		playerView.allowsPictureInPicturePlayback = true
 		return playerView
