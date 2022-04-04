@@ -36,7 +36,6 @@ extension API {
 		try await refreshZypeAuthorization()
 	}
 	
-	
 	func logout() {
 		URLSession.shared.configuration.httpCookieStorage?.removeCookies(since: Date.distantPast)
 		
