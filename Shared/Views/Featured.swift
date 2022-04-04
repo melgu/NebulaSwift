@@ -9,9 +9,13 @@ import SwiftUI
 
 struct Featured: View {
 	@EnvironmentObject private var api: API
+	@EnvironmentObject private var player: Player
 	
     var body: some View {
 		Text("Featured")
+			.onAppear {
+				player.reset()
+			}
 			.settingsSheet()
     }
 }

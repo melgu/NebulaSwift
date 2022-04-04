@@ -9,10 +9,14 @@ import SwiftUI
 
 @main
 struct NebulaSwiftApp: App {
-	@StateObject var api: API
+	@StateObject private var api: API
+	@StateObject private var player: Player
 	
 	init() {
-		_api = StateObject(wrappedValue: API())
+		let api = API()
+		_api = StateObject(wrappedValue: api)
+		let player = Player(api: api)
+		_player = StateObject(wrappedValue: player)
 	}
 	
     var body: some Scene {
@@ -20,6 +24,7 @@ struct NebulaSwiftApp: App {
 			if api.isLoggedIn {
 				ContentView()
 					.environmentObject(api)
+					.environmentObject(player)
 			} else {
 				Login()
 					.environmentObject(api)

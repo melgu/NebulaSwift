@@ -8,8 +8,14 @@
 import SwiftUI
 
 struct Browse: View {
+	@EnvironmentObject private var api: API
+	@EnvironmentObject private var player: Player
+	
     var body: some View {
 		Text("Browse")
+			.onAppear {
+				player.reset()
+			}
 			.settingsSheet()
     }
 }

@@ -10,7 +10,7 @@ import Combine
 import AVKit
 
 struct ContentView: View {
-	@Environment(\.player) private var player
+	@EnvironmentObject private var player: Player
 	
 	#if canImport(UIKit)
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -19,21 +19,15 @@ struct ContentView: View {
 	@State private var tab: Tab? = .myShows
 	
 	var body: some View {
-		Group {
-			#if os(iOS)
-			if horizontalSizeClass == .compact {
-				tabView
-			} else {
-				list
-			}
-			#else
+		#if os(iOS)
+		if horizontalSizeClass == .compact {
+			tabView
+		} else {
 			list
-			#endif
 		}
-		.onChange(of: tab) { newValue in
-			print("Tab changed")
-			player.replaceCurrentItem(with: nil)
-		}
+		#else
+		list
+		#endif
 	}
 	
 	var list: some View {
