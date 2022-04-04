@@ -10,12 +10,13 @@ import Combine
 import AVKit
 
 struct ContentView: View {
-	@State private var tab: Tab? = .myShows
-	@State private var player = AVPlayer()
+	@Environment(\.player) private var player
 	
 	#if canImport(UIKit)
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
 	#endif
+	
+	@State private var tab: Tab? = .myShows
 	
 	var body: some View {
 		Group {
@@ -44,7 +45,7 @@ struct ContentView: View {
 					Label("Featured", systemImage: "star.circle")
 				}
 				NavigationLink(tag: Tab.myShows, selection: $tab) {
-					MyShows(player: player)
+					MyShows()
 				} label: {
 					Label("My Shows", systemImage: "suit.heart")
 				}
@@ -78,7 +79,7 @@ struct ContentView: View {
 			.tag(Tab.featured)
 			
 			NavigationView {
-				MyShows(player: player)
+				MyShows()
 			}
 			.tabItem { Label("My Shows", systemImage: "suit.heart") }
 			.tag(Tab.myShows)

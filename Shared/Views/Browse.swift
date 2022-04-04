@@ -10,6 +10,7 @@ import SwiftUI
 struct Browse: View {
     var body: some View {
 		Text("Browse")
+			.settingsSheet()
     }
 }
 
