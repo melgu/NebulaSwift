@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
 import SwiftUIPullToRefresh
 
 public struct ScrollView<Content: View>: View {
@@ -55,6 +56,7 @@ public struct ScrollView<Content: View>: View {
 //		)
 //	}
 //}
+#endif
 
 struct RefreshableScrollView_Previews: PreviewProvider {
     static var previews: some View {
