@@ -9,19 +9,18 @@ import SwiftUI
 import AVKit
 
 struct MyShows: View {
-	let player: AVPlayer
-	
 	@EnvironmentObject private var api: API
 	
+	@Environment(\.player) private var player
+	
 	@State private var videos: [Video] = []
-	@State private var videoSelection: String?
 	@State private var page = 1
 	
 	var body: some View {
 		ScrollView {
 			LazyVGrid(columns: [GridItem(.adaptive(minimum: 240))]) {
 				ForEach(videos) { video in
-					NavigationLink(tag: video.id, selection: $videoSelection) {
+					NavigationLink {
 						VideoView(video: video, player: player)
 					} label: {
 						VideoPreview(video: video)
@@ -49,6 +48,9 @@ struct MyShows: View {
 				}
 			}
 			.padding()
+			.onAppear {
+				player.replaceCurrentItem(with: nil)
+			}
 		}
 		.navigationTitle("My Shows")
 		.refreshable {
@@ -71,10 +73,7 @@ struct MyShows: View {
 				print(error)
 			}
 		}
-		.onChange(of: videoSelection) { newSelection in
-			print("Video Selection Changed")
-			player.replaceCurrentItem(with: nil)
-		}
+		.settingsSheet()
 	}
 }
 
@@ -212,7 +211,7 @@ struct CustomVideoPlayer: NSViewRepresentable {
 
 struct MyShows_Previews: PreviewProvider {
     static var previews: some View {
-        MyShows(player: AVPlayer())
+        MyShows()
 			.environmentObject(API())
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct Downloads: View {
     var body: some View {
 		Text("Downloads")
+			.settingsSheet()
     }
 }
 

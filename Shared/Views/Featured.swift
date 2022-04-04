@@ -8,17 +8,12 @@
 import SwiftUI
 
 struct Featured: View {
-	@StateObject var model = Model()
+	@EnvironmentObject private var api: API
 	
     var body: some View {
 		Text("Featured")
+			.settingsSheet()
     }
-}
-
-extension Featured {
-	class Model: ObservableObject {
-		
-	}
 }
 
 struct Featured_Previews: PreviewProvider {

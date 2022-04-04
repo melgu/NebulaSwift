@@ -35,5 +35,11 @@ struct NebulaSwiftApp: App {
 		#if os(macOS)
 		.windowStyle(.hiddenTitleBar)
 		#endif
+		
+		#if os(macOS)
+		Settings {
+			SettingsView()
+		}
+		#endif
     }
 }
