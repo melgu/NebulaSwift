@@ -21,7 +21,7 @@ struct UserResponse: Decodable {
 	let hasCuriositystreamSubscription: Bool
 	let zobjectUserId: String
 	let zypeConsumer: ZypeConsumer
-	let zypeAuthInfo: ZypeAuthInfo
+	let zypeAuthInfo: ZypeAuthInfo?
 	let promotion: String?
 	let iapStatus: String?
 }
@@ -50,8 +50,8 @@ extension API {
 		
 		// Fetch additional authorization info
 		let user = try await self.user
-		storage.zypeAuthInfo.accessToken = user.zypeAuthInfo.accessToken
-		storage.zypeAuthInfo.expiresAt = user.zypeAuthInfo.expiresAt
-		storage.zypeAuthInfo.refreshToken = user.zypeAuthInfo.refreshToken
+		storage.zypeAuthInfo.accessToken = user.zypeAuthInfo?.accessToken
+		storage.zypeAuthInfo.expiresAt = user.zypeAuthInfo?.expiresAt
+		storage.zypeAuthInfo.refreshToken = user.zypeAuthInfo?.refreshToken
 	}
 }
