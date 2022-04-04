@@ -71,23 +71,35 @@ struct ContentView: View {
 	
 	var tabView: some View {
 		TabView(selection: $tab) {
-			Featured()
-				.tabItem { Label("Featured", systemImage: "star.circle") }
-				.tag(Tab.featured)
+			NavigationView {
+				Featured()
+			}
+			.tabItem { Label("Featured", systemImage: "star.circle") }
+			.tag(Tab.featured)
+			
 			NavigationView {
 				MyShows(player: player)
-					.tabItem { Label("My Shows", systemImage: "suit.heart") }
-					.tag(Tab.myShows)
 			}
-			Browse()
-				.tabItem { Label("Browse", systemImage: "list.dash") }
-				.tag(Tab.browse)
-			Downloads()
-				.tabItem { Label("Downloads", systemImage: "arrow.down.circle") }
-				.tag(Tab.downloads)
-			Search()
-				.tabItem { Label("Search", systemImage: "magnifyingglass") }
-				.tag(Tab.search)
+			.tabItem { Label("My Shows", systemImage: "suit.heart") }
+			.tag(Tab.myShows)
+			
+			NavigationView {
+				Browse()
+			}
+			.tabItem { Label("Browse", systemImage: "list.dash") }
+			.tag(Tab.browse)
+			
+			NavigationView {
+				Downloads()
+			}
+			.tabItem { Label("Downloads", systemImage: "arrow.down.circle") }
+			.tag(Tab.downloads)
+			
+			NavigationView {
+				Search()
+			}
+			.tabItem { Label("Search", systemImage: "magnifyingglass") }
+			.tag(Tab.search)
 		}
 	}
 }
