@@ -67,6 +67,7 @@
 		B0511C6027F0AA74006B077C /* RefreshableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollView.swift; sourceTree = "<group>"; };
 		B0511C6627FB65AF006B077C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B0511C6927FB6957006B077C /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		B0560B1827FCB8400048BE43 /* NebulaSwift--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "NebulaSwift--iOS--Info.plist"; sourceTree = "<group>"; };
 		B056F7D427445B45009B92BC /* API+Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Library.swift"; sourceTree = "<group>"; };
 		B056F7D727454A71009B92BC /* API+Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Video.swift"; sourceTree = "<group>"; };
 		B079EF2126853A57009EFBAA /* NebulaSwiftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NebulaSwiftApp.swift; sourceTree = "<group>"; };
@@ -106,6 +107,7 @@
 		B079EF1B26853A57009EFBAA = {
 			isa = PBXGroup;
 			children = (
+				B0560B1827FCB8400048BE43 /* NebulaSwift--iOS--Info.plist */,
 				B079EF2026853A57009EFBAA /* Shared */,
 				B079EF2926853A57009EFBAA /* Products */,
 			);
@@ -448,7 +450,7 @@
 				DEVELOPMENT_TEAM = V7E5P7292M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "";
+				INFOPLIST_FILE = "NebulaSwift--iOS--Info.plist";
 				INFOPLIST_KEY_CFBundleExecutable = NebulaSwift;
 				INFOPLIST_KEY_CFBundleName = NebulaSwift;
 				INFOPLIST_KEY_CFBundleVersion = 1;
@@ -481,7 +483,7 @@
 				DEVELOPMENT_TEAM = V7E5P7292M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "";
+				INFOPLIST_FILE = "NebulaSwift--iOS--Info.plist";
 				INFOPLIST_KEY_CFBundleExecutable = NebulaSwift;
 				INFOPLIST_KEY_CFBundleName = NebulaSwift;
 				INFOPLIST_KEY_CFBundleVersion = 1;

@@ -13,11 +13,22 @@ import AVKit
 	
 	private let api: API
 	
+	private let pipController: AVPictureInPictureController?
+	
 	private var video: Video?
 	private var task: Task<(), Error>?
 	
 	init(api: API) {
 		self.api = api
+		
+		let layer = AVPlayerLayer(player: player)
+		pipController = AVPictureInPictureController(playerLayer: layer)
+		
+		#if canImport(UIKit)
+		try? AVAudioSession.sharedInstance().setCategory(.playback)
+		try? AVAudioSession.sharedInstance().setActive(true, options: [])
+		pipController?.canStartPictureInPictureAutomaticallyFromInline = true
+		#endif
 	}
 	
 	func play() {
