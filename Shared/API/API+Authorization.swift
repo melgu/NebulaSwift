@@ -15,7 +15,7 @@ extension API {
 	var authorization: AuthorizationResponse {
 		get async throws {
 			let url = URL(string: "https://api.watchnebula.com/api/v1/authorization/")!
-			return try await request(.post, url: url, parameters: [:], authorization: .token)
+			return try await request(.post, url: url, authorization: .token)
 		}
 	}
 	

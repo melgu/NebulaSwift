@@ -65,7 +65,7 @@ extension API {
 		return data
 	}
 	
-	private func _request<Result: Decodable>(_ method: HTTPMethod, url: URL, parameters: [String: String], body: Data?, authorization: AuthorizationType?) async throws -> Result {
+	private func _request<Result: Decodable>(_ method: HTTPMethod, url: URL, headerFields: [String: String], body: Data?, authorization: AuthorizationType?) async throws -> Result {
 		var request = URLRequest(url: url)
 		
 		request.httpMethod = method.rawValue
@@ -74,7 +74,7 @@ extension API {
 			request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 		}
 		request.cachePolicy = .reloadIgnoringLocalCacheData
-		request.allHTTPHeaderFields = parameters
+		request.allHTTPHeaderFields = headerFields
 		
 		try setAuthorization(type: authorization, for: &request)
 		
@@ -104,14 +104,14 @@ extension API {
 		return result
 	}
 	
-	func request<Result: Decodable>(_ method: HTTPMethod, url: URL, parameters: [String: String], authorization: AuthorizationType?) async throws -> Result {
-		logger.debug("Request: method: \(method.rawValue), url: \(url), parameters: \(parameters), authorization: \(String(describing: authorization))")
-		return try await _request(method, url: url, parameters: parameters, body: nil, authorization: authorization)
+	func request<Result: Decodable>(_ method: HTTPMethod, url: URL, headerFields: [String: String] = [:], authorization: AuthorizationType?) async throws -> Result {
+		logger.debug("Request: method: \(method.rawValue), url: \(url), parameters: \(headerFields), authorization: \(String(describing: authorization))")
+		return try await _request(method, url: url, headerFields: headerFields, body: nil, authorization: authorization)
 	}
 	
-	func request<Body: Encodable, Result: Decodable>(_ method: HTTPMethod, url: URL, parameters: [String: String], body: Body, authorization: AuthorizationType?) async throws -> Result {
-		logger.debug("Request: method: \(method.rawValue), url: \(url), parameters: \(parameters), authorization: \(String(describing: authorization))")
+	func request<Body: Encodable, Result: Decodable>(_ method: HTTPMethod, url: URL, headerFields: [String: String] = [:], body: Body, authorization: AuthorizationType?) async throws -> Result {
+		logger.debug("Request: method: \(method.rawValue), url: \(url), parameters: \(headerFields), authorization: \(String(describing: authorization))")
 		let bodyData = try encoder.encode(body)
-		return try await _request(method, url: url, parameters: parameters, body: bodyData, authorization: authorization)
+		return try await _request(method, url: url, headerFields: headerFields, body: bodyData, authorization: authorization)
 	}
 }

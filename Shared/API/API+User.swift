@@ -41,7 +41,7 @@ extension API {
 	var user: UserResponse {
 		get async throws {
 			let url = URL(string: "https://api.watchnebula.com/api/v1/auth/user/")!
-			return try await request(.get, url: url, parameters: [:], authorization: .token)
+			return try await request(.get, url: url, authorization: .token)
 		}
 	}
 	
