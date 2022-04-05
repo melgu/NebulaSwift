@@ -54,26 +54,26 @@ struct MyShows: View {
 		.navigationTitle("My Shows")
 		.refreshable {
 			print("Refresh Videos")
-			do {
-				let newVideos = try await api.libraryVideos
-				if newVideos != videos {
-					print("Video list changed")
-					page = 1
-					videos = newVideos
-				}
-			} catch {
-				print(error)
-			}
+			await refreshVideos()
 		}
 		.task {
 			print("Load Videos")
-			do {
-				videos = try await api.libraryVideos
-			} catch {
-				print(error)
-			}
+			await refreshVideos()
 		}
 		.settingsSheet()
+	}
+	
+	func refreshVideos() async {
+		do {
+			let newVideos = try await api.libraryVideos
+			if newVideos != videos {
+				print("Video list changed")
+				page = 1
+				videos = newVideos
+			}
+		} catch {
+			print(error)
+		}
 	}
 }
 
