@@ -26,16 +26,21 @@ import AVKit
 		
 		#if canImport(UIKit)
 		try? AVAudioSession.sharedInstance().setCategory(.playback)
-		try? AVAudioSession.sharedInstance().setActive(true, options: [])
 		pipController?.canStartPictureInPictureAutomaticallyFromInline = true
 		#endif
 	}
 	
 	func play() {
+		#if canImport(UIKit)
+		try? AVAudioSession.sharedInstance().setActive(true, options: [])
+		#endif
 		player.play()
 	}
 	
 	func pause() {
+		#if canImport(UIKit)
+		try? AVAudioSession.sharedInstance().setActive(false)
+		#endif
 		sendProgress()
 		player.pause()
 	}
@@ -59,6 +64,9 @@ import AVKit
 	}
 	
 	func reset() {
+		#if canImport(UIKit)
+		try? AVAudioSession.sharedInstance().setActive(false)
+		#endif
 		sendProgress()
 		task?.cancel()
 		video = nil
