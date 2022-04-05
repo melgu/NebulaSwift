@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
 	@EnvironmentObject private var api: API
+	@EnvironmentObject private var player: Player
 	
 	@Environment(\.dismiss) var dismiss
 	
@@ -35,10 +36,13 @@ struct SettingsView: View {
 	var content: some View {
 		List {
 			Button {
+				dismiss()
+				player.reset()
 				api.logout()
 			} label: {
 				Text("Logout")
 			}
+			.disabled(!api.isLoggedIn)
 		}
 	}
 }

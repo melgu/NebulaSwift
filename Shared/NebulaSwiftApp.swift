@@ -44,6 +44,8 @@ struct NebulaSwiftApp: App {
 		#if os(macOS)
 		Settings {
 			SettingsView()
+				.environmentObject(api)
+				.environmentObject(player)
 		}
 		#endif
     }
