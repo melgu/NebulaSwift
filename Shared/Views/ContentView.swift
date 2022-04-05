@@ -11,12 +11,13 @@ import AVKit
 
 struct ContentView: View {
 	@EnvironmentObject private var player: Player
+	@EnvironmentObject private var api: API
 	
 	#if canImport(UIKit)
 	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
 	#endif
 	
-	@State private var tab: Tab? = .myShows
+	@State private var myShows: [Channel]?
 	
 	var body: some View {
 		#if os(iOS)
@@ -33,81 +34,99 @@ struct ContentView: View {
 	var list: some View {
 		NavigationView {
 			List {
-				NavigationLink(tag: Tab.featured, selection: $tab) {
-					Featured()
-				} label: {
-					Label("Featured", systemImage: "star.circle")
+				Section("Nebula") {
+					NavigationLink {
+						Featured()
+					} label: {
+						Label("Featured", systemImage: "star.circle")
+					}
+					NavigationLink {
+						MyShows()
+					} label: {
+						Label("My Shows", systemImage: "suit.heart")
+					}
+					NavigationLink {
+						Browse()
+					} label: {
+						Label("Browse", systemImage: "list.dash")
+					}
+					NavigationLink {
+						Downloads()
+					} label: {
+						Label("Downloads", systemImage: "arrow.down.circle")
+					}
+					NavigationLink {
+						Search()
+					} label: {
+						Label("Search", systemImage: "magnifyingglass")
+					}
 				}
-				NavigationLink(tag: Tab.myShows, selection: $tab) {
-					MyShows()
-				} label: {
-					Label("My Shows", systemImage: "suit.heart")
-				}
-				NavigationLink(tag: Tab.browse, selection: $tab) {
-					Browse()
-				} label: {
-					Label("Browse", systemImage: "list.dash")
-				}
-				NavigationLink(tag: Tab.downloads, selection: $tab) {
-					Downloads()
-				} label: {
-					Label("Downloads", systemImage: "arrow.down.circle")
-				}
-				NavigationLink(tag: Tab.search, selection: $tab) {
-					Search()
-				} label: {
-					Label("Search", systemImage: "magnifyingglass")
+				if let myShows = myShows {
+					Section("My Shows") {
+						ForEach(myShows) { channel in
+							NavigationLink {
+								Text(channel.title)
+							} label: {
+								HStack {
+									AsyncImage(url: channel.assets.avatar["64"]?.original) { image in
+										image
+											.resizable()
+											.scaledToFit()
+									} placeholder: {
+										Color.clear
+									}
+									.frame(width: 32, height: 32)
+									
+									Text(channel.title)
+										.lineLimit(1)
+								}
+							}
+						}
+					}
 				}
 			}
 			.listStyle(.sidebar)
 			.navigationTitle("Nebula")
+			.task {
+				do {
+					myShows = try await api.libraryChannels(page: 1, pageSize: 200)
+				} catch {
+					print(error)
+				}
+			}
 		}
 	}
 	
 	var tabView: some View {
-		TabView(selection: $tab) {
+		TabView {
 			NavigationView {
 				Featured()
 			}
 			.tabItem { Label("Featured", systemImage: "star.circle") }
-			.tag(Tab.featured)
 			
 			NavigationView {
 				MyShows()
 			}
 			.tabItem { Label("My Shows", systemImage: "suit.heart") }
-			.tag(Tab.myShows)
 			
 			NavigationView {
 				Browse()
 			}
 			.tabItem { Label("Browse", systemImage: "list.dash") }
-			.tag(Tab.browse)
 			
 			NavigationView {
 				Downloads()
 			}
 			.tabItem { Label("Downloads", systemImage: "arrow.down.circle") }
-			.tag(Tab.downloads)
 			
 			NavigationView {
 				Search()
 			}
 			.tabItem { Label("Search", systemImage: "magnifyingglass") }
-			.tag(Tab.search)
 		}
 	}
 }
 
-extension ContentView {
-	enum Tab {
-		case featured
-		case myShows
-		case browse
-		case downloads
-		case search
-	}
-}
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()

@@ -65,7 +65,7 @@ struct MyShows: View {
 	
 	func refreshVideos() async {
 		do {
-			let newVideos = try await api.libraryVideos
+			let newVideos = try await api.libraryVideos(page: 1)
 			if newVideos != videos {
 				print("Video list changed")
 				page = 1
