@@ -44,15 +44,17 @@ struct VideoView: View {
 				}
 				#endif
 				Text(video.description)
-				HStack {
-					ForEach(video.categorySlugs, id: \.self) { category in
-						Text(category)
-							.padding(8)
-							.background(
-								RoundedRectangle(cornerRadius: 4)
-									.foregroundColor(.blue)
-									.opacity(0.2)
-							)
+				if let categorySlugs = video.categorySlugs {
+					HStack {
+						ForEach(categorySlugs, id: \.self) { category in
+							Text(category)
+								.padding(8)
+								.background(
+									RoundedRectangle(cornerRadius: 4)
+										.foregroundColor(.blue)
+										.opacity(0.2)
+								)
+						}
 					}
 				}
 			}
