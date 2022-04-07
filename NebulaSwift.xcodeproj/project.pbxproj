@@ -56,6 +56,12 @@
 		B0DF9FB1268A36D900EF9392 /* API+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FAF268A36D900EF9392 /* API+Login.swift */; };
 		B0DF9FB3268A407300EF9392 /* API+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FB2268A3E3700EF9392 /* API+User.swift */; };
 		B0DF9FB4268A407300EF9392 /* API+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FB2268A3E3700EF9392 /* API+User.swift */; };
+		B0E5BA2627FF6274001D8403 /* VideoPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2527FF6274001D8403 /* VideoPreview.swift */; };
+		B0E5BA2727FF6274001D8403 /* VideoPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2527FF6274001D8403 /* VideoPreview.swift */; };
+		B0E5BA2927FF62D3001D8403 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2827FF62D3001D8403 /* VideoView.swift */; };
+		B0E5BA2A27FF62D3001D8403 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2827FF62D3001D8403 /* VideoView.swift */; };
+		B0E5BA2C27FF62F3001D8403 /* CustomVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2B27FF62F3001D8403 /* CustomVideoPlayer.swift */; };
+		B0E5BA2D27FF62F3001D8403 /* CustomVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2B27FF62F3001D8403 /* CustomVideoPlayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +92,9 @@
 		B0DF9FAC268A343700EF9392 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		B0DF9FAF268A36D900EF9392 /* API+Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Login.swift"; sourceTree = "<group>"; };
 		B0DF9FB2268A3E3700EF9392 /* API+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+User.swift"; sourceTree = "<group>"; };
+		B0E5BA2527FF6274001D8403 /* VideoPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPreview.swift; sourceTree = "<group>"; };
+		B0E5BA2827FF62D3001D8403 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
+		B0E5BA2B27FF62F3001D8403 /* CustomVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVideoPlayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +174,9 @@
 				B0508A3326856FEB006FED7E /* Search.swift */,
 				B0DF9FAC268A343700EF9392 /* Login.swift */,
 				B0511C6627FB65AF006B077C /* Settings.swift */,
+				B0E5BA2527FF6274001D8403 /* VideoPreview.swift */,
+				B0E5BA2827FF62D3001D8403 /* VideoView.swift */,
+				B0E5BA2B27FF62F3001D8403 /* CustomVideoPlayer.swift */,
 				B0511C6927FB6957006B077C /* Player.swift */,
 				B04EFE0B27EF276600B901F9 /* ShareSheet.swift */,
 				B0511C6027F0AA74006B077C /* RefreshableScrollView.swift */,
@@ -278,12 +290,14 @@
 			files = (
 				B0511C6A27FB6957006B077C /* Player.swift in Sources */,
 				B056F7D527445B45009B92BC /* API+Library.swift in Sources */,
+				B0E5BA2627FF6274001D8403 /* VideoPreview.swift in Sources */,
 				B0508A3426856FEB006FED7E /* Search.swift in Sources */,
 				B079EF4C268562B8009EFBAA /* Featured.swift in Sources */,
 				B0045976271FB9D9002C7974 /* Network.swift in Sources */,
 				B0DF9FB0268A36D900EF9392 /* API+Login.swift in Sources */,
 				B0508A3126856FDA006FED7E /* Downloads.swift in Sources */,
 				B0DF9FAD268A343700EF9392 /* Login.swift in Sources */,
+				B0E5BA2C27FF62F3001D8403 /* CustomVideoPlayer.swift in Sources */,
 				B0508A2E26856FC9006FED7E /* Browse.swift in Sources */,
 				B079EF3126853A57009EFBAA /* ContentView.swift in Sources */,
 				B0508A2A26856E1D006FED7E /* MyShows.swift in Sources */,
@@ -296,6 +310,7 @@
 				B04EFE0C27EF276600B901F9 /* ShareSheet.swift in Sources */,
 				B056F7D827454A71009B92BC /* API+Video.swift in Sources */,
 				B0511C6727FB65AF006B077C /* Settings.swift in Sources */,
+				B0E5BA2927FF62D3001D8403 /* VideoView.swift in Sources */,
 				B079EF45268560D6009EFBAA /* Storage.swift in Sources */,
 				B0511C6127F0AA74006B077C /* RefreshableScrollView.swift in Sources */,
 				B0560B1A27FCDA260048BE43 /* API+Channel.swift in Sources */,
@@ -308,12 +323,14 @@
 			files = (
 				B0511C6B27FB6957006B077C /* Player.swift in Sources */,
 				B056F7D627445B45009B92BC /* API+Library.swift in Sources */,
+				B0E5BA2727FF6274001D8403 /* VideoPreview.swift in Sources */,
 				B0508A3526856FEB006FED7E /* Search.swift in Sources */,
 				B079EF4D268562B8009EFBAA /* Featured.swift in Sources */,
 				B0045977271FB9D9002C7974 /* Network.swift in Sources */,
 				B0DF9FB1268A36D900EF9392 /* API+Login.swift in Sources */,
 				B0508A3226856FDA006FED7E /* Downloads.swift in Sources */,
 				B0DF9FAE268A343700EF9392 /* Login.swift in Sources */,
+				B0E5BA2D27FF62F3001D8403 /* CustomVideoPlayer.swift in Sources */,
 				B0508A2F26856FC9006FED7E /* Browse.swift in Sources */,
 				B079EF3226853A57009EFBAA /* ContentView.swift in Sources */,
 				B0508A2B26856E1D006FED7E /* MyShows.swift in Sources */,
@@ -326,6 +343,7 @@
 				B04EFE0D27EF276600B901F9 /* ShareSheet.swift in Sources */,
 				B056F7D927454A71009B92BC /* API+Video.swift in Sources */,
 				B0511C6827FB65AF006B077C /* Settings.swift in Sources */,
+				B0E5BA2A27FF62D3001D8403 /* VideoView.swift in Sources */,
 				B079EF46268560D6009EFBAA /* Storage.swift in Sources */,
 				B0511C6227F0AA74006B077C /* RefreshableScrollView.swift in Sources */,
 				B0560B1B27FCDA260048BE43 /* API+Channel.swift in Sources */,
