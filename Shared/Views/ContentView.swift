@@ -33,7 +33,7 @@ struct ContentView: View {
 	var list: some View {
 		NavigationView {
 			List {
-				Section("Nebula") {
+				Section("Home") {
 					NavigationLink {
 						Featured()
 					} label: {
