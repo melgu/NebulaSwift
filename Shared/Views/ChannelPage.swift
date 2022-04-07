@@ -17,7 +17,6 @@ struct ChannelPage: View {
 			try await api.videos(for: channel, page: page)
 		})
 		.navigationTitle(channel.title)
-		.settingsSheet()
 	}
 }
 
