@@ -12,10 +12,10 @@ struct Browse: View {
 	@EnvironmentObject private var player: Player
 	
     var body: some View {
-		Text("Browse")
-			.onAppear {
-				player.reset()
-			}
+		VideoGrid(fetch: { page in
+			try await api.allVideos(page: page)
+		})
+		.navigationTitle("Browse")
     }
 }
 
