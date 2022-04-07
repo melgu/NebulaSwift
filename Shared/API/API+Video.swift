@@ -9,12 +9,6 @@ import Foundation
 
 // MARK: Info
 
-struct ListContainer<Content: Decodable>: Decodable {
-	let next: String?
-	let previous: String?
-	let results: [Content]
-}
-
 struct Video: Decodable, Equatable {
 	let slug: String
 	let title: String
@@ -30,7 +24,7 @@ struct Video: Decodable, Equatable {
 //	let attributes: [Attribute]
 	let shareUrl: URL
 //	let channel: NSNull
-	let engagement: VideoEngagement
+	let engagement: VideoEngagement?
 	let zypeId: String
 }
 extension Video: Identifiable {

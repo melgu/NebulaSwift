@@ -66,6 +66,10 @@
 		B0E5BA3027FF66B1001D8403 /* VideoGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2E27FF66B1001D8403 /* VideoGrid.swift */; };
 		B0E5BA3227FF6869001D8403 /* ChannelPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3127FF6869001D8403 /* ChannelPage.swift */; };
 		B0E5BA3327FF6869001D8403 /* ChannelPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3127FF6869001D8403 /* ChannelPage.swift */; };
+		B0E5BA3527FF6C85001D8403 /* API+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3427FF6C85001D8403 /* API+Search.swift */; };
+		B0E5BA3627FF6C85001D8403 /* API+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3427FF6C85001D8403 /* API+Search.swift */; };
+		B0E5BA3827FF6CEB001D8403 /* ListContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3727FF6CEB001D8403 /* ListContainer.swift */; };
+		B0E5BA3927FF6CEB001D8403 /* ListContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3727FF6CEB001D8403 /* ListContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,6 +105,8 @@
 		B0E5BA2B27FF62F3001D8403 /* CustomVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVideoPlayer.swift; sourceTree = "<group>"; };
 		B0E5BA2E27FF66B1001D8403 /* VideoGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoGrid.swift; sourceTree = "<group>"; };
 		B0E5BA3127FF6869001D8403 /* ChannelPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelPage.swift; sourceTree = "<group>"; };
+		B0E5BA3427FF6C85001D8403 /* API+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Search.swift"; sourceTree = "<group>"; };
+		B0E5BA3727FF6CEB001D8403 /* ListContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +168,8 @@
 				B056F7D427445B45009B92BC /* API+Library.swift */,
 				B056F7D727454A71009B92BC /* API+Video.swift */,
 				B0560B1927FCDA260048BE43 /* API+Channel.swift */,
+				B0E5BA3427FF6C85001D8403 /* API+Search.swift */,
+				B0E5BA3727FF6CEB001D8403 /* ListContainer.swift */,
 				B079EF44268560D6009EFBAA /* Storage.swift */,
 				B079EF4726856116009EFBAA /* Defaults.swift */,
 				B0045975271FB9D9002C7974 /* Network.swift */,
@@ -300,6 +308,7 @@
 				B056F7D527445B45009B92BC /* API+Library.swift in Sources */,
 				B0E5BA2627FF6274001D8403 /* VideoPreview.swift in Sources */,
 				B0508A3426856FEB006FED7E /* Search.swift in Sources */,
+				B0E5BA3527FF6C85001D8403 /* API+Search.swift in Sources */,
 				B079EF4C268562B8009EFBAA /* Featured.swift in Sources */,
 				B0045976271FB9D9002C7974 /* Network.swift in Sources */,
 				B0E5BA2F27FF66B1001D8403 /* VideoGrid.swift in Sources */,
@@ -312,6 +321,7 @@
 				B0508A2A26856E1D006FED7E /* MyShows.swift in Sources */,
 				B079EF42268560A4009EFBAA /* API+Config.swift in Sources */,
 				B0045973271FAD5D002C7974 /* API+Authorization.swift in Sources */,
+				B0E5BA3827FF6CEB001D8403 /* ListContainer.swift in Sources */,
 				B0DF9FB3268A407300EF9392 /* API+User.swift in Sources */,
 				B079EF3E26855A50009EFBAA /* API.swift in Sources */,
 				B079EF4826856116009EFBAA /* Defaults.swift in Sources */,
@@ -335,6 +345,7 @@
 				B056F7D627445B45009B92BC /* API+Library.swift in Sources */,
 				B0E5BA2727FF6274001D8403 /* VideoPreview.swift in Sources */,
 				B0508A3526856FEB006FED7E /* Search.swift in Sources */,
+				B0E5BA3627FF6C85001D8403 /* API+Search.swift in Sources */,
 				B079EF4D268562B8009EFBAA /* Featured.swift in Sources */,
 				B0045977271FB9D9002C7974 /* Network.swift in Sources */,
 				B0E5BA3027FF66B1001D8403 /* VideoGrid.swift in Sources */,
@@ -347,6 +358,7 @@
 				B0508A2B26856E1D006FED7E /* MyShows.swift in Sources */,
 				B079EF43268560A4009EFBAA /* API+Config.swift in Sources */,
 				B0045974271FAD5D002C7974 /* API+Authorization.swift in Sources */,
+				B0E5BA3927FF6CEB001D8403 /* ListContainer.swift in Sources */,
 				B0DF9FB4268A407300EF9392 /* API+User.swift in Sources */,
 				B079EF3F26855A50009EFBAA /* API.swift in Sources */,
 				B079EF4926856116009EFBAA /* Defaults.swift in Sources */,

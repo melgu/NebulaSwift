@@ -57,8 +57,10 @@ import AVKit
 			let item = AVPlayerItem(url: stream.manifest)
 			try Task.checkCancellation()
 			player.replaceCurrentItem(with: item)
-			print("Player: Seeking to progress \(video.engagement.progress)")
-			await player.seek(to: CMTime(seconds: Double(video.engagement.progress), preferredTimescale: 1))
+			if let progress = video.engagement?.progress {
+				print("Player: Seeking to progress \(progress)")
+				await player.seek(to: CMTime(seconds: Double(progress), preferredTimescale: 1))
+			}
 		}
 		try await task?.value
 	}
