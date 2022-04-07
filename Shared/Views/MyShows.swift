@@ -17,7 +17,7 @@ struct MyShows: View {
 	
 	var body: some View {
 		ScrollView {
-			LazyVGrid(columns: [GridItem(.adaptive(minimum: 240))]) {
+			LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
 				ForEach(videos) { video in
 					NavigationLink {
 						VideoView(video: video)
@@ -86,6 +86,7 @@ struct VideoPreview: View {
 				image
 					.resizable()
 					.scaledToFit()
+					.cornerRadius(8)
 			} placeholder: {
 				Color.black
 					.aspectRatio(16/9, contentMode: .fit)
@@ -97,7 +98,8 @@ struct VideoPreview: View {
 			Text(video.channelTitle)
 				.font(.caption)
 		}
-		.lineLimit(1)
+		.lineLimit(2)
+		.background(Color.primary.colorInvert())
 	}
 }
 
