@@ -15,7 +15,6 @@ struct MyShows: View {
 			try await api.libraryVideos(page: page)
 		})
 		.navigationTitle("My Shows")
-		.settingsSheet()
 	}
 }
 

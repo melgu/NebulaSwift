@@ -16,7 +16,6 @@ struct Featured: View {
 			.onAppear {
 				player.reset()
 			}
-			.settingsSheet()
     }
 }
 

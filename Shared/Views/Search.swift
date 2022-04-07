@@ -16,7 +16,6 @@ struct Search: View {
 			.onAppear {
 				player.reset()
 			}
-			.settingsSheet()
     }
 }
 

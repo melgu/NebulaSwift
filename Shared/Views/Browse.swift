@@ -16,7 +16,6 @@ struct Browse: View {
 			.onAppear {
 				player.reset()
 			}
-			.settingsSheet()
     }
 }
 

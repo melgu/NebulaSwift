@@ -16,7 +16,6 @@ struct Downloads: View {
 			.onAppear {
 				player.reset()
 			}
-			.settingsSheet()
     }
 }
 
