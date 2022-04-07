@@ -72,6 +72,7 @@ struct ContentView: View {
 										image
 											.resizable()
 											.scaledToFit()
+											.clipShape(Circle())
 									} placeholder: {
 										Color.clear
 									}
