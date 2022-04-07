@@ -64,7 +64,7 @@ struct ContentView: View {
 					Section("My Shows") {
 						ForEach(myShows) { channel in
 							NavigationLink {
-								Text(channel.title)
+								ChannelPage(channel: channel)
 							} label: {
 								label(for: channel)
 							}
