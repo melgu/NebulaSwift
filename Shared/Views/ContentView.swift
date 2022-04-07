@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Combine
-import AVKit
 
 struct ContentView: View {
 	@EnvironmentObject private var player: Player
