@@ -62,6 +62,8 @@
 		B0E5BA2A27FF62D3001D8403 /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2827FF62D3001D8403 /* VideoView.swift */; };
 		B0E5BA2C27FF62F3001D8403 /* CustomVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2B27FF62F3001D8403 /* CustomVideoPlayer.swift */; };
 		B0E5BA2D27FF62F3001D8403 /* CustomVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2B27FF62F3001D8403 /* CustomVideoPlayer.swift */; };
+		B0E5BA2F27FF66B1001D8403 /* VideoGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2E27FF66B1001D8403 /* VideoGrid.swift */; };
+		B0E5BA3027FF66B1001D8403 /* VideoGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2E27FF66B1001D8403 /* VideoGrid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -95,6 +97,7 @@
 		B0E5BA2527FF6274001D8403 /* VideoPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPreview.swift; sourceTree = "<group>"; };
 		B0E5BA2827FF62D3001D8403 /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		B0E5BA2B27FF62F3001D8403 /* CustomVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomVideoPlayer.swift; sourceTree = "<group>"; };
+		B0E5BA2E27FF66B1001D8403 /* VideoGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoGrid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +177,7 @@
 				B0508A3326856FEB006FED7E /* Search.swift */,
 				B0DF9FAC268A343700EF9392 /* Login.swift */,
 				B0511C6627FB65AF006B077C /* Settings.swift */,
+				B0E5BA2E27FF66B1001D8403 /* VideoGrid.swift */,
 				B0E5BA2527FF6274001D8403 /* VideoPreview.swift */,
 				B0E5BA2827FF62D3001D8403 /* VideoView.swift */,
 				B0E5BA2B27FF62F3001D8403 /* CustomVideoPlayer.swift */,
@@ -294,6 +298,7 @@
 				B0508A3426856FEB006FED7E /* Search.swift in Sources */,
 				B079EF4C268562B8009EFBAA /* Featured.swift in Sources */,
 				B0045976271FB9D9002C7974 /* Network.swift in Sources */,
+				B0E5BA2F27FF66B1001D8403 /* VideoGrid.swift in Sources */,
 				B0DF9FB0268A36D900EF9392 /* API+Login.swift in Sources */,
 				B0508A3126856FDA006FED7E /* Downloads.swift in Sources */,
 				B0DF9FAD268A343700EF9392 /* Login.swift in Sources */,
@@ -327,6 +332,7 @@
 				B0508A3526856FEB006FED7E /* Search.swift in Sources */,
 				B079EF4D268562B8009EFBAA /* Featured.swift in Sources */,
 				B0045977271FB9D9002C7974 /* Network.swift in Sources */,
+				B0E5BA3027FF66B1001D8403 /* VideoGrid.swift in Sources */,
 				B0DF9FB1268A36D900EF9392 /* API+Login.swift in Sources */,
 				B0508A3226856FDA006FED7E /* Downloads.swift in Sources */,
 				B0DF9FAE268A343700EF9392 /* Login.swift in Sources */,
