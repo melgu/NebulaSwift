@@ -66,20 +66,7 @@ struct ContentView: View {
 							NavigationLink {
 								Text(channel.title)
 							} label: {
-								HStack {
-									AsyncImage(url: channel.assets.avatar["64"]?.original) { image in
-										image
-											.resizable()
-											.scaledToFit()
-											.clipShape(Circle())
-									} placeholder: {
-										Color.clear
-									}
-									.frame(width: 32, height: 32)
-									
-									Text(channel.title)
-										.lineLimit(1)
-								}
+								label(for: channel)
 							}
 						}
 					}
@@ -94,6 +81,23 @@ struct ContentView: View {
 					print(error)
 				}
 			}
+		}
+	}
+	
+	func label(for channel: Channel) -> some View {
+		HStack {
+			AsyncImage(url: channel.assets.avatar["64"]?.original) { image in
+				image
+					.resizable()
+					.scaledToFit()
+					.clipShape(Circle())
+			} placeholder: {
+				Color.clear
+			}
+			.frame(width: 32, height: 32)
+			
+			Text(channel.title)
+				.lineLimit(1)
 		}
 	}
 	
