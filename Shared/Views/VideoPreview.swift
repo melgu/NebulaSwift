@@ -8,7 +8,37 @@
 import SwiftUI
 
 struct VideoPreview: View {
-	var video: Video
+	let video: Video
+	
+	@State var shareUrl: [Any]?
+	
+	var body: some View {
+		NavigationLink {
+			VideoPage(video: video)
+		} label: {
+			VideoPreviewView(video: video)
+		}
+		.buttonStyle(.plain)
+		.contextMenu {
+			Button("Watch later") {
+				print("Watch later")
+			}
+			Button("Download") {
+				print("Download")
+			}
+			Divider()
+			Button {
+				shareUrl = [video.shareUrl]
+			} label: {
+				Label("Share", systemImage: "square.and.arrow.up")
+			}
+		}
+		.shareSheet(items: $shareUrl)
+	}
+}
+
+struct VideoPreviewView: View {
+	let video: Video
 	
 	var body: some View {
 		VStack(alignment: .leading) {
@@ -24,7 +54,6 @@ struct VideoPreview: View {
 			.cornerRadius(4)
 			
 			Text(video.title)
-				.font(.body)
 			Text(video.channelTitle)
 				.font(.caption)
 		}

@@ -12,7 +12,7 @@ struct Browse: View {
 	@EnvironmentObject private var player: Player
 	
     var body: some View {
-		VideoGrid(fetch: { page in
+		AutoVideoGrid(fetch: { page in
 			try await api.allVideos(page: page)
 		})
 		.navigationTitle("Browse")
@@ -24,6 +24,6 @@ struct Browse: View {
 
 struct Browse_Previews: PreviewProvider {
     static var previews: some View {
-        Browse()
+        Text("No preview")
     }
 }

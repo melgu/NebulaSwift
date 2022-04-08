@@ -13,7 +13,7 @@ struct ChannelPage: View {
 	@EnvironmentObject private var api: API
 	
 	var body: some View {
-		VideoGrid(fetch: { page in
+		AutoVideoGrid(fetch: { page in
 			try await api.videos(for: channel, page: page)
 		})
 		.navigationTitle(channel.title)

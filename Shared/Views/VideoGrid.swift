@@ -7,11 +7,24 @@
 
 import SwiftUI
 
-/// Auto-loading VideoGrid
 struct VideoGrid: View {
-	let fetch: (Int) async throws -> [Video]
+	let videos: [Video]
 	
-	@EnvironmentObject private var player: Player
+	var body: some View {
+		ScrollView {
+			LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
+				ForEach(videos) { video in
+					VideoPreview(video: video)
+				}
+			}
+			.padding()
+		}
+	}
+}
+
+/// Auto-loading VideoGrid
+struct AutoVideoGrid: View {
+	let fetch: (Int) async throws -> [Video]
 	
 	@State private var videos: [Video] = []
 	@State private var page = 1
@@ -26,31 +39,18 @@ struct VideoGrid: View {
 		ScrollView {
 			LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
 				ForEach(videos) { video in
-					NavigationLink {
-						VideoPage(video: video)
-					} label: {
-						VideoPreview(video: video)
-					}
-					.buttonStyle(.plain)
-					.contextMenu {
-						Button("Watch later") {
-							print("Watch later")
-						}
-						Button("Download") {
-							print("Download")
-						}
-					}
-					.task {
-						if video == videos.last {
-							print("Last video did appear, loading next page")
-							do {
-								videos += try await fetch(page + 1)
-								page += 1
-							} catch {
-								print(error)
+					VideoPreview(video: video)
+						.task {
+							if video == videos.last {
+								print("Last video did appear, loading next page")
+								do {
+									videos += try await fetch(page + 1)
+									page += 1
+								} catch {
+									print(error)
+								}
 							}
 						}
-					}
 				}
 			}
 			.padding()
