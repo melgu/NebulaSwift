@@ -29,13 +29,20 @@ struct Search: View {
 					}
 				}
 				.textFieldStyle(.roundedBorder)
-				Text("Channels")
-					.font(.title)
-				ChannelGrid(channels: channelResults)
-				Divider()
-				Text("Videos")
-					.font(.title)
-				VideoGrid(videos: videoResults)
+				
+				if !channelResults.isEmpty {
+					Text("Channels")
+						.font(.title)
+					ChannelGrid(channels: channelResults)
+				}
+				if !channelResults.isEmpty && !videoResults.isEmpty {
+					Divider()
+				}
+				if !videoResults.isEmpty {
+					Text("Videos")
+						.font(.title)
+					VideoGrid(videos: videoResults)
+				}
 			}
 			.padding()
 		}
