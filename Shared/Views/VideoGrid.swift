@@ -60,7 +60,6 @@ struct VideoGrid: View {
 			await refreshVideos()
 		}
 		.task {
-			player.reset()
 			print("Load Videos")
 			await refreshVideos()
 		}
