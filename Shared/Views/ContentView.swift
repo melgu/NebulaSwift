@@ -9,7 +9,6 @@ import SwiftUI
 import Combine
 
 struct ContentView: View {
-	@EnvironmentObject private var player: Player
 	@EnvironmentObject private var api: API
 	
 	#if canImport(UIKit)
