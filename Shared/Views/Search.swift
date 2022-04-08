@@ -16,27 +16,31 @@ struct Search: View {
 	@State private var videoResults: [Video] = []
 	
     var body: some View {
-		VStack {
-			TextField("Search", text: $searchTerm) {
-				Task {
-					do {
-						channelResults = try await api.searchChannels(for: searchTerm)
-						videoResults = try await api.searchVideos(for: searchTerm)
-					} catch {
-						print(error)
+		ScrollView {
+			VStack(alignment: .leading) {
+				TextField("Search", text: $searchTerm) {
+					Task {
+						do {
+							channelResults = try await api.searchChannels(for: searchTerm)
+							videoResults = try await api.searchVideos(for: searchTerm)
+						} catch {
+							print(error)
+						}
 					}
 				}
+				.textFieldStyle(.roundedBorder)
+				Text("Channels")
+					.font(.title)
+				Divider()
+				Text("Videos")
+					.font(.title)
+				VideoGrid(videos: videoResults)
 			}
-			Text("Channels")
-				.font(.title)
-			ForEach(channelResults) { channel in
-				Text(channel.title)
-			}
-			Text("Videos")
-				.font(.title)
-			ForEach(videoResults) { video in
-				Text(video.title)
-			}
+			.padding()
+		}
+		.navigationTitle("Search")
+		.onAppear {
+			player.reset()
 		}
     }
 }

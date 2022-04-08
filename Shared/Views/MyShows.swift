@@ -12,7 +12,7 @@ struct MyShows: View {
 	@EnvironmentObject private var player: Player
 	
 	var body: some View {
-		VideoGrid(fetch: { page in
+		AutoVideoGrid(fetch: { page in
 			try await api.libraryVideos(page: page)
 		})
 		.navigationTitle("My Shows")
