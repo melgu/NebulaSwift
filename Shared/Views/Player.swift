@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 import AVKit
 import os.log
 
@@ -18,6 +19,7 @@ import os.log
 	
 	private var video: Video?
 	private var task: Task<(), Error>?
+	private var cancellables = Set<AnyCancellable>()
 	
 	private let logger = Logger(category: "Player")
 	
@@ -31,6 +33,14 @@ import os.log
 		try? AVAudioSession.sharedInstance().setCategory(.playback)
 		pipController?.canStartPictureInPictureAutomaticallyFromInline = true
 		#endif
+		
+		player.publisher(for: \.rate)
+			.sink { [unowned self] rate in
+				if rate.isZero {
+					sendProgress()
+				}
+			}
+			.store(in: &cancellables)
 	}
 	
 	func play() {

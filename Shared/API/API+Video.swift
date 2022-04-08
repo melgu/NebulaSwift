@@ -86,7 +86,6 @@ extension API {
 	func sendProgress(for video: Video, seconds: Int) async throws -> VideoEngagement {
 		let url = URL(string: "https://content.watchnebula.com/engagement/video/progress/")!
 		let progress = Progress(contentSlug: video.slug, value: seconds)
-		print(String(data: (try! encoder.encode(progress)), encoding: .utf8)!)
 		return try await request(.post, url: url, body: progress, authorization: .bearer)
 	}
 }
