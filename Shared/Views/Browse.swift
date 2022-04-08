@@ -16,6 +16,9 @@ struct Browse: View {
 			try await api.allVideos(page: page)
 		})
 		.navigationTitle("Browse")
+		.onAppear {
+			player.reset()
+		}
     }
 }
 
