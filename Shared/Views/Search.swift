@@ -31,6 +31,7 @@ struct Search: View {
 				.textFieldStyle(.roundedBorder)
 				Text("Channels")
 					.font(.title)
+				ChannelGrid(channels: channelResults)
 				Divider()
 				Text("Videos")
 					.font(.title)

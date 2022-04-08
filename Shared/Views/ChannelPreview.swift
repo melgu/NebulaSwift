@@ -10,7 +10,7 @@ import SwiftUI
 struct ChannelPreview: View {
 	let channel: Channel
 	
-	@State var shareUrl: [Any]?
+	@State private var shareUrl: [Any]?
 	
 	var body: some View {
 		NavigationLink {

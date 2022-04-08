@@ -12,7 +12,7 @@ struct ChannelEpisodesContainer: Decodable {
 	let episodes: ListContainer<Video>
 }
 
-struct Channel: Decodable {
+struct Channel: Decodable, Equatable {
 	let slug: String
 	let title: String
 	let resultDescription: String?
@@ -36,14 +36,14 @@ extension Channel: Identifiable {
 	var id: String { slug }
 }
 
-struct ChannelAssets: Decodable {
+struct ChannelAssets: Decodable, Equatable {
 	let avatar: [String: ChannelAvatar]
 	let banner: [String: ChannelAvatar]
 	let hero: [String: ChannelAvatar]?
 	let featured: [String: ChannelAvatar]
 }
 
-struct ChannelEngagement: Decodable {
+struct ChannelEngagement: Decodable, Equatable {
 	let following: Bool
 }
 
