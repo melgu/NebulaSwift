@@ -27,7 +27,7 @@ struct VideoGrid: View {
 			LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
 				ForEach(videos) { video in
 					NavigationLink {
-						VideoView(video: video)
+						VideoPage(video: video)
 					} label: {
 						VideoPreview(video: video)
 					}

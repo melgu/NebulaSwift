@@ -1,5 +1,5 @@
 //
-//  VideoView.swift
+//  VideoPage.swift
 //  NebulaSwift
 //
 //  Created by Melvin Gundlach on 07.04.22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct VideoView: View {
+struct VideoPage: View {
 	let video: Video
 	
 	@EnvironmentObject private var api: API
