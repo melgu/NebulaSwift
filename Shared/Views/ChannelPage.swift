@@ -11,6 +11,7 @@ struct ChannelPage: View {
 	let channel: Channel
 	
 	@EnvironmentObject private var api: API
+	@EnvironmentObject private var player: Player
 	
 	var body: some View {
 		AutoVideoGrid(fetch: { page in
@@ -26,6 +27,9 @@ struct ChannelPage: View {
 			}
 		}
 		#endif
+		.onAppear {
+			player.reset()
+		}
 	}
 }
 
