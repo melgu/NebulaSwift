@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AVKit
+import os.log
 
 @MainActor class Player: ObservableObject {
 	let player = AVPlayer()
@@ -17,6 +18,8 @@ import AVKit
 	
 	private var video: Video?
 	private var task: Task<(), Error>?
+	
+	private let logger = Logger(category: "Player")
 	
 	init(api: API) {
 		self.api = api
@@ -31,6 +34,7 @@ import AVKit
 	}
 	
 	func play() {
+		logger.debug("Play")
 		#if canImport(UIKit)
 		try? AVAudioSession.sharedInstance().setActive(true, options: [])
 		#endif
@@ -38,6 +42,7 @@ import AVKit
 	}
 	
 	func pause() {
+		logger.debug("Pause")
 		#if canImport(UIKit)
 		try? AVAudioSession.sharedInstance().setActive(false)
 		#endif
@@ -46,6 +51,7 @@ import AVKit
 	}
 	
 	func replaceVideo(with video: Video) async throws {
+		logger.debug("Replace video \(self.video?.title ?? "nil") with \(video.title)")
 		task?.cancel()
 		
 		sendProgress()
@@ -58,7 +64,7 @@ import AVKit
 			try Task.checkCancellation()
 			player.replaceCurrentItem(with: item)
 			if let progress = video.engagement?.progress {
-				print("Player: Seeking to progress \(progress)")
+				logger.debug("Seeking to progress \(progress)")
 				await player.seek(to: CMTime(seconds: Double(progress), preferredTimescale: 1))
 			}
 		}
@@ -66,6 +72,7 @@ import AVKit
 	}
 	
 	func reset() {
+		logger.debug("Reset")
 		#if canImport(UIKit)
 		try? AVAudioSession.sharedInstance().setActive(false)
 		#endif
@@ -78,6 +85,7 @@ import AVKit
 	private func sendProgress() {
 		guard let video = video, player.currentItem != nil else { return }
 		let seconds = Int(player.currentTime().seconds)
+		logger.log("Send progress. \(video.title), progress: \(seconds) s")
 		Task {
 			try await api.sendProgress(for: video, seconds: seconds)
 		}
