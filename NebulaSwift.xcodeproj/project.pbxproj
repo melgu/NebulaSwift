@@ -54,6 +54,8 @@
 		B099D42328008C97002D6A63 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B099D42128008C97002D6A63 /* Logger.swift */; };
 		B0B7EED428009C3F007D3682 /* ChannelPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B7EED328009C3F007D3682 /* ChannelPreview.swift */; };
 		B0B7EED528009C3F007D3682 /* ChannelPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B7EED328009C3F007D3682 /* ChannelPreview.swift */; };
+		B0B7EED72800B086007D3682 /* ChannelGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B7EED62800B086007D3682 /* ChannelGrid.swift */; };
+		B0B7EED82800B086007D3682 /* ChannelGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B7EED62800B086007D3682 /* ChannelGrid.swift */; };
 		B0DF9FAD268A343700EF9392 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FAC268A343700EF9392 /* Login.swift */; };
 		B0DF9FAE268A343700EF9392 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FAC268A343700EF9392 /* Login.swift */; };
 		B0DF9FB0268A36D900EF9392 /* API+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FAF268A36D900EF9392 /* API+Login.swift */; };
@@ -103,6 +105,7 @@
 		B079EF4B268562B8009EFBAA /* Featured.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Featured.swift; sourceTree = "<group>"; };
 		B099D42128008C97002D6A63 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		B0B7EED328009C3F007D3682 /* ChannelPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelPreview.swift; sourceTree = "<group>"; };
+		B0B7EED62800B086007D3682 /* ChannelGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelGrid.swift; sourceTree = "<group>"; };
 		B0DF9FAC268A343700EF9392 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		B0DF9FAF268A36D900EF9392 /* API+Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Login.swift"; sourceTree = "<group>"; };
 		B0DF9FB2268A3E3700EF9392 /* API+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+User.swift"; sourceTree = "<group>"; };
@@ -195,6 +198,7 @@
 				B0508A3326856FEB006FED7E /* Search.swift */,
 				B0DF9FAC268A343700EF9392 /* Login.swift */,
 				B0511C6627FB65AF006B077C /* Settings.swift */,
+				B0B7EED62800B086007D3682 /* ChannelGrid.swift */,
 				B0B7EED328009C3F007D3682 /* ChannelPreview.swift */,
 				B0E5BA3127FF6869001D8403 /* ChannelPage.swift */,
 				B0E5BA2E27FF66B1001D8403 /* VideoGrid.swift */,
@@ -339,6 +343,7 @@
 				B04EFE0C27EF276600B901F9 /* ShareSheet.swift in Sources */,
 				B056F7D827454A71009B92BC /* API+Video.swift in Sources */,
 				B0E5BA3227FF6869001D8403 /* ChannelPage.swift in Sources */,
+				B0B7EED72800B086007D3682 /* ChannelGrid.swift in Sources */,
 				B0511C6727FB65AF006B077C /* Settings.swift in Sources */,
 				B0E5BA2927FF62D3001D8403 /* VideoPage.swift in Sources */,
 				B079EF45268560D6009EFBAA /* Storage.swift in Sources */,
@@ -378,6 +383,7 @@
 				B04EFE0D27EF276600B901F9 /* ShareSheet.swift in Sources */,
 				B056F7D927454A71009B92BC /* API+Video.swift in Sources */,
 				B0E5BA3327FF6869001D8403 /* ChannelPage.swift in Sources */,
+				B0B7EED82800B086007D3682 /* ChannelGrid.swift in Sources */,
 				B0511C6827FB65AF006B077C /* Settings.swift in Sources */,
 				B0E5BA2A27FF62D3001D8403 /* VideoPage.swift in Sources */,
 				B079EF46268560D6009EFBAA /* Storage.swift in Sources */,

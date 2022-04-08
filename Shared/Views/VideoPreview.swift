@@ -10,7 +10,7 @@ import SwiftUI
 struct VideoPreview: View {
 	let video: Video
 	
-	@State var shareUrl: [Any]?
+	@State private var shareUrl: [Any]?
 	
 	var body: some View {
 		NavigationLink {
