@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import OSLog
+import os.log
 
 @MainActor class API: ObservableObject {
 	let storage = Storage()
@@ -27,7 +27,7 @@ import OSLog
 	
 	@Published var isLoggedIn = false
 	
-	let logger = Logger(subsystem: "NebulaSwift", category: "API")
+	let logger = Logger(category: "API")
 	
 	init() {
 		print("Token: \(storage.token ?? "nil")")
