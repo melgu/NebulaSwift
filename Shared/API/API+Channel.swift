@@ -27,7 +27,7 @@ struct Channel: Decodable {
 	let facebook: URL?
 	let merch: URL?
 	let merchCollection: String?
-	let shareurl: URL?
+	let shareUrl: URL
 	let engagement: ChannelEngagement?
 //	let playlists: [Category]
 	let zypeid: String?
