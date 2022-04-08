@@ -54,17 +54,15 @@ struct VideoGrid: View {
 				}
 			}
 			.padding()
-			.onAppear {
-				player.reset()
-			}
-			.refreshable {
-				print("Refresh Videos")
-				await refreshVideos()
-			}
-			.task {
-				print("Load Videos")
-				await refreshVideos()
-			}
+		}
+		.refreshable {
+			print("Refresh Videos")
+			await refreshVideos()
+		}
+		.task {
+			player.reset()
+			print("Load Videos")
+			await refreshVideos()
 		}
 	}
 	
