@@ -72,16 +72,23 @@ struct ContentView: View {
 					}
 				}
 			}
+			.refreshable {
+				await refreshMyShows()
+			}
 			.listStyle(.sidebar)
 			.navigationTitle("Nebula")
 			.task {
-				do {
-					myShows = try await api.libraryChannels(page: 1, pageSize: 200)
-				} catch {
-					print(error)
-				}
+				await refreshMyShows()
 			}
 			.settingsSheet()
+		}
+	}
+	
+	func refreshMyShows() async {
+		do {
+			myShows = try await api.libraryChannels(page: 1, pageSize: 200)
+		} catch {
+			print(error)
 		}
 	}
 	
