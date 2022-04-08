@@ -14,19 +14,28 @@ struct Search: View {
 	@State private var searchTerm = ""
 	@State private var channelResults: [Channel] = []
 	@State private var videoResults: [Video] = []
+	@State private var task: Task<(), Never>?
 	
     var body: some View {
 		ScrollView {
 			VStack(alignment: .leading) {
 				TextField("Search", text: $searchTerm) {
-					Task {
+					task?.cancel()
+					channelResults.removeAll()
+					videoResults.removeAll()
+					task = Task {
 						do {
-							channelResults = try await api.searchChannels(for: searchTerm)
-							videoResults = try await api.searchVideos(for: searchTerm)
+							async let channels = api.searchChannels(for: searchTerm)
+							async let videos = api.searchVideos(for: searchTerm)
+							let both = try await (channels: channels, videos: videos)
+							try Task.checkCancellation()
+							channelResults = both.channels
+							videoResults = both.videos
 						} catch {
 							print(error)
 						}
 					}
+					Task { await task?.value }
 				}
 				.textFieldStyle(.roundedBorder)
 				
