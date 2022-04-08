@@ -17,6 +17,15 @@ struct ChannelPage: View {
 			try await api.videos(for: channel, page: page)
 		})
 		.navigationTitle(channel.title)
+		#if canImport(UIKit)
+		.toolbar {
+			ToolbarItem(placement: .navigationBarTrailing) {
+				ShareButton(items: [channel.shareUrl]) {
+					Image(systemName: "square.and.arrow.up")
+				}
+			}
+		}
+		#endif
 	}
 }
 
