@@ -28,7 +28,7 @@ struct Video: Decodable, Equatable {
 	let zypeId: String
 }
 extension Video: Identifiable {
-	var id: String { slug }
+	var id: String { slug + "\(engagement?.progress ?? 0)" }
 }
 
 struct VideoAssets: Decodable, Equatable {
