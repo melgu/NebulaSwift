@@ -57,7 +57,7 @@ struct AutoVideoGrid: View {
 		}
 		.refreshable {
 			print("Refresh Videos")
-			await refreshVideos()
+			await refreshVideos(animated: true)
 		}
 		.task {
 			print("Load Videos")
@@ -65,13 +65,19 @@ struct AutoVideoGrid: View {
 		}
 	}
 	
-	func refreshVideos() async {
+	func refreshVideos(animated: Bool = false) async {
 		do {
 			let newVideos = try await fetch(1)
 			if newVideos != videos {
 				print("Video list changed")
 				page = 1
-				videos = newVideos
+				if animated {
+					withAnimation {
+						videos = newVideos
+					}
+				} else {
+					videos = newVideos
+				}
 			}
 		} catch {
 			print(error)
