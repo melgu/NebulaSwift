@@ -57,7 +57,7 @@ struct AutoChannelGrid: View {
 		}
 		.refreshable {
 			print("Refresh Channels")
-			await refreshChannels()
+			await refreshChannels(animated: true)
 		}
 		.task {
 			print("Load Channels")
@@ -65,13 +65,19 @@ struct AutoChannelGrid: View {
 		}
 	}
 	
-	func refreshChannels() async {
+	func refreshChannels(animated: Bool = false) async {
 		do {
 			let newChannels = try await fetch(1)
 			if newChannels != channels {
 				print("Video list changed")
 				page = 1
-				channels = newChannels
+				if animated {
+					withAnimation {
+						channels = newChannels
+					}
+				} else {
+					channels = newChannels
+				}
 			}
 		} catch {
 			print(error)
