@@ -16,7 +16,7 @@ struct ChannelPage: View {
 	var body: some View {
 		AutoVideoGrid(fetch: { page in
 			try await api.videos(for: channel, page: page)
-		})
+		}, disableChannelNavigation: true)
 		.navigationTitle(channel.title)
 		#if canImport(UIKit)
 		.toolbar {
