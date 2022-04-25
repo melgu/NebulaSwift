@@ -9,33 +9,15 @@ import SwiftUI
 
 struct VideoGrid: View {
 	let videos: [Video]
-	var disableChannelNavigation = false
-	
-	@EnvironmentObject private var api: API
-	
-	@State private var channelInNavigation: Channel?
 	
 	var body: some View {
 		ScrollView {
 			LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
 				ForEach(videos) { video in
-					VideoPreview(video: video, showChannelBlock: disableChannelNavigation ? nil : showChannel)
+					VideoPreview(video: video)
 				}
 			}
 			.padding()
-		}
-		.navigation(item: $channelInNavigation) { channel in
-			ChannelPage(channel: channel)
-		}
-	}
-	
-	func showChannel(slug: String) {
-		Task {
-			do {
-				channelInNavigation = try await api.channel(for: slug)
-			} catch {
-				print(error)
-			}
 		}
 	}
 }
@@ -43,9 +25,6 @@ struct VideoGrid: View {
 /// Auto-loading VideoGrid
 struct AutoVideoGrid: View {
 	let fetch: (Int) async throws -> [Video]
-	let disableChannelNavigation: Bool
-	
-	@EnvironmentObject private var api: API
 	
 	@State private var videos: [Video] = []
 	@State private var page = 1
@@ -53,16 +32,15 @@ struct AutoVideoGrid: View {
 	
 	/// Auto-loading VideoGrid
 	/// - Parameter fetch: Closure which loads the videos for a given page (1-indexed)
-	init(fetch: @escaping (Int) async throws -> [Video], disableChannelNavigation: Bool = false) {
+	init(fetch: @escaping (Int) async throws -> [Video]) {
 		self.fetch = fetch
-		self.disableChannelNavigation = disableChannelNavigation
 	}
 	
 	var body: some View {
 		ScrollView {
 			LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
 				ForEach(videos) { video in
-					VideoPreview(video: video, showChannelBlock: disableChannelNavigation ? nil : showChannel)
+					VideoPreview(video: video)
 						.task {
 							if video == videos.last {
 								print("Last video did appear, loading next page")
@@ -107,16 +85,6 @@ struct AutoVideoGrid: View {
 			}
 		} catch {
 			print(error)
-		}
-	}
-	
-	func showChannel(slug: String) {
-		Task {
-			do {
-				channelInNavigation = try await api.channel(for: slug)
-			} catch {
-				print(error)
-			}
 		}
 	}
 }
