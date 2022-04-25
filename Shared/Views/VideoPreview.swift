@@ -7,10 +7,31 @@
 
 import SwiftUI
 
+private struct GoToChannelEnabledKey: EnvironmentKey {
+	static let defaultValue = true
+}
+
+extension EnvironmentValues {
+	var goToChannelEnabled: Bool {
+		get { self[GoToChannelEnabledKey.self] }
+		set { self[GoToChannelEnabledKey.self] = newValue }
+	}
+}
+
+extension View {
+	func disableGoToChannel() -> some View {
+		environment(\.goToChannelEnabled, false)
+	}
+}
+
 struct VideoPreview: View {
 	let video: Video
-	let showChannelBlock: ((String) -> Void)?
 	
+	@EnvironmentObject private var api: API
+	
+	@Environment(\.goToChannelEnabled) var goToChannelEnabled
+	
+	@State private var channelInNavigation: Channel?
 	@State private var shareUrl: [Any]?
 	
 	var body: some View {
@@ -21,9 +42,9 @@ struct VideoPreview: View {
 		}
 		.buttonStyle(.plain)
 		.contextMenu {
-			if let showChannelBlock = showChannelBlock {
+			if goToChannelEnabled {
 				Button(video.channelTitle) {
-					showChannelBlock(video.channelSlug)
+					showChannel(slug: video.channelSlug)
 				}
 				Divider()
 			}
@@ -40,7 +61,20 @@ struct VideoPreview: View {
 				Label("Share", systemImage: "square.and.arrow.up")
 			}
 		}
+		.navigation(item: $channelInNavigation) { channel in
+			ChannelPage(channel: channel)
+		}
 		.shareSheet(items: $shareUrl)
+	}
+	
+	func showChannel(slug: String) {
+		Task {
+			do {
+				channelInNavigation = try await api.channel(for: slug)
+			} catch {
+				print(error)
+			}
+		}
 	}
 }
 
