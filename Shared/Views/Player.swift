@@ -83,13 +83,13 @@ import os.log
 	
 	func reset() {
 		logger.debug("Reset")
-		#if canImport(UIKit)
-		try? AVAudioSession.sharedInstance().setActive(false)
-		#endif
 		sendProgress()
 		task?.cancel()
 		video = nil
 		player.replaceCurrentItem(with: nil)
+		#if canImport(UIKit)
+		try? AVAudioSession.sharedInstance().setActive(false)
+		#endif
 	}
 	
 	private func sendProgress() {
