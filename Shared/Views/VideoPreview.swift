@@ -9,6 +9,7 @@ import SwiftUI
 
 struct VideoPreview: View {
 	let video: Video
+	let showChannelBlock: ((String) -> Void)?
 	
 	@State private var shareUrl: [Any]?
 	
@@ -20,6 +21,12 @@ struct VideoPreview: View {
 		}
 		.buttonStyle(.plain)
 		.contextMenu {
+			if let showChannelBlock = showChannelBlock {
+				Button(video.channelTitle) {
+					showChannelBlock(video.channelSlug)
+				}
+				Divider()
+			}
 			Button("Watch later") {
 				print("Watch later")
 			}
