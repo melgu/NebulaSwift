@@ -87,12 +87,21 @@ struct VideoPreviewView: View {
 				image
 					.resizable()
 					.scaledToFit()
-					.cornerRadius(8)
 			} placeholder: {
 				Color.black
 					.aspectRatio(16/9, contentMode: .fit)
 			}
-			.cornerRadius(4)
+			.overlay(
+				Text((Date.now..<Date.now + Double(video.duration)).formatted(.timeDuration))
+					.font(.caption)
+					.padding(2)
+					.background(Material.regular)
+					.cornerRadius(4)
+					.padding(8)
+					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+			)
+			.overlay(progressBar)
+			.cornerRadius(8)
 			
 			Text(video.title)
 			Text(video.channelTitle)
@@ -100,6 +109,14 @@ struct VideoPreviewView: View {
 		}
 		.lineLimit(2)
 		.background(Color.primary.colorInvert())
+	}
+	
+	@ViewBuilder
+	var progressBar: some View {
+		if let progress = video.engagement?.progress, progress != 0 {
+			ProgressView(value: Double(progress) / Double(video.duration))
+				.frame(maxHeight: .infinity, alignment: .bottom)
+		}
 	}
 }
 
