@@ -11,7 +11,7 @@ struct Browse: View {
 	@EnvironmentObject private var api: API
 	@EnvironmentObject private var player: Player
 	
-	@State private var viewType: ViewType = .videos
+	@State private var viewType: ContentType = .videos
 	
     var body: some View {
 		Group {
@@ -43,11 +43,6 @@ struct Browse: View {
 			player.reset()
 		}
     }
-}
-
-fileprivate enum ViewType {
-	case videos
-	case channels
 }
 
 struct Browse_Previews: PreviewProvider {

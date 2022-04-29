@@ -78,6 +78,8 @@
 		B0E5BA3627FF6C85001D8403 /* API+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3427FF6C85001D8403 /* API+Search.swift */; };
 		B0E5BA3827FF6CEB001D8403 /* ListContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3727FF6CEB001D8403 /* ListContainer.swift */; };
 		B0E5BA3927FF6CEB001D8403 /* ListContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3727FF6CEB001D8403 /* ListContainer.swift */; };
+		B0FA4424281C5801002554A7 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FA4423281C5801002554A7 /* ContentType.swift */; };
+		B0FA4425281C5801002554A7 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FA4423281C5801002554A7 /* ContentType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -119,6 +121,7 @@
 		B0E5BA3127FF6869001D8403 /* ChannelPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelPage.swift; sourceTree = "<group>"; };
 		B0E5BA3427FF6C85001D8403 /* API+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Search.swift"; sourceTree = "<group>"; };
 		B0E5BA3727FF6CEB001D8403 /* ListContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListContainer.swift; sourceTree = "<group>"; };
+		B0FA4423281C5801002554A7 /* ContentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +215,7 @@
 				B04EFE0B27EF276600B901F9 /* ShareSheet.swift */,
 				B0511C6027F0AA74006B077C /* RefreshableScrollView.swift */,
 				B041001E2817071700845750 /* Navigation.swift */,
+				B0FA4423281C5801002554A7 /* ContentType.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -345,6 +349,7 @@
 				B079EF4826856116009EFBAA /* Defaults.swift in Sources */,
 				B079EF2F26853A57009EFBAA /* NebulaSwiftApp.swift in Sources */,
 				B04EFE0C27EF276600B901F9 /* ShareSheet.swift in Sources */,
+				B0FA4424281C5801002554A7 /* ContentType.swift in Sources */,
 				B041001F2817071700845750 /* Navigation.swift in Sources */,
 				B056F7D827454A71009B92BC /* API+Video.swift in Sources */,
 				B0E5BA3227FF6869001D8403 /* ChannelPage.swift in Sources */,
@@ -386,6 +391,7 @@
 				B079EF4926856116009EFBAA /* Defaults.swift in Sources */,
 				B079EF3026853A57009EFBAA /* NebulaSwiftApp.swift in Sources */,
 				B04EFE0D27EF276600B901F9 /* ShareSheet.swift in Sources */,
+				B0FA4425281C5801002554A7 /* ContentType.swift in Sources */,
 				B04100202817071700845750 /* Navigation.swift in Sources */,
 				B056F7D927454A71009B92BC /* API+Video.swift in Sources */,
 				B0E5BA3327FF6869001D8403 /* ChannelPage.swift in Sources */,
