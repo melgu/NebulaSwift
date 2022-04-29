@@ -16,7 +16,7 @@ extension View {
 	/// struct MyView {
 	///     @State var itemsToShare: [Any]?
 	///     var body: some View {
-	///         Image(systemName: "square.and.arrow.up")
+	///         Label("Share", systemImage: "square.and.arrow.up")
 	///             .onTapGesture {
 	///                 itemsToShare = ["This text will be shared"]
 	///             }

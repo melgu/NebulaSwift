@@ -39,7 +39,7 @@ struct VideoPage: View {
 						.font(.title)
 					Spacer()
 					ShareButton(items: [video.shareUrl]) {
-						Image(systemName: "square.and.arrow.up")
+						Label("Share", systemImage: "square.and.arrow.up")
 					}
 				}
 				#endif
@@ -64,7 +64,7 @@ struct VideoPage: View {
 			.toolbar {
 				ToolbarItem(placement: .navigationBarTrailing) {
 					ShareButton(items: [video.shareUrl]) {
-						Image(systemName: "square.and.arrow.up")
+						Label("Share", systemImage: "square.and.arrow.up")
 					}
 				}
 			}

@@ -23,7 +23,7 @@ struct SettingsView: View {
 					Button {
 						dismiss()
 					} label: {
-						Image(systemName: "xmark.circle.fill")
+						Label("Close", systemImage: "xmark.circle.fill")
 					}
 				}
 			}
@@ -65,7 +65,7 @@ struct SettingsSheet: ViewModifier {
 					Button {
 						showSettings = true
 					} label: {
-						Image(systemName: "gear")
+						Label("Settings", systemImage: "gear")
 					}
 				}
 			}
