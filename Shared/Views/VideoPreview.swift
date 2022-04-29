@@ -64,9 +64,24 @@ struct VideoPreviewView: View {
 			.overlay(progressBar)
 			.cornerRadius(8)
 			
-			Text(video.title)
-			Text(video.channelTitle)
-				.font(.caption)
+			HStack(alignment: .top) {
+				AsyncImage(url: video.assets.channelAvatar["64"]?.original) { image in
+					image
+						.resizable()
+						.scaledToFit()
+						.clipShape(Circle())
+				} placeholder: {
+					Color.clear
+						.aspectRatio(1, contentMode: .fit)
+				}
+				.frame(width: 32, height: 32)
+				VStack(alignment: .leading) {
+					Text(video.title)
+					Text(video.channelTitle)
+						.font(.caption)
+						.foregroundColor(.secondary)
+				}
+			}
 		}
 		.lineLimit(2)
 		.background(Color.primary.colorInvert())
