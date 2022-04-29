@@ -29,11 +29,6 @@ struct VideoPreview: View {
 	
 	@EnvironmentObject private var api: API
 	
-	@Environment(\.goToChannelEnabled) var goToChannelEnabled
-	
-	@State private var channelInNavigation: Channel?
-	@State private var shareUrl: [Any]?
-	
 	var body: some View {
 		NavigationLink {
 			VideoPage(video: video)
@@ -41,40 +36,7 @@ struct VideoPreview: View {
 			VideoPreviewView(video: video)
 		}
 		.buttonStyle(.plain)
-		.contextMenu {
-			if goToChannelEnabled {
-				Button(video.channelTitle) {
-					showChannel(slug: video.channelSlug)
-				}
-				Divider()
-			}
-			Button("Watch later") {
-				print("Watch later")
-			}
-			Button("Download") {
-				print("Download")
-			}
-			Divider()
-			Button {
-				shareUrl = [video.shareUrl]
-			} label: {
-				Label("Share", systemImage: "square.and.arrow.up")
-			}
-		}
-		.navigation(item: $channelInNavigation) { channel in
-			ChannelPage(channel: channel)
-		}
-		.shareSheet(items: $shareUrl)
-	}
-	
-	func showChannel(slug: String) {
-		Task {
-			do {
-				channelInNavigation = try await api.channel(for: slug)
-			} catch {
-				print(error)
-			}
-		}
+		.contextMenu(for: video)
 	}
 }
 
