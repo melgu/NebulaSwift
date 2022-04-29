@@ -8,13 +8,20 @@
 import SwiftUI
 
 struct AsyncButton<Label: View>: View {
-	let action: @MainActor @Sendable () async -> Void
-	let label: () -> Label
+	private let role: ButtonRole?
+	private let action: Action
+	private let label: () -> Label
 	
 	@State private var isRunning = false
 	
+	init(action: @escaping Action, @ViewBuilder label: @escaping () -> Label) {
+		self.role = nil
+		self.action = action
+		self.label = label
+	}
+	
 	var body: some View {
-		Button {
+		Button(role: role) {
 			Task {
 				isRunning = true
 				await action()
@@ -24,6 +31,44 @@ struct AsyncButton<Label: View>: View {
 			label()
 		}
 		.disabled(isRunning)
+	}
+	
+	typealias Action = @MainActor  @Sendable () async -> Void
+}
+
+extension AsyncButton where Label == Text {
+	init(_ titleKey: LocalizedStringKey, action: @escaping Action) {
+		self.role = nil
+		self.action = action
+		self.label = { Text(titleKey) }
+	}
+	
+	init<S: StringProtocol>(_ title: S, action: @escaping Action) {
+		self.role = nil
+		self.action = action
+		self.label = { Text(title) }
+	}
+}
+
+extension AsyncButton {
+	init(role: ButtonRole?, action: @escaping Action, @ViewBuilder label: @escaping () -> Label) {
+		self.role = role
+		self.action = action
+		self.label = label
+	}
+}
+
+extension AsyncButton where Label == Text {
+	init(_ titleKey: LocalizedStringKey, role: ButtonRole?, action: @escaping Action) {
+		self.role = role
+		self.action = action
+		self.label = { Text(titleKey) }
+	}
+	
+	init<S: StringProtocol>(_ title: S, role: ButtonRole?, action: @escaping Action) {
+		self.role = role
+		self.action = action
+		self.label = { Text(title) }
 	}
 }
 
