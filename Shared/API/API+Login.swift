@@ -19,12 +19,11 @@ struct LoginResponse: Decodable {
 extension API {
 	private func _login(email: String, password: String) async throws -> LoginResponse {
 		let url = URL(string: "https://api.watchnebula.com/api/v1/auth/login/")!
-		let parameters = ["Content-Type": "application/json;charset=utf-8"]
 		let body = LoginRequestBody(email: email, password: password)
 		
 		URLSession.shared.configuration.httpCookieStorage?.removeCookies(since: Date.distantPast)
 		
-		return try await request(.post, url: url, headerFields: parameters, body: body, authorization: .none)
+		return try await request(.post, url: url, body: body, authorization: .none)
 	}
 	
 	func login(email: String, password: String) async throws {
