@@ -26,18 +26,7 @@ struct ChannelPreview: View {
 		.contextMenu {
 			if let engagement = channel.engagement {
 				if engagement.following {
-					Button("Unfollow") {
-						Task {
-							do {
-								try await api.unfollow(channel)
-								await refresh?()
-							} catch {
-								print(error)
-							}
-						}
-					}
-				} else {
-					Button("Follow") {
+					Button {
 						Task {
 							do {
 								try await api.follow(channel)
@@ -46,6 +35,21 @@ struct ChannelPreview: View {
 								print(error)
 							}
 						}
+					} label: {
+						Label("Unfollow", systemImage: "person.fill.badge.minus")
+					}
+				} else {
+					Button {
+						Task {
+							do {
+								try await api.follow(channel)
+								await refresh?()
+							} catch {
+								print(error)
+							}
+						}
+					} label: {
+						Label("Follow", systemImage: "person.fill.badge.plus")
 					}
 				}
 				Divider()
