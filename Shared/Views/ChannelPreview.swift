@@ -14,8 +14,6 @@ struct ChannelPreview: View {
 	
 	@Environment(\.refresh) private var refresh
 	
-	@State private var shareUrl: [Any]?
-	
 	var body: some View {
 		NavigationLink {
 			ChannelPage(channel: channel)
@@ -23,40 +21,7 @@ struct ChannelPreview: View {
 			ChannelPreviewView(channel: channel)
 		}
 		.buttonStyle(.plain)
-		.contextMenu {
-			if let engagement = channel.engagement {
-				if engagement.following {
-					AsyncButton {
-						do {
-							try await api.unfollow(channel)
-							await refresh?()
-						} catch {
-							print(error)
-						}
-					} label: {
-						Label("Unfollow", systemImage: "person.fill.badge.minus")
-					}
-				} else {
-					AsyncButton {
-						do {
-							try await api.follow(channel)
-							await refresh?()
-						} catch {
-							print(error)
-						}
-					} label: {
-						Label("Follow", systemImage: "person.fill.badge.plus")
-					}
-				}
-				Divider()
-			}
-			Button {
-				shareUrl = [channel.shareUrl]
-			} label: {
-				Label("Share", systemImage: "square.and.arrow.up")
-			}
-		}
-		.shareSheet(items: $shareUrl)
+		.contextMenu(for: channel)
 	}
 }
 
