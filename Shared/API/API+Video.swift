@@ -66,7 +66,7 @@ struct Progress: Encodable {
 // MARK: - Stream
 
 extension API {
-	func allVideos(page: Int, pageSize: Int = 20) async throws -> [Video] {
+	func allVideos(page: Int, pageSize: Int = 24) async throws -> [Video] {
 		let url = URL(string: "https://content.watchnebula.com/video/?page=\(page)&page_size=\(pageSize)")!
 		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
