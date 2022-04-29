@@ -13,6 +13,10 @@ struct ChannelPage: View {
 	@EnvironmentObject private var api: API
 	@EnvironmentObject private var player: Player
 	
+	@Environment(\.refresh) private var refresh
+	
+	@State private var following: Bool?
+	
 	var body: some View {
 		AutoVideoGrid(fetch: { page in
 			try await api.videos(for: channel, page: page)
@@ -22,6 +26,31 @@ struct ChannelPage: View {
 		#if canImport(UIKit)
 		.toolbar {
 			ToolbarItem(placement: .navigationBarTrailing) {
+				if let following = following {
+					if following {
+						AsyncButton("Unfollow") {
+							do {
+								try await api.unfollow(channel)
+								self.following = false
+								await refresh?()
+							} catch {
+								print(error)
+							}
+						}
+					} else {
+						AsyncButton("Follow") {
+							do {
+								try await api.follow(channel)
+								self.following = true
+								await refresh?()
+							} catch {
+								print(error)
+							}
+						}
+					}
+				}
+			}
+			ToolbarItem(placement: .navigationBarTrailing) {
 				ShareButton(items: [channel.shareUrl]) {
 					Image(systemName: "square.and.arrow.up")
 				}
@@ -30,6 +59,9 @@ struct ChannelPage: View {
 		#endif
 		.onAppear {
 			player.reset()
+			if let engagement = channel.engagement {
+				following = engagement.following
+			}
 		}
 	}
 }
