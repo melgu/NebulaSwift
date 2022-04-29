@@ -67,6 +67,7 @@ struct ContentView: View {
 							} label: {
 								label(for: channel)
 							}
+							.contextMenu(for: channel)
 						}
 					}
 				}
