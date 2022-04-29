@@ -65,7 +65,7 @@ extension API {
 		return data
 	}
 	
-	private func _request<Result: Decodable>(_ method: HTTPMethod, url: URL, headerFields: [String: String], body: Data?, authorization: AuthorizationType?) async throws -> Result {
+	private func _request(_ method: HTTPMethod, url: URL, headerFields: [String: String], body: Data?, authorization: AuthorizationType?) async throws -> Data {
 		var request = URLRequest(url: url)
 		
 		request.httpMethod = method.rawValue
@@ -78,9 +78,8 @@ extension API {
 		
 		try setAuthorization(type: authorization, for: &request)
 		
-		let data: Data
 		do {
-			data = try await execute(request: request)
+			return try await execute(request: request)
 		} catch let error as APIError {
 			if case .invalidServerResponse(let code) = error, code == 403 {
 				switch authorization {
@@ -94,12 +93,15 @@ extension API {
 					throw error
 				}
 				try setAuthorization(type: authorization, for: &request)
-				data = try await execute(request: request)
+				return try await execute(request: request)
 			} else {
 				throw error
 			}
 		}
-		
+	}
+	
+	private func _request<Result: Decodable>(_ method: HTTPMethod, url: URL, headerFields: [String: String], body: Data?, authorization: AuthorizationType?) async throws -> Result {
+		let data = try await _request(method, url: url, headerFields: headerFields, body: body, authorization: authorization)
 		let result = try decoder.decode(Result.self, from: data)
 		return result
 	}
@@ -110,8 +112,19 @@ extension API {
 	}
 	
 	func request<Body: Encodable, Result: Decodable>(_ method: HTTPMethod, url: URL, headerFields: [String: String] = [:], body: Body, authorization: AuthorizationType?) async throws -> Result {
-		logger.debug("Request: method: \(method.rawValue), url: \(url), parameters: \(headerFields), authorization: \(String(describing: authorization))")
+		logger.debug("Request: method: \(method.rawValue), url: \(url), parameters: \(headerFields), body: \(String(describing: body)), authorization: \(String(describing: authorization))")
 		let bodyData = try encoder.encode(body)
 		return try await _request(method, url: url, headerFields: headerFields, body: bodyData, authorization: authorization)
+	}
+	
+	func request(_ method: HTTPMethod, url: URL, headerFields: [String: String] = [:], authorization: AuthorizationType?) async throws {
+		logger.debug("Request: method: \(method.rawValue), url: \(url), parameters: \(headerFields), authorization: \(String(describing: authorization))")
+		_ = try await _request(method, url: url, headerFields: headerFields, body: nil, authorization: authorization)
+	}
+	
+	func request<Body: Encodable>(_ method: HTTPMethod, url: URL, headerFields: [String: String] = [:], body: Body, authorization: AuthorizationType?) async throws {
+		logger.debug("Request: method: \(method.rawValue), url: \(url), parameters: \(headerFields), body: \(String(describing: body)), authorization: \(String(describing: authorization))")
+		let bodyData = try encoder.encode(body)
+		_ = try await _request(method, url: url, headerFields: headerFields, body: bodyData, authorization: authorization)
 	}
 }
