@@ -69,4 +69,20 @@ extension API {
 		let (_, videos) = try await channelAndVideos(for: channel.slug, page: page, pageSize: pageSize)
 		return videos
 	}
+	
+	func follow(_ channel: Channel) async throws {
+		let url = URL(string: "https://content.watchnebula.com/engagement/video/follow/")!
+		let body = FollowBody(channelSlug: channel.slug)
+		try await request(.post, url: url, body: body, authorization: .bearer)
+	}
+	
+	func unfollow(_ channel: Channel) async throws {
+		let url = URL(string: "https://content.watchnebula.com/engagement/video/unfollow/")!
+		let body = FollowBody(channelSlug: channel.slug)
+		try await request(.post, url: url, body: body, authorization: .bearer)
+	}
+	
+	private struct FollowBody: Encodable {
+		let channelSlug: String
+	}
 }
