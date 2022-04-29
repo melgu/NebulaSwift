@@ -10,6 +10,10 @@ import SwiftUI
 struct ChannelPreview: View {
 	let channel: Channel
 	
+	@EnvironmentObject private var api: API
+	
+	@Environment(\.refresh) private var refresh
+	
 	@State private var shareUrl: [Any]?
 	
 	var body: some View {
@@ -23,11 +27,25 @@ struct ChannelPreview: View {
 			if let engagement = channel.engagement {
 				if engagement.following {
 					Button("Unfollow") {
-						print("Unfollow")
+						Task {
+							do {
+								try await api.unfollow(channel)
+								await refresh?()
+							} catch {
+								print(error)
+							}
+						}
 					}
 				} else {
 					Button("Follow") {
-						print("Follow")
+						Task {
+							do {
+								try await api.follow(channel)
+								await refresh?()
+							} catch {
+								print(error)
+							}
+						}
 					}
 				}
 				Divider()
