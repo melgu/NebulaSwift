@@ -52,7 +52,7 @@ struct ChannelPage: View {
 			}
 			ToolbarItem(placement: .navigationBarTrailing) {
 				ShareButton(items: [channel.shareUrl]) {
-					Image(systemName: "square.and.arrow.up")
+					Label("Share", systemImage: "square.and.arrow.up")
 				}
 			}
 		}
