@@ -12,14 +12,14 @@ import SwiftUIPullToRefresh
 public struct ScrollView<Content: View>: View {
 	private let axes: Axis.Set
 	private let showsIndicators: Bool
-	private let content: Content
+	private let content: () -> Content
 	
 	@Environment(\.refresh) private var refresh
 	
-	public init(_ axes: Axis.Set = .vertical, showsIndicators: Bool = true, @ViewBuilder content: () -> Content) {
+	public init(_ axes: Axis.Set = .vertical, showsIndicators: Bool = true, @ViewBuilder content: @escaping () -> Content) {
 		self.axes = axes
 		self.showsIndicators = showsIndicators
-		self.content = content()
+		self.content = content
 	}
 	
 	public var body: some View {
@@ -32,12 +32,10 @@ public struct ScrollView<Content: View>: View {
 					case .waiting: EmptyView()
 					}
 				},
-				content: { content }
+				content: content
 			)
 		} else {
-			SwiftUI.ScrollView(axes, showsIndicators: showsIndicators) {
-				content
-			}
+			SwiftUI.ScrollView(axes, showsIndicators: showsIndicators, content: content)
 		}
 	}
 }
