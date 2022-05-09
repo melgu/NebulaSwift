@@ -16,7 +16,7 @@ struct Channel: Decodable, Equatable {
 	let slug: String
 	let title: String
 	let resultDescription: String?
-	let assets: ChannelAssets
+	let assets: Assets
 	let genreCategoryTitle: String
 	let genreCategorySlug: String
 //	let categories: [Category]
@@ -28,7 +28,7 @@ struct Channel: Decodable, Equatable {
 	let merch: URL?
 	let merchCollection: String?
 	let shareUrl: URL
-	let engagement: ChannelEngagement?
+	let engagement: Engagement?
 //	let playlists: [Category]
 	let zypeid: String?
 }
@@ -36,15 +36,22 @@ extension Channel: Identifiable {
 	var id: String { slug }
 }
 
-struct ChannelAssets: Decodable, Equatable {
-	let avatar: [String: ChannelAvatar]
-	let banner: [String: ChannelAvatar]
-	let hero: [String: ChannelAvatar]?
-	let featured: [String: ChannelAvatar]
-}
-
-struct ChannelEngagement: Decodable, Equatable {
-	let following: Bool
+extension Channel {
+	struct Assets: Decodable, Equatable {
+		let avatar: [String: Avatar]
+		let banner: [String: Avatar]
+		let hero: [String: Avatar]?
+		let featured: [String: Avatar]
+	}
+	
+	struct Avatar: Decodable, Equatable {
+		let original: URL
+		let webp: URL
+	}
+	
+	struct Engagement: Decodable, Equatable {
+		let following: Bool
+	}
 }
 
 extension API {
