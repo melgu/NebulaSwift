@@ -21,7 +21,7 @@ struct Video: Decodable, Equatable {
 	let channelTitle: String
 	let categorySlugs: [String]
 	let assets: VideoAssets
-//	let attributes: [Attribute]
+	let attributes: [Attribute]
 	let shareUrl: URL
 //	let channel: NSNull
 	let engagement: VideoEngagement?
@@ -45,10 +45,11 @@ struct Thumbnail: Decodable, Equatable {
 	let original: URL
 }
 
-//enum Attribute: Decodable, Equatable {
-//	case freeSampleEligible
-//	case isNebulaPlus
-//}
+enum Attribute: String, Decodable, Equatable {
+	case freeSampleEligible = "free_sample_eligible"
+	case isNebulaPlus = "is_nebula_plus"
+	case isNebulaOriginal = "is_nebula_original"
+}
 
 struct VideoEngagement: Decodable, Equatable {
 	let contentSlug: String

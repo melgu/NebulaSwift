@@ -53,14 +53,7 @@ struct VideoPreviewView: View {
 				Color.black
 					.aspectRatio(16/9, contentMode: .fit)
 			}
-			.overlay(
-				Text((Date.now..<Date.now + Double(video.duration)).formatted(.timeDuration))
-					.font(.caption)
-					.padding(2)
-					.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
-					.padding(8)
-					.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-			)
+			.overlay(length)
 			.overlay(progressBar)
 			.cornerRadius(8)
 			
@@ -85,6 +78,21 @@ struct VideoPreviewView: View {
 		}
 		.lineLimit(2)
 		.background(Color.primary.colorInvert())
+	}
+	
+	var length: some View {
+		HStack(spacing: 2) {
+			if video.attributes.contains(.isNebulaPlus) {
+				Image(systemName: "plus")
+					.foregroundColor(.accentColor)
+			}
+			Text((Date.now..<Date.now + Double(video.duration)).formatted(.timeDuration))
+		}
+		.font(.caption)
+		.padding(2)
+		.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
+		.padding(8)
+		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
 	}
 	
 	@ViewBuilder
