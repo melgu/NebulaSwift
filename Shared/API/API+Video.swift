@@ -15,48 +15,45 @@ struct Video: Decodable, Equatable {
 	let description: String
 	let shortDescription: String
 	let duration: Int
-//	let publishedAt: Date
+	let publishedAt: Date
 	let channelSlug: String
 	let channelSlugs: [String]
 	let channelTitle: String
 	let categorySlugs: [String]
-	let assets: VideoAssets
+	let assets: Assets
 	let attributes: [Attribute]
 	let shareUrl: URL
 //	let channel: NSNull
-	let engagement: VideoEngagement?
+	let engagement: Engagement?
 	let zypeId: String
 }
 extension Video: Identifiable {
 	var id: String { slug + "\(engagement?.progress ?? 0)" }
 }
 
-struct VideoAssets: Decodable, Equatable {
-	let channelAvatar: [String: ChannelAvatar]
-	let thumbnail: [String: Thumbnail]
-}
+extension Video {
+	struct Assets: Decodable, Equatable {
+		let channelAvatar: [String: Channel.Avatar]
+		let thumbnail: [String: Thumbnail]
+	}
+	
+	struct Thumbnail: Decodable, Equatable {
+		let original: URL
+	}
+	
+	enum Attribute: String, Decodable, Equatable {
+		case freeSampleEligible = "free_sample_eligible"
+		case isNebulaPlus = "is_nebula_plus"
+		case isNebulaOriginal = "is_nebula_original"
+	}
 
-struct ChannelAvatar: Decodable, Equatable {
-	let original: URL
-	let webp: URL
-}
-
-struct Thumbnail: Decodable, Equatable {
-	let original: URL
-}
-
-enum Attribute: String, Decodable, Equatable {
-	case freeSampleEligible = "free_sample_eligible"
-	case isNebulaPlus = "is_nebula_plus"
-	case isNebulaOriginal = "is_nebula_original"
-}
-
-struct VideoEngagement: Decodable, Equatable {
-	let contentSlug: String
-	let updatedAt: Date
-	let progress: Int
-	let completed: Bool
-	let watchLater: Bool
+	struct Engagement: Decodable, Equatable {
+		let contentSlug: String
+		let updatedAt: Date
+		let progress: Int
+		let completed: Bool
+		let watchLater: Bool
+	}
 }
 
 struct Progress: Encodable {
@@ -84,7 +81,7 @@ extension API {
 	}
 	
 	@discardableResult
-	func sendProgress(for video: Video, seconds: Int) async throws -> VideoEngagement {
+	func sendProgress(for video: Video, seconds: Int) async throws -> Video.Engagement {
 		let url = URL(string: "https://content.watchnebula.com/engagement/video/progress/")!
 		let progress = Progress(contentSlug: video.slug, value: seconds)
 		return try await request(.post, url: url, body: progress, authorization: .bearer)
