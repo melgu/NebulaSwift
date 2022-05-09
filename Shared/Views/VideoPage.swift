@@ -18,45 +18,8 @@ struct VideoPage: View {
 	var body: some View {
 		ScrollView {
 			VStack(alignment: .leading) {
-				Color.black
-					.aspectRatio(16/9, contentMode: .fit)
-					.overlay(CustomVideoPlayer())
-					.task {
-						guard !didAppearOnce else { return }
-						didAppearOnce = true
-						print("Load Video Stream Info")
-						do {
-							try await player.replaceVideo(with: video)
-							player.play()
-						} catch {
-							print(error)
-						}
-					}
-				
-				#if os(macOS)
-				HStack {
-					Text(video.title)
-						.font(.title)
-					Spacer()
-					ShareButton(items: [video.shareUrl]) {
-						Label("Share", systemImage: "square.and.arrow.up")
-					}
-				}
-				#endif
-				Text(video.description)
-				if let categorySlugs = video.categorySlugs {
-					HStack {
-						ForEach(categorySlugs, id: \.self) { category in
-							Text(category)
-								.padding(8)
-								.background(
-									RoundedRectangle(cornerRadius: 4)
-										.foregroundColor(.blue)
-										.opacity(0.2)
-								)
-						}
-					}
-				}
+				videoPlayer
+				description
 			}
 			.padding()
 			.navigationTitle(video.title)
@@ -69,6 +32,54 @@ struct VideoPage: View {
 				}
 			}
 			#endif
+		}
+	}
+	
+	var videoPlayer: some View {
+		Color.black
+			.aspectRatio(16/9, contentMode: .fit)
+			.overlay(CustomVideoPlayer())
+			.task {
+				guard !didAppearOnce else { return }
+				didAppearOnce = true
+				print("Load Video Stream Info")
+				do {
+					try await player.replaceVideo(with: video)
+					player.play()
+				} catch {
+					print(error)
+				}
+			}
+	}
+	
+	var description: some View {
+		VStack(alignment: .leading) {
+			#if os(macOS)
+			HStack {
+				Text(video.title)
+					.font(.title)
+				Spacer()
+				ShareButton(items: [video.shareUrl]) {
+					Label("Share", systemImage: "square.and.arrow.up")
+				}
+			}
+			#endif
+			
+			Text(video.description)
+			
+			if let categorySlugs = video.categorySlugs {
+				HStack {
+					ForEach(categorySlugs, id: \.self) { category in
+						Text(category)
+							.padding(8)
+							.background(
+								RoundedRectangle(cornerRadius: 4)
+									.foregroundColor(.blue)
+									.opacity(0.2)
+							)
+					}
+				}
+			}
 		}
 	}
 }
