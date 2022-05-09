@@ -12,8 +12,6 @@ struct ChannelPreview: View {
 	
 	@EnvironmentObject private var api: API
 	
-	@Environment(\.refresh) private var refresh
-	
 	var body: some View {
 		NavigationLink {
 			ChannelPage(channel: channel)

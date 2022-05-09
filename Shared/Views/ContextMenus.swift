@@ -21,7 +21,6 @@ struct VideoContextMenu: ViewModifier {
 	@EnvironmentObject private var api: API
 	
 	@Environment(\.goToChannelEnabled) var goToChannelEnabled
-	@Environment(\.refresh) private var refresh
 	
 	@State private var channelInNavigation: Channel?
 	@State private var shareURL: [Any]?
