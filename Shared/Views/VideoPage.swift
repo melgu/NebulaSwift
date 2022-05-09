@@ -69,45 +69,12 @@ struct VideoPage: View {
 			
 			if let categorySlugs = video.categorySlugs {
 				HStack {
-					ForEach(categorySlugs, id: \.self) { category in
-						categoryPreview(for: category)
+					ForEach(categorySlugs, id: \.self) { slug in
+						CategoryPreview(slug: slug)
 					}
 				}
 			}
 		}
-	}
-	
-	func categoryPreview(for slug: String) -> some View {
-		AsyncNavigationLink { () -> Category in
-			let categories = try await api.allCategories(page: 1, pageSize: 100)
-			guard let category = categories.first(where: { $0.slug == slug }) else {
-				throw VideoPageError.categoryNotFound
-			}
-			return category
-		} destination: { category in
-			AutoVideoGrid { page in
-				try await api.allVideos(for: slug, page: page)
-			}
-			.onAppear { player.reset() }
-			.navigationTitle(category.title)
-		} label: { status in
-			ZStack {
-				Text(slug)
-					.padding(8)
-					.background(
-						RoundedRectangle(cornerRadius: 4)
-							.foregroundColor(.accentColor)
-							.opacity(0.2)
-					)
-				if case .loading = status {
-					ProgressView()
-				}
-			}
-		}
-	}
-	
-	private enum VideoPageError: Error {
-		case categoryNotFound
 	}
 }
 
