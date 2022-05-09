@@ -12,14 +12,13 @@ struct Browse: View {
 	@EnvironmentObject private var player: Player
 	
 	@State private var viewType: ContentType = .videos
+	@State private var categories: [Category] = []
 	
     var body: some View {
 		Group {
 			switch viewType {
 			case .videos:
-				AutoVideoGrid(fetch: { page in
-					try await api.allVideos(page: page)
-				})
+				videoGrid
 			case .channels:
 				AutoChannelGrid(fetch: { page in
 					try await api.allChannels(page: page)
@@ -39,10 +38,31 @@ struct Browse: View {
 				}
 			}
 		}
-		.onAppear {
+		.task {
 			player.reset()
+			do {
+				categories = try await api.allCategories(page: 1, pageSize: 100)
+			} catch {
+				print(error)
+			}
 		}
     }
+	
+	var videoGrid: some View {
+		VStack {
+			ScrollView(.horizontal) {
+				HStack {
+					ForEach(categories) { category in
+						CategoryPreview(category: category)
+					}
+				}
+				.padding()
+			}
+			AutoVideoGrid(fetch: { page in
+				try await api.allVideos(page: page)
+			})
+		}
+	}
 }
 
 struct Browse_Previews: PreviewProvider {
