@@ -63,9 +63,35 @@ struct Progress: Encodable {
 
 // MARK: - Stream
 
+struct VideoStream: Decodable {
+	let manifest: URL
+	let download: URL
+	let iframe: URL
+//	let bif: Bif
+	let subtitles: [Subtitle]
+}
+
+//struct Bif: Decodable {
+//	let hd: URL
+//	let sd: URL
+//	let fhd: URL
+//}
+
+struct Subtitle: Decodable {
+	let languageCode: String
+	let url: URL
+	let language: String
+}
+
 extension API {
 	func allVideos(page: Int, pageSize: Int = 24) async throws -> [Video] {
 		let url = URL(string: "https://content.watchnebula.com/video/?page=\(page)&page_size=\(pageSize)")!
+		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
+		return response.results
+	}
+	
+	func allVideos(for category: String, page: Int, pageSize: Int = 24) async throws -> [Video] {
+		let url = URL(string: "https://content.watchnebula.com/video/?category=\(category)&page=\(page)&page_size=\(pageSize)")!
 		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}
@@ -86,25 +112,4 @@ extension API {
 		let progress = Progress(contentSlug: video.slug, value: seconds)
 		return try await request(.post, url: url, body: progress, authorization: .bearer)
 	}
-}
-
-
-struct VideoStream: Decodable {
-	let manifest: URL
-	let download: URL
-	let iframe: URL
-//	let bif: Bif
-	let subtitles: [Subtitle]
-}
-
-//struct Bif: Decodable {
-//	let hd: URL
-//	let sd: URL
-//	let fhd: URL
-//}
-
-struct Subtitle: Decodable {
-	let languageCode: String
-	let url: URL
-	let language: String
 }
