@@ -41,21 +41,6 @@ public struct ScrollView<Content: View>: View {
 		}
 	}
 }
-
-//extension ScrollView {
-//	public func refreshable(action: @MainActor @escaping @Sendable () async -> Void) -> some View {
-//		RefreshableScrollView(
-//			action: action,
-//			progress: { state in
-//				switch state {
-//				case .loading, .primed: ProgressView()
-//				case .waiting: EmptyView()
-//				}
-//			},
-//			content: { content }
-//		)
-//	}
-//}
 #endif
 
 struct RefreshableScrollView_Previews: PreviewProvider {
