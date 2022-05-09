@@ -52,7 +52,7 @@ struct RefreshableScrollView_Previews: PreviewProvider {
 			do {
 				try await Task.sleep(nanoseconds: 2_000_000_000)
 			} catch {
-				
+				print(error)
 			}
 		}
     }
