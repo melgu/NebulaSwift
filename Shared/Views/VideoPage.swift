@@ -73,7 +73,7 @@ struct VideoPage: View {
 	}
 }
 
-struct VideoView_Previews: PreviewProvider {
+struct VideoPage_Previews: PreviewProvider {
     static var previews: some View {
         Text("No preview")
     }
