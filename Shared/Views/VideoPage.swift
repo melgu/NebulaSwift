@@ -70,7 +70,7 @@ struct VideoPage: View {
 			if let categorySlugs = video.categorySlugs {
 				HStack {
 					ForEach(categorySlugs, id: \.self) { slug in
-						CategoryPreview(slug: slug)
+						CategoryPreview(slug: slug, target: .videos)
 					}
 				}
 			}

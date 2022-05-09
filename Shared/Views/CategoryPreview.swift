@@ -10,18 +10,21 @@ import SwiftUI
 struct CategoryPreview: View {
 	let slug: String
 	let category: Category?
+	let target: ContentType
 	
 	@EnvironmentObject private var api: API
 	@EnvironmentObject private var player: Player
 	
-	init(slug: String) {
+	init(slug: String, target: ContentType) {
 		self.slug = slug
 		self.category = nil
+		self.target = target
 	}
 	
-	init(category: Category) {
+	init(category: Category, target: ContentType) {
 		self.slug = category.slug
 		self.category = category
+		self.target = target
 	}
 	
 	var body: some View {
@@ -52,8 +55,17 @@ struct CategoryPreview: View {
 	}
 	
 	func destination(category: Category) -> some View {
-		AutoVideoGrid { page in
-			try await api.allVideos(for: slug, page: page)
+		Group {
+			switch target {
+			case .videos:
+				AutoVideoGrid { page in
+					try await api.allVideos(for: slug, page: page)
+				}
+			case .channels:
+				AutoChannelGrid { page in
+					try await api.allChannels(for: slug, page: page)
+				}
+			}
 		}
 		.onAppear { player.reset() }
 		.navigationTitle(category.title)
@@ -78,8 +90,11 @@ struct CategoryPreview_Previews: PreviewProvider {
 	private static let api = API()
 	
     static var previews: some View {
-		CategoryPreview(slug: "animation")
-			.environmentObject(api)
-			.environmentObject(Player(api: api))
+		Group {
+			CategoryPreview(slug: "animation", target: .videos)
+			CategoryPreview(slug: "animation", target: .channels)
+		}
+		.environmentObject(api)
+		.environmentObject(Player(api: api))
     }
 }
