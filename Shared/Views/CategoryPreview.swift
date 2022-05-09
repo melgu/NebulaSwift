@@ -30,7 +30,7 @@ struct CategoryPreview: View {
 	var body: some View {
 		if let category = category {
 			NavigationLink {
-				destination(category: category)
+				CategoryPage(category: category, initialViewType: target)
 			} label: {
 				label
 			}
@@ -42,7 +42,7 @@ struct CategoryPreview: View {
 				}
 				return category
 			} destination: { category in
-				destination(category: category)
+				CategoryPage(category: category, initialViewType: target)
 			} label: { status in
 				ZStack {
 					label
@@ -52,23 +52,6 @@ struct CategoryPreview: View {
 				}
 			}
 		}
-	}
-	
-	func destination(category: Category) -> some View {
-		Group {
-			switch target {
-			case .videos:
-				AutoVideoGrid { page in
-					try await api.allVideos(for: slug, page: page)
-				}
-			case .channels:
-				AutoChannelGrid { page in
-					try await api.allChannels(for: slug, page: page)
-				}
-			}
-		}
-		.onAppear { player.reset() }
-		.navigationTitle(category.title)
 	}
 	
 	var label: some View {
