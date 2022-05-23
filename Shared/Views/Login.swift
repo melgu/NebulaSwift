@@ -27,18 +27,14 @@ struct Login: View {
 			SecureField("password", text: $password)
 			Text(wrongCredentials ? "Wrong credentials" : " ")
 				.foregroundColor(.red)
-			Button {
+			AsyncButton("Login") {
 				wrongCredentials = false
-				Task {
-					do {
-						try await api.login(email: email, password: password)
-					} catch {
-						print(error)
-						wrongCredentials = true
-					}
+				do {
+					try await api.login(email: email, password: password)
+				} catch {
+					print(error)
+					wrongCredentials = true
 				}
-			} label: {
-				Text("Login")
 			}
 		}
 		.padding()
