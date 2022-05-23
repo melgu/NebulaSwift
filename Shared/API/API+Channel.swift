@@ -30,7 +30,6 @@ struct Channel: Decodable, Equatable {
 	let shareUrl: URL
 	let engagement: Engagement?
 //	let playlists: [Category]
-	let zypeid: String?
 }
 extension Channel: Identifiable {
 	var id: String { slug }

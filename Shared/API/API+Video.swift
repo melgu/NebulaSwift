@@ -25,7 +25,6 @@ struct Video: Decodable, Equatable {
 	let shareUrl: URL
 //	let channel: NSNull
 	let engagement: Engagement?
-	let zypeId: String
 }
 extension Video: Identifiable {
 	var id: String { slug + "\(engagement?.progress ?? 0)" }
