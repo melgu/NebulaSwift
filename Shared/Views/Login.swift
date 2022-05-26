@@ -19,9 +19,8 @@ struct Login: View {
 			Text("Login")
 				.font(.title)
 			TextField("email", text: $email)
-				#if os(iOS)
-				// .textContentType works on macOS, but creates a weird box when typing. TODO: Beta bug?
 				.textContentType(.username)
+				#if os(iOS)
 				.keyboardType(.emailAddress)
 				#endif
 			SecureField("password", text: $password)
