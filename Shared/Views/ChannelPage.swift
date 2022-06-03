@@ -19,7 +19,7 @@ struct ChannelPage: View {
 	
 	init(channel: Channel) {
 		self.channel = channel
-		self.following = channel.engagement?.following
+		self._following = State(initialValue: channel.engagement?.following)
 	}
 	
 	var body: some View {
