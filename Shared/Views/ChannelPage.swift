@@ -17,6 +17,11 @@ struct ChannelPage: View {
 	
 	@State private var following: Bool?
 	
+	init(channel: Channel) {
+		self.channel = channel
+		self.following = channel.engagement?.following
+	}
+	
 	var body: some View {
 		AutoVideoGrid(fetch: { page in
 			try await api.videos(for: channel, page: page)
@@ -57,12 +62,7 @@ struct ChannelPage: View {
 			}
 		}
 		#endif
-		.onAppear {
-			player.reset()
-			if let engagement = channel.engagement {
-				following = engagement.following
-			}
-		}
+		.onAppear { player.reset() }
 	}
 }
 

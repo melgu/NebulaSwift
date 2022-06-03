@@ -13,9 +13,7 @@ struct Featured: View {
 	
     var body: some View {
 		Text("Featured")
-			.onAppear {
-				player.reset()
-			}
+			.onAppear { player.reset() }
     }
 }
 

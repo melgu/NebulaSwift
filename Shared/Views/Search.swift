@@ -56,9 +56,7 @@ struct Search: View {
 			.padding()
 		}
 		.navigationTitle("Search")
-		.onAppear {
-			player.reset()
-		}
+		.onAppear { player.reset() }
     }
 }
 
