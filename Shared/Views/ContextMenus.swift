@@ -22,6 +22,8 @@ struct VideoContextMenu: ViewModifier {
 	
 	@Environment(\.goToChannelEnabled) var goToChannelEnabled
 	
+	@Environment(\.refresh) private var refresh
+	
 	@State private var channelInNavigation: Channel?
 	@State private var shareURL: [Any]?
 	
@@ -34,11 +36,35 @@ struct VideoContextMenu: ViewModifier {
 					}
 					Divider()
 				}
-				Button("Watch later") {
-					print("Watch later")
+				if let engagement = video.engagement {
+					if engagement.watchLater {
+						AsyncButton {
+							do {
+								try await api.removeVideoFromWatchLater(video)
+								await refresh?()
+							} catch {
+								print(error)
+							}
+						} label: {
+							Label("Remove from Watch Later", systemImage: "bookmark.slash")
+						}
+					} else {
+						AsyncButton {
+							do {
+								try await api.addVideoToWatchLater(video)
+								await refresh?()
+							} catch {
+								print(error)
+							}
+						} label: {
+							Label("Add to Watch Later", systemImage: "bookmark")
+						}
+					}
 				}
-				Button("Download") {
+				Button {
 					print("Download")
+				} label: {
+					Label("Download", systemImage: "arrow.down")
 				}
 				Divider()
 				Button {
