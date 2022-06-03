@@ -29,7 +29,7 @@ struct CategoryPage: View {
 				}
 			case .channels:
 				AutoChannelGrid { page in
-					try await api.channels(for: category.slug, page: page)
+					try await api.channels(for: category, page: page)
 				}
 			}
 		}
