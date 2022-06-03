@@ -40,4 +40,10 @@ extension API {
 		let response: ListContainer<Category> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}
+	
+	func allVideos(for category: String, page: Int, pageSize: Int = 24) async throws -> [Video] {
+		let url = URL(string: "https://content.watchnebula.com/video/?category=\(category)&page=\(page)&page_size=\(pageSize)")!
+		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
+		return response.results
+	}
 }
