@@ -33,7 +33,6 @@ struct CategoryPage: View {
 				}
 			}
 		}
-		.onAppear { player.reset() }
 		.navigationTitle(category.title)
 		.toolbar {
 			switch viewType {
@@ -47,6 +46,7 @@ struct CategoryPage: View {
 				}
 			}
 		}
+		.onAppear { player.reset() }
     }
 }
 

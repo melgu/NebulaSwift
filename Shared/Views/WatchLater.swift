@@ -16,9 +16,7 @@ struct WatchLater: View {
 			try await api.watchLaterVideos(page: page)
 		})
 		.navigationTitle("Watch Later")
-		.onAppear {
-			player.reset()
-		}
+		.onAppear { player.reset() }
 	}
 }
 

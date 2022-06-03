@@ -13,9 +13,7 @@ struct Downloads: View {
 	
     var body: some View {
 		Text("Downloads")
-			.onAppear {
-				player.reset()
-			}
+			.onAppear { player.reset() }
     }
 }
 
