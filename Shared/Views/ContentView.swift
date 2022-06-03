@@ -49,6 +49,11 @@ struct ContentView: View {
 						Label("Browse", systemImage: "list.dash")
 					}
 					NavigationLink {
+						WatchLater()
+					} label: {
+						Label("Watch Later", systemImage: "bookmark")
+					}
+					NavigationLink {
 						Downloads()
 					} label: {
 						Label("Downloads", systemImage: "arrow.down.circle")

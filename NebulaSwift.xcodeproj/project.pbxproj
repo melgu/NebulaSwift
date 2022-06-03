@@ -13,6 +13,10 @@
 		B0045977271FB9D9002C7974 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0045975271FB9D9002C7974 /* Network.swift */; };
 		B041001F2817071700845750 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B041001E2817071700845750 /* Navigation.swift */; };
 		B04100202817071700845750 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B041001E2817071700845750 /* Navigation.swift */; };
+		B04C8690284A9D9000EA2D59 /* API+Playlists.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04C868F284A9D9000EA2D59 /* API+Playlists.swift */; };
+		B04C8691284A9D9000EA2D59 /* API+Playlists.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04C868F284A9D9000EA2D59 /* API+Playlists.swift */; };
+		B04C8693284A9FFD00EA2D59 /* WatchLater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04C8692284A9FFD00EA2D59 /* WatchLater.swift */; };
+		B04C8694284A9FFD00EA2D59 /* WatchLater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04C8692284A9FFD00EA2D59 /* WatchLater.swift */; };
 		B04EFE0C27EF276600B901F9 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04EFE0B27EF276600B901F9 /* ShareSheet.swift */; };
 		B04EFE0D27EF276600B901F9 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04EFE0B27EF276600B901F9 /* ShareSheet.swift */; };
 		B0508A2A26856E1D006FED7E /* MyShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A2926856E1D006FED7E /* MyShows.swift */; };
@@ -98,6 +102,8 @@
 		B0045972271FAD5D002C7974 /* API+Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Authorization.swift"; sourceTree = "<group>"; };
 		B0045975271FB9D9002C7974 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		B041001E2817071700845750 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
+		B04C868F284A9D9000EA2D59 /* API+Playlists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Playlists.swift"; sourceTree = "<group>"; };
+		B04C8692284A9FFD00EA2D59 /* WatchLater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLater.swift; sourceTree = "<group>"; };
 		B04EFE0B27EF276600B901F9 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
 		B0508A2926856E1D006FED7E /* MyShows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyShows.swift; sourceTree = "<group>"; };
 		B0508A2D26856FC9006FED7E /* Browse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browse.swift; sourceTree = "<group>"; };
@@ -202,6 +208,7 @@
 				B056F7D727454A71009B92BC /* API+Video.swift */,
 				B0AA74AC2829B203001B778B /* API+Categories.swift */,
 				B0560B1927FCDA260048BE43 /* API+Channel.swift */,
+				B04C868F284A9D9000EA2D59 /* API+Playlists.swift */,
 				B0E5BA3427FF6C85001D8403 /* API+Search.swift */,
 				B0E5BA3727FF6CEB001D8403 /* ListContainer.swift */,
 				B079EF44268560D6009EFBAA /* Storage.swift */,
@@ -219,6 +226,7 @@
 				B079EF4B268562B8009EFBAA /* Featured.swift */,
 				B0508A2926856E1D006FED7E /* MyShows.swift */,
 				B0508A2D26856FC9006FED7E /* Browse.swift */,
+				B04C8692284A9FFD00EA2D59 /* WatchLater.swift */,
 				B0508A3026856FDA006FED7E /* Downloads.swift */,
 				B0508A3326856FEB006FED7E /* Search.swift */,
 				B0DF9FAC268A343700EF9392 /* Login.swift */,
@@ -378,10 +386,12 @@
 				B079EF4826856116009EFBAA /* Defaults.swift in Sources */,
 				B079EF2F26853A57009EFBAA /* NebulaSwiftApp.swift in Sources */,
 				B04EFE0C27EF276600B901F9 /* ShareSheet.swift in Sources */,
+				B04C8693284A9FFD00EA2D59 /* WatchLater.swift in Sources */,
 				B0FA4424281C5801002554A7 /* ContentType.swift in Sources */,
 				B041001F2817071700845750 /* Navigation.swift in Sources */,
 				B056F7D827454A71009B92BC /* API+Video.swift in Sources */,
 				B0E5BA3227FF6869001D8403 /* ChannelPage.swift in Sources */,
+				B04C8690284A9D9000EA2D59 /* API+Playlists.swift in Sources */,
 				B0B7EED72800B086007D3682 /* ChannelGrid.swift in Sources */,
 				B0511C6727FB65AF006B077C /* Settings.swift in Sources */,
 				B0E5BA2927FF62D3001D8403 /* VideoPage.swift in Sources */,
@@ -426,10 +436,12 @@
 				B079EF4926856116009EFBAA /* Defaults.swift in Sources */,
 				B079EF3026853A57009EFBAA /* NebulaSwiftApp.swift in Sources */,
 				B04EFE0D27EF276600B901F9 /* ShareSheet.swift in Sources */,
+				B04C8694284A9FFD00EA2D59 /* WatchLater.swift in Sources */,
 				B0FA4425281C5801002554A7 /* ContentType.swift in Sources */,
 				B04100202817071700845750 /* Navigation.swift in Sources */,
 				B056F7D927454A71009B92BC /* API+Video.swift in Sources */,
 				B0E5BA3327FF6869001D8403 /* ChannelPage.swift in Sources */,
+				B04C8691284A9D9000EA2D59 /* API+Playlists.swift in Sources */,
 				B0B7EED82800B086007D3682 /* ChannelGrid.swift in Sources */,
 				B0511C6827FB65AF006B077C /* Settings.swift in Sources */,
 				B0E5BA2A27FF62D3001D8403 /* VideoPage.swift in Sources */,
