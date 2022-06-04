@@ -12,6 +12,8 @@ struct AsyncNavigationLink<Item, Destination: View, Label: View>: View {
 	let destination: (Item) -> Destination
 	let label: (Status<Item>) -> Label
 	
+	@Environment(\.errorHandler) private var errorHandler
+	
 	@State private var state: Status<Item> = .idle
 	
 	init(
@@ -31,8 +33,8 @@ struct AsyncNavigationLink<Item, Destination: View, Label: View>: View {
 				let item = try await fetch()
 				state = .success(item)
 			} catch {
-				print(error)
 				state = .failure(error)
+				errorHandler(error)
 			}
 		} label: {
 			label(state)
