@@ -78,23 +78,20 @@ struct ContentView: View {
 				}
 			}
 			.refreshable {
-				await refreshMyShows()
+				try await refreshMyShows()
 			}
 			.listStyle(.sidebar)
 			.navigationTitle("Nebula")
 			.task {
-				await refreshMyShows()
+				try await refreshMyShows()
 			}
+			.alertErrorHandling()
 			.settingsSheet()
 		}
 	}
 	
-	func refreshMyShows() async {
-		do {
-			myShows = try await api.libraryChannels(page: 1, pageSize: 200)
-		} catch {
-			print(error)
-		}
+	func refreshMyShows() async throws {
+		myShows = try await api.libraryChannels(page: 1, pageSize: 200)
 	}
 	
 	func label(for channel: Channel) -> some View {

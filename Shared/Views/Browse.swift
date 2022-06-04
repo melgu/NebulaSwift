@@ -50,11 +50,7 @@ struct Browse: View {
 		}
 		.task {
 			player.reset()
-			do {
-				categories = try await api.allCategories(page: 1, pageSize: 100)
-			} catch {
-				print(error)
-			}
+			categories = try await api.allCategories(page: 1, pageSize: 100)
 		}
     }
 }

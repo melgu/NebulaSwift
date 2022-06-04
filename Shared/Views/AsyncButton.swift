@@ -12,6 +12,8 @@ struct AsyncButton<Label: View>: View {
 	private let action: Action
 	private let label: () -> Label
 	
+	@Environment(\.errorHandler) private var errorHandler
+	
 	@State private var isRunning = false
 	
 	init(action: @escaping Action, @ViewBuilder label: @escaping () -> Label) {
@@ -23,9 +25,14 @@ struct AsyncButton<Label: View>: View {
 	var body: some View {
 		Button(role: role) {
 			Task {
-				isRunning = true
-				await action()
-				isRunning = false
+				do {
+					isRunning = true
+					try await action()
+					isRunning = false
+				} catch {
+					isRunning = false
+					errorHandler(error)
+				}
 			}
 		} label: {
 			label()
@@ -33,7 +40,7 @@ struct AsyncButton<Label: View>: View {
 		.disabled(isRunning)
 	}
 	
-	typealias Action = @MainActor  @Sendable () async -> Void
+	typealias Action = @MainActor @Sendable () async throws -> Void
 }
 
 extension AsyncButton where Label == Text {
