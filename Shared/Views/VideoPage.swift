@@ -65,7 +65,11 @@ struct VideoPage: View {
 			}
 			#endif
 			
-			Text(video.description)
+			if let attributedDescription = attributedDescription {
+				Text(attributedDescription)
+			} else {
+				Text(video.description)
+			}
 			
 			if let categorySlugs = video.categorySlugs {
 				HStack {
@@ -75,6 +79,18 @@ struct VideoPage: View {
 				}
 			}
 		}
+	}
+	
+	var attributedDescription: AttributedString? {
+		try? AttributedString(
+			markdown: video.description,
+			options: .init(
+				allowsExtendedAttributes: false,
+				interpretedSyntax: .inlineOnlyPreservingWhitespace,
+				failurePolicy: .throwError,
+				languageCode: nil
+			)
+		)
 	}
 }
 
