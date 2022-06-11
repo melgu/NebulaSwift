@@ -35,7 +35,9 @@ fileprivate struct AlertErrorHandlerModifier: ViewModifier {
 				error = $0
 				isPresented = true
 			}
-			.alert("Error", isPresented: $isPresented, presenting: error) { error in
+			.alert("Error", isPresented: $isPresented, presenting: error) { _ in
+				Button("OK") {}
+			} message: { error in
 				Text(error.localizedDescription)
 			}
 	}
@@ -127,13 +129,29 @@ extension View {
 
 struct ErrorHandling_Previews: PreviewProvider {
     static var previews: some View {
-		AsyncButton("Throw Error") {
-			throw DemoError.unknown
+		VStack {
+			AsyncButton("Throw first Error") {
+				throw DemoError.unknown
+			}
+			AsyncButton("Throw second error") {
+				throw DemoError.known(number: 1)
+			}
 		}
+		.buttonStyle(.bordered)
 		.alertErrorHandling()
     }
 	
-	private enum DemoError: Error {
+	private enum DemoError: Error, LocalizedError {
 		case unknown
+		case known(number: Int)
+		
+		var errorDescription: String? {
+			switch self {
+			case .unknown:
+				return "Description: unknown"
+			case .known(number: let number):
+				return "Description: known \(number)"
+			}
+		}
 	}
 }
