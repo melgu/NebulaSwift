@@ -12,7 +12,6 @@ struct Login: View {
 	
 	@State private var email = ""
 	@State private var password = ""
-	@State private var wrongCredentials = false
 	
     var body: some View {
 		VStack {
@@ -24,16 +23,9 @@ struct Login: View {
 				.keyboardType(.emailAddress)
 				#endif
 			SecureField("password", text: $password)
-			Text(wrongCredentials ? "Wrong credentials" : " ")
 				.foregroundColor(.red)
 			AsyncButton("Login") {
-				wrongCredentials = false
-				do {
-					try await api.login(email: email, password: password)
-				} catch {
-					print(error)
-					wrongCredentials = true
-				}
+				try await api.login(email: email, password: password)
 			}
 		}
         .textFieldStyle(.roundedBorder)
