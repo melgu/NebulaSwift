@@ -23,7 +23,6 @@ struct Login: View {
 				.keyboardType(.emailAddress)
 				#endif
 			SecureField("password", text: $password)
-				.foregroundColor(.red)
 			AsyncButton("Login") {
 				try await api.login(email: email, password: password)
 			}
