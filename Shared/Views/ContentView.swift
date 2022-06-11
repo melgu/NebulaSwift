@@ -18,15 +18,22 @@ struct ContentView: View {
 	@State private var myShows: [Channel]?
 	
 	var body: some View {
-		#if os(iOS)
-		if horizontalSizeClass == .compact {
-			tabView
-		} else {
-			list
+		Group {
+			if api.isLoggedIn {
+				#if os(iOS)
+				if horizontalSizeClass == .compact {
+					tabView
+				} else {
+					list
+				}
+				#else
+				list
+				#endif
+			} else {
+				Login()
+			}
 		}
-		#else
-		list
-		#endif
+		.alertErrorHandling()
 	}
 	
 	var list: some View {
@@ -85,7 +92,6 @@ struct ContentView: View {
 			.task {
 				try await refreshMyShows()
 			}
-			.alertErrorHandling()
 			.settingsSheet()
 		}
 	}
