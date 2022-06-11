@@ -7,12 +7,25 @@
 
 import Foundation
 
-enum APIError: Error {
+enum APIError: LocalizedError {
 	case invalidServerResponse(errorCode: Int)
 	case networkIssues
 	case missingToken
 	case missingBearer
 	case missingZypeAccessToken
+}
+
+extension APIError {
+	var errorDescription: String? {
+		switch self {
+		case .invalidServerResponse(let errorCode):
+			return "Invalid server response. Error code \(errorCode)"
+		case .networkIssues:
+			return "Network issues"
+		case .missingToken, .missingBearer, .missingZypeAccessToken:
+			return "Missing authorization"
+		}
+	}
 }
 
 extension API {
