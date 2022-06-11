@@ -15,6 +15,7 @@ struct CustomVideoPlayer: UIViewControllerRepresentable {
 	func makeUIViewController(context: Context) -> AVPlayerViewController {
 		let playerViewController = AVPlayerViewController()
 		playerViewController.player = player.player
+		playerViewController.canStartPictureInPictureAutomaticallyFromInline = true
 		return playerViewController
 	}
 	
