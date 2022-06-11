@@ -20,15 +20,10 @@ struct NebulaSwiftApp: App {
 	}
 	
     var body: some Scene {
-        WindowGroup {
-			if api.isLoggedIn {
-				ContentView()
-					.environmentObject(api)
-					.environmentObject(player)
-			} else {
-				Login()
-					.environmentObject(api)
-			}
+		WindowGroup {
+			ContentView()
+				.environmentObject(api)
+				.environmentObject(player)
         }
 		.commands {
 			CommandMenu("Account") {
