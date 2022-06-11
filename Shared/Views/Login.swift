@@ -36,6 +36,7 @@ struct Login: View {
 				}
 			}
 		}
+        .textFieldStyle(.roundedBorder)
 		.padding()
 		.frame(width: 300)
     }
