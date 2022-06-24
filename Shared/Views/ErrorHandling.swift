@@ -31,8 +31,9 @@ fileprivate struct AlertErrorHandlerModifier: ViewModifier {
 	
 	func body(content: Content) -> some View {
 		content
-			.environment(\.errorHandler) {
-				error = $0
+			.environment(\.errorHandler) { error in
+				if let error = error as? URLError, error.code == .cancelled { return }
+				self.error = error
 				isPresented = true
 			}
 			.alert("Error", isPresented: $isPresented, presenting: error) { _ in
