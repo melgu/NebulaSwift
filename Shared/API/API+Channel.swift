@@ -34,6 +34,12 @@ struct Channel: Decodable, Equatable {
 extension Channel: Identifiable {
 	var id: String { slug }
 }
+extension Channel: Hashable {
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(slug)
+		hasher.combine(engagement)
+	}
+}
 
 extension Channel {
 	struct Assets: Decodable, Equatable {
@@ -48,8 +54,12 @@ extension Channel {
 		let webp: URL
 	}
 	
-	struct Engagement: Decodable, Equatable {
+	struct Engagement: Decodable, Equatable, Hashable {
 		let following: Bool
+		
+		func hash(into hasher: inout Hasher) {
+			hasher.combine(following)
+		}
 	}
 }
 
