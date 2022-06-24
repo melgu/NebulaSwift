@@ -55,9 +55,16 @@ struct AutoVideoGrid: View {
 			}
 			.padding()
 		}
-		.refreshable {
-			print("Refresh Videos")
-			await refreshVideos(animated: true)
+		.toolbar {
+			ToolbarItem(placement: .navigationBarTrailing) {
+				AsyncButton {
+					print("Refresh Videos")
+					await refreshVideos(animated: true)
+				} label: {
+					Image(systemName: "arrow.clockwise")
+				}
+
+			}
 		}
 		.task {
 			print("Load Videos")
