@@ -7,37 +7,19 @@
 
 import SwiftUI
 
-extension View {
-	func navigation<Item, Destination: View>(item: Binding<Item?>, destination: @escaping (Item) -> Destination) -> some View {
-		modifier(NavigationModifier(item: item, destination: destination))
-	}
+// MARK: Environment
+
+private struct OpenItemKey: EnvironmentKey {
+	static let defaultValue: (any Hashable) -> Void = { print($0) }
 }
 
-fileprivate struct NavigationModifier<Item, Destination: View>: ViewModifier {
-	@Binding var item: Item?
-	var destination: (Item) -> Destination
-	
-	var isActive: Binding<Bool> {
-		Binding {
-			item != nil
-		} set: { newValue in
-			if !newValue {
-				item = nil
-			}
-		}
-	}
-	
-	func body(content: Content) -> some View {
-		content
-			.background(
-				NavigationLink(isActive: isActive) {
-					if let item = item {
-						destination(item)
-					}
-				} label: {
-					EmptyView()
-				}
-			)
+extension EnvironmentValues {
+	/// Set a handler for errors.
+	///
+	/// The default error handler prints errors that occur.
+	var openItem: (any Hashable) -> Void {
+		get { self[OpenItemKey.self] }
+		set { self[OpenItemKey.self] = newValue }
 	}
 }
 

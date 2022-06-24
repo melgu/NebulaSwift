@@ -17,9 +17,14 @@ struct Category: Decodable {
 	let assets: Assets
 }
 extension Category: Identifiable {}
+extension Category: Hashable {
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(slug)
+	}
+}
 
 extension Category {
-	struct Assets: Decodable {
+	struct Assets: Equatable, Decodable {
 		let avatar: String
 		let avatarBigDark: String
 		let avatarBigLight: String
