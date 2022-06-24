@@ -63,7 +63,7 @@ struct AutoChannelGrid: View {
 				} label: {
 					Image(systemName: "arrow.clockwise")
 				}
-
+				.asyncButtonStyle(.progress)
 			}
 		}
 		.task {
