@@ -56,20 +56,30 @@ struct AutoChannelGrid: View {
 			.padding()
 		}
 		.toolbar {
+			#if canImport(UIKit)
 			ToolbarItem(placement: .navigationBarTrailing) {
-				AsyncButton {
-					print("Refresh Channels")
-					await refreshChannels(animated: true)
-				} label: {
-					Image(systemName: "arrow.clockwise")
-				}
-				.asyncButtonStyle(.progress)
+				refreshButton
 			}
+			#else
+			ToolbarItem(placement: .navigation) {
+				refreshButton
+			}
+			#endif
 		}
 		.task {
 			print("Load Channels")
 			await refreshChannels()
 		}
+	}
+	
+	private var refreshButton: some View {
+		AsyncButton {
+			print("Refresh Channels")
+			await refreshChannels(animated: true)
+		} label: {
+			Image(systemName: "arrow.clockwise")
+		}
+		.asyncButtonStyle(.progress)
 	}
 	
 	private func refreshChannels(animated: Bool = false) async {
