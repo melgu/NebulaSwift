@@ -55,7 +55,7 @@ struct CategoryPreview: View {
 		}
 	}
 	
-	var label: some View {
+	private var label: some View {
 		Text(category?.title ?? slug)
 			.padding(8)
 			.background(

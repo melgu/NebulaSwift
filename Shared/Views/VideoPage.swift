@@ -33,7 +33,7 @@ struct VideoPage: View {
 		}
 	}
 	
-	var videoPlayer: some View {
+	private var videoPlayer: some View {
 		Color.black
 			.aspectRatio(16/9, contentMode: .fit)
 			.overlay(CustomVideoPlayer())
@@ -48,7 +48,7 @@ struct VideoPage: View {
 			}
 	}
 	
-	var description: some View {
+	private var description: some View {
 		VStack(alignment: .leading) {
 			#if os(macOS)
 			HStack {
@@ -77,7 +77,7 @@ struct VideoPage: View {
 		}
 	}
 	
-	var attributedDescription: AttributedString? {
+	private var attributedDescription: AttributedString? {
 		try? AttributedString(
 			markdown: video.description,
 			options: .init(

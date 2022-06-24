@@ -80,7 +80,7 @@ struct VideoPreviewView: View {
 		.background(Color.primary.colorInvert())
 	}
 	
-	var length: some View {
+	private var length: some View {
 		HStack(spacing: 2) {
 			if video.attributes.contains(.isNebulaPlus) {
 				Image(systemName: "plus")
@@ -96,7 +96,7 @@ struct VideoPreviewView: View {
 	}
 	
 	@ViewBuilder
-	var progressBar: some View {
+	private var progressBar: some View {
 		if let progress = video.engagement?.progress, progress != 0 {
 			ProgressView(value: Double(progress) / Double(video.duration))
 				.frame(maxHeight: .infinity, alignment: .bottom)

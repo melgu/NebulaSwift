@@ -11,7 +11,7 @@ struct SettingsView: View {
 	@EnvironmentObject private var api: API
 	@EnvironmentObject private var player: Player
 	
-	@Environment(\.dismiss) var dismiss
+	@Environment(\.dismiss) private var dismiss
 	
 	var body: some View {
 		#if os(iOS)
@@ -33,7 +33,7 @@ struct SettingsView: View {
 		#endif
 	}
 	
-	var content: some View {
+	private var content: some View {
 		List {
 			Section("User") {
 				Button {
@@ -91,7 +91,7 @@ extension View {
 	}
 }
 
-struct SettingsSheet: ViewModifier {
+fileprivate struct SettingsSheet: ViewModifier {
 	@State private var showSettings = false
 	
 	func body(content: Content) -> some View {
