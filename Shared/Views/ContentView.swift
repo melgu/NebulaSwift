@@ -25,28 +25,16 @@ struct ContentView: View {
 	var body: some View {
 		Group {
 			if api.isLoggedIn {
-				#if os(iOS)
-				if horizontalSizeClass == .compact {
-					tabView
-				} else {
-					list
+				NavigationSplitView {
+					sidebar
+				} detail: {
+					detail
 				}
-				#else
-				list
-				#endif
 			} else {
 				Login()
 			}
 		}
 		.alertErrorHandling()
-	}
-	
-	private var list: some View {
-		NavigationSplitView {
-			sidebar
-		} detail: {
-			detail
-		}
 	}
 	
 	private var sidebar: some View {
@@ -134,35 +122,6 @@ struct ContentView: View {
 			
 			Text(channel.title)
 				.lineLimit(1)
-		}
-	}
-	
-	private var tabView: some View {
-		TabView {
-			NavigationStack {
-				Featured()
-			}
-			.tabItem { Label("Featured", systemImage: "star.circle") }
-			
-			NavigationStack {
-				MyShows()
-			}
-			.tabItem { Label("My Shows", systemImage: "suit.heart") }
-			
-			NavigationStack {
-				Browse()
-			}
-			.tabItem { Label("Browse", systemImage: "list.dash") }
-			
-			NavigationStack {
-				Downloads()
-			}
-			.tabItem { Label("Downloads", systemImage: "arrow.down.circle") }
-			
-			NavigationStack {
-				Search()
-			}
-			.tabItem { Label("Search", systemImage: "magnifyingglass") }
 		}
 	}
 }
