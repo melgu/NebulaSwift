@@ -61,6 +61,10 @@ import os.log
 	}
 	
 	func replaceVideo(with video: Video) async throws {
+		guard video.slug != self.video?.slug else {
+			logger.debug("Replacement video is the same. So no action is taken.")
+			return
+		}
 		logger.debug("Replace video \(self.video?.title ?? "nil") with \(video.title)")
 		task?.cancel()
 		

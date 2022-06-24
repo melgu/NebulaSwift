@@ -13,8 +13,6 @@ struct VideoPage: View {
 	@EnvironmentObject private var api: API
 	@EnvironmentObject private var player: Player
 	
-	@State private var didAppearOnce = false
-	
 	var body: some View {
 		ScrollView {
 			VStack(alignment: .leading) {
@@ -40,8 +38,6 @@ struct VideoPage: View {
 			.aspectRatio(16/9, contentMode: .fit)
 			.overlay(CustomVideoPlayer())
 			.task {
-				guard !didAppearOnce else { return }
-				didAppearOnce = true
 				print("Load Video Stream Info")
 				do {
 					try await player.replaceVideo(with: video)
