@@ -77,7 +77,9 @@ struct VideoPreviewView: View {
 			}
 		}
 		.lineLimit(2)
+		#if canImport(UIKit)
 		.background(Color.primary.colorInvert())
+		#endif
 	}
 	
 	private var length: some View {
