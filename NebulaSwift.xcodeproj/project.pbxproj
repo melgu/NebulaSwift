@@ -8,96 +8,51 @@
 
 /* Begin PBXBuildFile section */
 		B0045973271FAD5D002C7974 /* API+Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0045972271FAD5D002C7974 /* API+Authorization.swift */; };
-		B0045974271FAD5D002C7974 /* API+Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0045972271FAD5D002C7974 /* API+Authorization.swift */; };
 		B0045976271FB9D9002C7974 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0045975271FB9D9002C7974 /* Network.swift */; };
-		B0045977271FB9D9002C7974 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0045975271FB9D9002C7974 /* Network.swift */; };
 		B041001F2817071700845750 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B041001E2817071700845750 /* Navigation.swift */; };
-		B04100202817071700845750 /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B041001E2817071700845750 /* Navigation.swift */; };
 		B04C8690284A9D9000EA2D59 /* API+Playlists.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04C868F284A9D9000EA2D59 /* API+Playlists.swift */; };
-		B04C8691284A9D9000EA2D59 /* API+Playlists.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04C868F284A9D9000EA2D59 /* API+Playlists.swift */; };
 		B04C8693284A9FFD00EA2D59 /* WatchLater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04C8692284A9FFD00EA2D59 /* WatchLater.swift */; };
-		B04C8694284A9FFD00EA2D59 /* WatchLater.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04C8692284A9FFD00EA2D59 /* WatchLater.swift */; };
 		B04C8696284BC1FF00EA2D59 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04C8695284BC1FF00EA2D59 /* ErrorHandling.swift */; };
-		B04C8697284BC1FF00EA2D59 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04C8695284BC1FF00EA2D59 /* ErrorHandling.swift */; };
 		B04EFE0C27EF276600B901F9 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04EFE0B27EF276600B901F9 /* ShareSheet.swift */; };
-		B04EFE0D27EF276600B901F9 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04EFE0B27EF276600B901F9 /* ShareSheet.swift */; };
 		B0508A2A26856E1D006FED7E /* MyShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A2926856E1D006FED7E /* MyShows.swift */; };
-		B0508A2B26856E1D006FED7E /* MyShows.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A2926856E1D006FED7E /* MyShows.swift */; };
 		B0508A2E26856FC9006FED7E /* Browse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A2D26856FC9006FED7E /* Browse.swift */; };
-		B0508A2F26856FC9006FED7E /* Browse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A2D26856FC9006FED7E /* Browse.swift */; };
 		B0508A3126856FDA006FED7E /* Downloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A3026856FDA006FED7E /* Downloads.swift */; };
-		B0508A3226856FDA006FED7E /* Downloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A3026856FDA006FED7E /* Downloads.swift */; };
 		B0508A3426856FEB006FED7E /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A3326856FEB006FED7E /* Search.swift */; };
-		B0508A3526856FEB006FED7E /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A3326856FEB006FED7E /* Search.swift */; };
 		B0511C6127F0AA74006B077C /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0511C6027F0AA74006B077C /* RefreshableScrollView.swift */; };
-		B0511C6227F0AA74006B077C /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0511C6027F0AA74006B077C /* RefreshableScrollView.swift */; };
 		B0511C6527F0AB8A006B077C /* SwiftUIPullToRefresh in Frameworks */ = {isa = PBXBuildFile; productRef = B0511C6427F0AB8A006B077C /* SwiftUIPullToRefresh */; };
 		B0511C6727FB65AF006B077C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0511C6627FB65AF006B077C /* Settings.swift */; };
-		B0511C6827FB65AF006B077C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0511C6627FB65AF006B077C /* Settings.swift */; };
 		B0511C6A27FB6957006B077C /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0511C6927FB6957006B077C /* Player.swift */; };
-		B0511C6B27FB6957006B077C /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0511C6927FB6957006B077C /* Player.swift */; };
 		B0560B1A27FCDA260048BE43 /* API+Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0560B1927FCDA260048BE43 /* API+Channel.swift */; };
-		B0560B1B27FCDA260048BE43 /* API+Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0560B1927FCDA260048BE43 /* API+Channel.swift */; };
 		B056F7D527445B45009B92BC /* API+Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = B056F7D427445B45009B92BC /* API+Library.swift */; };
-		B056F7D627445B45009B92BC /* API+Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = B056F7D427445B45009B92BC /* API+Library.swift */; };
 		B056F7D827454A71009B92BC /* API+Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = B056F7D727454A71009B92BC /* API+Video.swift */; };
-		B056F7D927454A71009B92BC /* API+Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = B056F7D727454A71009B92BC /* API+Video.swift */; };
 		B079EF2F26853A57009EFBAA /* NebulaSwiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF2126853A57009EFBAA /* NebulaSwiftApp.swift */; };
-		B079EF3026853A57009EFBAA /* NebulaSwiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF2126853A57009EFBAA /* NebulaSwiftApp.swift */; };
 		B079EF3126853A57009EFBAA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF2226853A57009EFBAA /* ContentView.swift */; };
-		B079EF3226853A57009EFBAA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF2226853A57009EFBAA /* ContentView.swift */; };
 		B079EF3326853A57009EFBAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B079EF2326853A57009EFBAA /* Assets.xcassets */; };
-		B079EF3426853A57009EFBAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B079EF2326853A57009EFBAA /* Assets.xcassets */; };
 		B079EF3E26855A50009EFBAA /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF3D26855A50009EFBAA /* API.swift */; };
-		B079EF3F26855A50009EFBAA /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF3D26855A50009EFBAA /* API.swift */; };
 		B079EF42268560A4009EFBAA /* API+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF41268560A4009EFBAA /* API+Config.swift */; };
-		B079EF43268560A4009EFBAA /* API+Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF41268560A4009EFBAA /* API+Config.swift */; };
 		B079EF45268560D6009EFBAA /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF44268560D6009EFBAA /* Storage.swift */; };
-		B079EF46268560D6009EFBAA /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF44268560D6009EFBAA /* Storage.swift */; };
 		B079EF4826856116009EFBAA /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF4726856116009EFBAA /* Defaults.swift */; };
-		B079EF4926856116009EFBAA /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF4726856116009EFBAA /* Defaults.swift */; };
 		B079EF4C268562B8009EFBAA /* Featured.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF4B268562B8009EFBAA /* Featured.swift */; };
-		B079EF4D268562B8009EFBAA /* Featured.swift in Sources */ = {isa = PBXBuildFile; fileRef = B079EF4B268562B8009EFBAA /* Featured.swift */; };
 		B07FBFF4281C6D6B007CD89E /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07FBFF3281C6D6B007CD89E /* AsyncButton.swift */; };
-		B07FBFF5281C6D6B007CD89E /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07FBFF3281C6D6B007CD89E /* AsyncButton.swift */; };
 		B07FBFF7281C7ED6007CD89E /* ContextMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07FBFF6281C7ED6007CD89E /* ContextMenus.swift */; };
-		B07FBFF8281C7ED6007CD89E /* ContextMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B07FBFF6281C7ED6007CD89E /* ContextMenus.swift */; };
 		B099D42228008C97002D6A63 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B099D42128008C97002D6A63 /* Logger.swift */; };
-		B099D42328008C97002D6A63 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B099D42128008C97002D6A63 /* Logger.swift */; };
 		B0AA74AD2829B203001B778B /* API+Categories.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AA74AC2829B203001B778B /* API+Categories.swift */; };
-		B0AA74AE2829B203001B778B /* API+Categories.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AA74AC2829B203001B778B /* API+Categories.swift */; };
 		B0AA74B02829C0A2001B778B /* AsyncNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AA74AF2829C0A2001B778B /* AsyncNavigationLink.swift */; };
-		B0AA74B12829C0A2001B778B /* AsyncNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AA74AF2829C0A2001B778B /* AsyncNavigationLink.swift */; };
 		B0AA74B32829C2EE001B778B /* CategoryPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AA74B22829C2EE001B778B /* CategoryPreview.swift */; };
-		B0AA74B42829C2EE001B778B /* CategoryPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AA74B22829C2EE001B778B /* CategoryPreview.swift */; };
 		B0AA74B62829C7A5001B778B /* CategoryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AA74B52829C7A5001B778B /* CategoryPage.swift */; };
-		B0AA74B72829C7A5001B778B /* CategoryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AA74B52829C7A5001B778B /* CategoryPage.swift */; };
 		B0B7EED428009C3F007D3682 /* ChannelPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B7EED328009C3F007D3682 /* ChannelPreview.swift */; };
-		B0B7EED528009C3F007D3682 /* ChannelPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B7EED328009C3F007D3682 /* ChannelPreview.swift */; };
 		B0B7EED72800B086007D3682 /* ChannelGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B7EED62800B086007D3682 /* ChannelGrid.swift */; };
-		B0B7EED82800B086007D3682 /* ChannelGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B7EED62800B086007D3682 /* ChannelGrid.swift */; };
 		B0DF9FAD268A343700EF9392 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FAC268A343700EF9392 /* Login.swift */; };
-		B0DF9FAE268A343700EF9392 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FAC268A343700EF9392 /* Login.swift */; };
 		B0DF9FB0268A36D900EF9392 /* API+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FAF268A36D900EF9392 /* API+Login.swift */; };
-		B0DF9FB1268A36D900EF9392 /* API+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FAF268A36D900EF9392 /* API+Login.swift */; };
 		B0DF9FB3268A407300EF9392 /* API+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FB2268A3E3700EF9392 /* API+User.swift */; };
-		B0DF9FB4268A407300EF9392 /* API+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0DF9FB2268A3E3700EF9392 /* API+User.swift */; };
 		B0E5BA2627FF6274001D8403 /* VideoPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2527FF6274001D8403 /* VideoPreview.swift */; };
-		B0E5BA2727FF6274001D8403 /* VideoPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2527FF6274001D8403 /* VideoPreview.swift */; };
 		B0E5BA2927FF62D3001D8403 /* VideoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2827FF62D3001D8403 /* VideoPage.swift */; };
-		B0E5BA2A27FF62D3001D8403 /* VideoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2827FF62D3001D8403 /* VideoPage.swift */; };
 		B0E5BA2C27FF62F3001D8403 /* CustomVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2B27FF62F3001D8403 /* CustomVideoPlayer.swift */; };
-		B0E5BA2D27FF62F3001D8403 /* CustomVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2B27FF62F3001D8403 /* CustomVideoPlayer.swift */; };
 		B0E5BA2F27FF66B1001D8403 /* VideoGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2E27FF66B1001D8403 /* VideoGrid.swift */; };
-		B0E5BA3027FF66B1001D8403 /* VideoGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA2E27FF66B1001D8403 /* VideoGrid.swift */; };
 		B0E5BA3227FF6869001D8403 /* ChannelPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3127FF6869001D8403 /* ChannelPage.swift */; };
-		B0E5BA3327FF6869001D8403 /* ChannelPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3127FF6869001D8403 /* ChannelPage.swift */; };
 		B0E5BA3527FF6C85001D8403 /* API+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3427FF6C85001D8403 /* API+Search.swift */; };
-		B0E5BA3627FF6C85001D8403 /* API+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3427FF6C85001D8403 /* API+Search.swift */; };
 		B0E5BA3827FF6CEB001D8403 /* ListContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3727FF6CEB001D8403 /* ListContainer.swift */; };
-		B0E5BA3927FF6CEB001D8403 /* ListContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3727FF6CEB001D8403 /* ListContainer.swift */; };
 		B0FA4424281C5801002554A7 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FA4423281C5801002554A7 /* ContentType.swift */; };
-		B0FA4425281C5801002554A7 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FA4423281C5801002554A7 /* ContentType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -123,7 +78,6 @@
 		B079EF2226853A57009EFBAA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B079EF2326853A57009EFBAA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B079EF2826853A57009EFBAA /* NebulaSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NebulaSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		B079EF2E26853A57009EFBAA /* NebulaSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NebulaSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B079EF3D26855A50009EFBAA /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		B079EF41268560A4009EFBAA /* API+Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Config.swift"; sourceTree = "<group>"; };
 		B079EF44268560D6009EFBAA /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
@@ -160,13 +114,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B079EF2B26853A57009EFBAA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -194,7 +141,6 @@
 			isa = PBXGroup;
 			children = (
 				B079EF2826853A57009EFBAA /* NebulaSwift.app */,
-				B079EF2E26853A57009EFBAA /* NebulaSwift.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -259,9 +205,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B079EF2726853A57009EFBAA /* NebulaSwift (iOS) */ = {
+		B079EF2726853A57009EFBAA /* NebulaSwift */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B079EF3726853A57009EFBAA /* Build configuration list for PBXNativeTarget "NebulaSwift (iOS)" */;
+			buildConfigurationList = B079EF3726853A57009EFBAA /* Build configuration list for PBXNativeTarget "NebulaSwift" */;
 			buildPhases = (
 				B079EF2426853A57009EFBAA /* Sources */,
 				B079EF2526853A57009EFBAA /* Frameworks */,
@@ -271,29 +217,12 @@
 			);
 			dependencies = (
 			);
-			name = "NebulaSwift (iOS)";
+			name = NebulaSwift;
 			packageProductDependencies = (
 				B0511C6427F0AB8A006B077C /* SwiftUIPullToRefresh */,
 			);
 			productName = "NebulaSwift (iOS)";
 			productReference = B079EF2826853A57009EFBAA /* NebulaSwift.app */;
-			productType = "com.apple.product-type.application";
-		};
-		B079EF2D26853A57009EFBAA /* NebulaSwift (macOS) */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B079EF3A26853A57009EFBAA /* Build configuration list for PBXNativeTarget "NebulaSwift (macOS)" */;
-			buildPhases = (
-				B079EF2A26853A57009EFBAA /* Sources */,
-				B079EF2B26853A57009EFBAA /* Frameworks */,
-				B079EF2C26853A57009EFBAA /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "NebulaSwift (macOS)";
-			productName = "NebulaSwift (macOS)";
-			productReference = B079EF2E26853A57009EFBAA /* NebulaSwift.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -307,9 +236,6 @@
 				LastUpgradeCheck = 1400;
 				TargetAttributes = {
 					B079EF2726853A57009EFBAA = {
-						CreatedOnToolsVersion = 13.0;
-					};
-					B079EF2D26853A57009EFBAA = {
 						CreatedOnToolsVersion = 13.0;
 					};
 				};
@@ -330,8 +256,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B079EF2726853A57009EFBAA /* NebulaSwift (iOS) */,
-				B079EF2D26853A57009EFBAA /* NebulaSwift (macOS) */,
+				B079EF2726853A57009EFBAA /* NebulaSwift */,
 			);
 		};
 /* End PBXProject section */
@@ -342,14 +267,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B079EF3326853A57009EFBAA /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B079EF2C26853A57009EFBAA /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B079EF3426853A57009EFBAA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,57 +321,6 @@
 				B079EF45268560D6009EFBAA /* Storage.swift in Sources */,
 				B0511C6127F0AA74006B077C /* RefreshableScrollView.swift in Sources */,
 				B0560B1A27FCDA260048BE43 /* API+Channel.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B079EF2A26853A57009EFBAA /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B099D42328008C97002D6A63 /* Logger.swift in Sources */,
-				B0511C6B27FB6957006B077C /* Player.swift in Sources */,
-				B056F7D627445B45009B92BC /* API+Library.swift in Sources */,
-				B0E5BA2727FF6274001D8403 /* VideoPreview.swift in Sources */,
-				B0508A3526856FEB006FED7E /* Search.swift in Sources */,
-				B0E5BA3627FF6C85001D8403 /* API+Search.swift in Sources */,
-				B079EF4D268562B8009EFBAA /* Featured.swift in Sources */,
-				B0045977271FB9D9002C7974 /* Network.swift in Sources */,
-				B0E5BA3027FF66B1001D8403 /* VideoGrid.swift in Sources */,
-				B0DF9FB1268A36D900EF9392 /* API+Login.swift in Sources */,
-				B0B7EED528009C3F007D3682 /* ChannelPreview.swift in Sources */,
-				B0508A3226856FDA006FED7E /* Downloads.swift in Sources */,
-				B0AA74B72829C7A5001B778B /* CategoryPage.swift in Sources */,
-				B0DF9FAE268A343700EF9392 /* Login.swift in Sources */,
-				B0E5BA2D27FF62F3001D8403 /* CustomVideoPlayer.swift in Sources */,
-				B07FBFF5281C6D6B007CD89E /* AsyncButton.swift in Sources */,
-				B0508A2F26856FC9006FED7E /* Browse.swift in Sources */,
-				B04C8697284BC1FF00EA2D59 /* ErrorHandling.swift in Sources */,
-				B0AA74B42829C2EE001B778B /* CategoryPreview.swift in Sources */,
-				B079EF3226853A57009EFBAA /* ContentView.swift in Sources */,
-				B0508A2B26856E1D006FED7E /* MyShows.swift in Sources */,
-				B079EF43268560A4009EFBAA /* API+Config.swift in Sources */,
-				B07FBFF8281C7ED6007CD89E /* ContextMenus.swift in Sources */,
-				B0045974271FAD5D002C7974 /* API+Authorization.swift in Sources */,
-				B0E5BA3927FF6CEB001D8403 /* ListContainer.swift in Sources */,
-				B0AA74B12829C0A2001B778B /* AsyncNavigationLink.swift in Sources */,
-				B0DF9FB4268A407300EF9392 /* API+User.swift in Sources */,
-				B079EF3F26855A50009EFBAA /* API.swift in Sources */,
-				B079EF4926856116009EFBAA /* Defaults.swift in Sources */,
-				B079EF3026853A57009EFBAA /* NebulaSwiftApp.swift in Sources */,
-				B04EFE0D27EF276600B901F9 /* ShareSheet.swift in Sources */,
-				B04C8694284A9FFD00EA2D59 /* WatchLater.swift in Sources */,
-				B0FA4425281C5801002554A7 /* ContentType.swift in Sources */,
-				B04100202817071700845750 /* Navigation.swift in Sources */,
-				B056F7D927454A71009B92BC /* API+Video.swift in Sources */,
-				B0E5BA3327FF6869001D8403 /* ChannelPage.swift in Sources */,
-				B04C8691284A9D9000EA2D59 /* API+Playlists.swift in Sources */,
-				B0B7EED82800B086007D3682 /* ChannelGrid.swift in Sources */,
-				B0511C6827FB65AF006B077C /* Settings.swift in Sources */,
-				B0E5BA2A27FF62D3001D8403 /* VideoPage.swift in Sources */,
-				B0AA74AE2829B203001B778B /* API+Categories.swift in Sources */,
-				B079EF46268560D6009EFBAA /* Storage.swift in Sources */,
-				B0511C6227F0AA74006B077C /* RefreshableScrollView.swift in Sources */,
-				B0560B1B27FCDA260048BE43 /* API+Channel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,6 +467,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = de.melgu.NebulaSwift;
 				PRODUCT_NAME = NebulaSwift;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
@@ -635,77 +504,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = de.melgu.NebulaSwift;
 				PRODUCT_NAME = NebulaSwift;
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		B079EF3B26853A57009EFBAA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = NebulaSwift.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = V7E5P7292M;
-				ENABLE_APP_SANDBOX = YES;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = de.melgu.NebulaSwift;
-				PRODUCT_NAME = NebulaSwift;
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		B079EF3C26853A57009EFBAA /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = NebulaSwift.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = V7E5P7292M;
-				ENABLE_APP_SANDBOX = YES;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SELECTED_FILES = readonly;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = de.melgu.NebulaSwift;
-				PRODUCT_NAME = NebulaSwift;
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -721,20 +527,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B079EF3726853A57009EFBAA /* Build configuration list for PBXNativeTarget "NebulaSwift (iOS)" */ = {
+		B079EF3726853A57009EFBAA /* Build configuration list for PBXNativeTarget "NebulaSwift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B079EF3826853A57009EFBAA /* Debug */,
 				B079EF3926853A57009EFBAA /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B079EF3A26853A57009EFBAA /* Build configuration list for PBXNativeTarget "NebulaSwift (macOS)" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B079EF3B26853A57009EFBAA /* Debug */,
-				B079EF3C26853A57009EFBAA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
