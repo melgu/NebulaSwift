@@ -24,8 +24,6 @@ struct VideoContextMenu: ViewModifier {
 	@Environment(\.openItem) private var openItem
 	@Environment(\.refresh) private var refresh
 	
-	@State private var shareURL: [Any]?
-	
 	func body(content: Content) -> some View {
 		content
 			.contextMenu {
@@ -66,13 +64,8 @@ struct VideoContextMenu: ViewModifier {
 					Label("Download", systemImage: "arrow.down")
 				}
 				Divider()
-				Button {
-					shareURL = [video.shareUrl]
-				} label: {
-					Label("Share", systemImage: "square.and.arrow.up")
-				}
+				ShareLink(item: video.shareUrl)
 			}
-			.shareSheet(items: $shareURL)
 	}
 	
 	private func showChannel(slug: String) {
@@ -101,8 +94,6 @@ struct ChannelContextMenu: ViewModifier {
 	@EnvironmentObject private var api: API
 	
 	@Environment(\.refresh) private var refresh
-	
-	@State private var shareURL: [Any]?
 	
 	func body(content: Content) -> some View {
 		content
@@ -133,13 +124,8 @@ struct ChannelContextMenu: ViewModifier {
 					}
 					Divider()
 				}
-				Button {
-					shareURL = [channel.shareUrl]
-				} label: {
-					Label("Share", systemImage: "square.and.arrow.up")
-				}
+				ShareLink(item: channel.shareUrl)
 			}
-			.shareSheet(items: $shareURL)
 	}
 }
 
