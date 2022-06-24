@@ -55,9 +55,16 @@ struct AutoChannelGrid: View {
 			}
 			.padding()
 		}
-		.refreshable {
-			print("Refresh Channels")
-			await refreshChannels(animated: true)
+		.toolbar {
+			ToolbarItem(placement: .navigationBarTrailing) {
+				AsyncButton {
+					print("Refresh Channels")
+					await refreshChannels(animated: true)
+				} label: {
+					Image(systemName: "arrow.clockwise")
+				}
+
+			}
 		}
 		.task {
 			print("Load Channels")

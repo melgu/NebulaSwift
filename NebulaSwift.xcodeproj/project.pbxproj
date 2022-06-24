@@ -17,8 +17,6 @@
 		B0508A2E26856FC9006FED7E /* Browse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A2D26856FC9006FED7E /* Browse.swift */; };
 		B0508A3126856FDA006FED7E /* Downloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A3026856FDA006FED7E /* Downloads.swift */; };
 		B0508A3426856FEB006FED7E /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0508A3326856FEB006FED7E /* Search.swift */; };
-		B0511C6127F0AA74006B077C /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0511C6027F0AA74006B077C /* RefreshableScrollView.swift */; };
-		B0511C6527F0AB8A006B077C /* SwiftUIPullToRefresh in Frameworks */ = {isa = PBXBuildFile; productRef = B0511C6427F0AB8A006B077C /* SwiftUIPullToRefresh */; };
 		B0511C6727FB65AF006B077C /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0511C6627FB65AF006B077C /* Settings.swift */; };
 		B0511C6A27FB6957006B077C /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0511C6927FB6957006B077C /* Player.swift */; };
 		B0560B1A27FCDA260048BE43 /* API+Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0560B1927FCDA260048BE43 /* API+Channel.swift */; };
@@ -65,7 +63,6 @@
 		B0508A2D26856FC9006FED7E /* Browse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browse.swift; sourceTree = "<group>"; };
 		B0508A3026856FDA006FED7E /* Downloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloads.swift; sourceTree = "<group>"; };
 		B0508A3326856FEB006FED7E /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
-		B0511C6027F0AA74006B077C /* RefreshableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollView.swift; sourceTree = "<group>"; };
 		B0511C6627FB65AF006B077C /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		B0511C6927FB6957006B077C /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		B0560B1827FCB8400048BE43 /* NebulaSwift--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "NebulaSwift--iOS--Info.plist"; sourceTree = "<group>"; };
@@ -108,7 +105,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B0511C6527F0AB8A006B077C /* SwiftUIPullToRefresh in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,7 +187,6 @@
 				B07FBFF3281C6D6B007CD89E /* AsyncButton.swift */,
 				B0AA74AF2829C0A2001B778B /* AsyncNavigationLink.swift */,
 				B07FBFF6281C7ED6007CD89E /* ContextMenus.swift */,
-				B0511C6027F0AA74006B077C /* RefreshableScrollView.swift */,
 				B041001E2817071700845750 /* Navigation.swift */,
 				B04C8695284BC1FF00EA2D59 /* ErrorHandling.swift */,
 				B0FA4423281C5801002554A7 /* ContentType.swift */,
@@ -216,7 +211,6 @@
 			);
 			name = NebulaSwift;
 			packageProductDependencies = (
-				B0511C6427F0AB8A006B077C /* SwiftUIPullToRefresh */,
 			);
 			productName = "NebulaSwift (iOS)";
 			productReference = B079EF2826853A57009EFBAA /* NebulaSwift.app */;
@@ -247,7 +241,6 @@
 			);
 			mainGroup = B079EF1B26853A57009EFBAA;
 			packageReferences = (
-				B0511C6327F0AB8A006B077C /* XCRemoteSwiftPackageReference "swiftui-pull-to-refresh" */,
 			);
 			productRefGroup = B079EF2926853A57009EFBAA /* Products */;
 			projectDirPath = "";
@@ -315,7 +308,6 @@
 				B0E5BA2927FF62D3001D8403 /* VideoPage.swift in Sources */,
 				B0AA74AD2829B203001B778B /* API+Categories.swift in Sources */,
 				B079EF45268560D6009EFBAA /* Storage.swift in Sources */,
-				B0511C6127F0AA74006B077C /* RefreshableScrollView.swift in Sources */,
 				B0560B1A27FCDA260048BE43 /* API+Channel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -533,25 +525,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		B0511C6327F0AB8A006B077C /* XCRemoteSwiftPackageReference "swiftui-pull-to-refresh" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/globulus/swiftui-pull-to-refresh";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		B0511C6427F0AB8A006B077C /* SwiftUIPullToRefresh */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B0511C6327F0AB8A006B077C /* XCRemoteSwiftPackageReference "swiftui-pull-to-refresh" */;
-			productName = SwiftUIPullToRefresh;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B079EF1C26853A57009EFBAA /* Project object */;
 }
