@@ -65,7 +65,7 @@ struct AutoVideoGrid: View {
 		}
 	}
 	
-	func refreshVideos(animated: Bool = false) async {
+	private func refreshVideos(animated: Bool = false) async {
 		do {
 			let newVideos = try await fetch(1)
 			if newVideos != videos {

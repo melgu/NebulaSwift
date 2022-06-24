@@ -75,7 +75,7 @@ struct VideoContextMenu: ViewModifier {
 			.shareSheet(items: $shareURL)
 	}
 	
-	func showChannel(slug: String) {
+	private func showChannel(slug: String) {
 		Task {
 			do {
 				let channel = try await api.channel(for: slug)
@@ -102,7 +102,7 @@ struct ChannelContextMenu: ViewModifier {
 	
 	@Environment(\.refresh) private var refresh
 	
-	@State var shareURL: [Any]?
+	@State private var shareURL: [Any]?
 	
 	func body(content: Content) -> some View {
 		content

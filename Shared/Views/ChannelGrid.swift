@@ -65,7 +65,7 @@ struct AutoChannelGrid: View {
 		}
 	}
 	
-	func refreshChannels(animated: Bool = false) async {
+	private func refreshChannels(animated: Bool = false) async {
 		do {
 			let newChannels = try await fetch(1)
 			if newChannels != channels {
