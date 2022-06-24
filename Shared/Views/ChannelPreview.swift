@@ -42,9 +42,6 @@ struct ChannelPreviewView: View {
 			Text(channel.title)
 		}
 		.lineLimit(2)
-		#if canImport(UIKit)
-		.background(Color.primary.colorInvert())
-		#endif
 	}
 }
 
