@@ -56,9 +56,7 @@ struct ChannelPage: View {
 				}
 			}
 			ToolbarItem(placement: .navigationBarTrailing) {
-				ShareButton(items: [channel.shareUrl]) {
-					Label("Share", systemImage: "square.and.arrow.up")
-				}
+				ShareLink(item: channel.shareUrl)
 			}
 		}
 		#endif

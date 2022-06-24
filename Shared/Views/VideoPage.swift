@@ -24,9 +24,7 @@ struct VideoPage: View {
 			#if canImport(UIKit)
 			.toolbar {
 				ToolbarItem(placement: .navigationBarTrailing) {
-					ShareButton(items: [video.shareUrl]) {
-						Label("Share", systemImage: "square.and.arrow.up")
-					}
+					ShareLink(item: video.shareUrl)
 				}
 			}
 			#endif
@@ -55,9 +53,7 @@ struct VideoPage: View {
 				Text(video.title)
 					.font(.title)
 				Spacer()
-				ShareButton(items: [video.shareUrl]) {
-					Label("Share", systemImage: "square.and.arrow.up")
-				}
+				ShareLink(item: video.shareUrl)
 			}
 			#endif
 			
