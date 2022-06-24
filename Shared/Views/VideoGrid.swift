@@ -56,20 +56,30 @@ struct AutoVideoGrid: View {
 			.padding()
 		}
 		.toolbar {
+			#if canImport(UIKit)
 			ToolbarItem(placement: .navigationBarTrailing) {
-				AsyncButton {
-					print("Refresh Videos")
-					await refreshVideos(animated: true)
-				} label: {
-					Image(systemName: "arrow.clockwise")
-				}
-				.asyncButtonStyle(.progress)
+				refreshButton
 			}
+			#else
+			ToolbarItem(placement: .navigation) {
+				refreshButton
+			}
+			#endif
 		}
 		.task {
 			print("Load Videos")
 			await refreshVideos()
 		}
+	}
+	
+	private var refreshButton: some View {
+		AsyncButton {
+			print("Refresh Videos")
+			await refreshVideos(animated: true)
+		} label: {
+			Image(systemName: "arrow.clockwise")
+		}
+		.asyncButtonStyle(.progress)
 	}
 	
 	private func refreshVideos(animated: Bool = false) async {

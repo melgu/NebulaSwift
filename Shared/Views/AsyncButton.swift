@@ -56,6 +56,9 @@ struct AsyncButton<Label: View>: View {
 	private var progressView: some View {
 		if showProgressView {
 			ProgressView()
+				#if os(macOS)
+				.controlSize(.small)
+				#endif
 		}
 	}
 	
