@@ -17,6 +17,11 @@ struct ContentView: View {
 	
 	@State private var myShows: [Channel]?
 	
+	@State private var selection: TopLevel? = .myShows
+	private enum TopLevel: Hashable {
+		case featured, myShows, browse, watchLater, downloads, search, channel(Channel)
+	}
+	
 	var body: some View {
 		Group {
 			if api.isLoggedIn {
@@ -36,71 +41,86 @@ struct ContentView: View {
 		.alertErrorHandling()
 	}
 	
-	var list: some View {
-		NavigationView {
-			List {
-				Section("Home") {
-					NavigationLink {
-						Featured()
-					} label: {
-						Label("Featured", systemImage: "star.circle")
-					}
-					NavigationLink {
-						MyShows()
-					} label: {
-						Label("My Shows", systemImage: "suit.heart")
-					}
-					NavigationLink {
-						Browse()
-					} label: {
-						Label("Browse", systemImage: "list.dash")
-					}
-					NavigationLink {
-						WatchLater()
-					} label: {
-						Label("Watch Later", systemImage: "bookmark")
-					}
-					NavigationLink {
-						Downloads()
-					} label: {
-						Label("Downloads", systemImage: "arrow.down.circle")
-					}
-					NavigationLink {
-						Search()
-					} label: {
-						Label("Search", systemImage: "magnifyingglass")
-					}
-				}
-				if let myShows = myShows {
-					Section("My Shows") {
-						ForEach(myShows) { channel in
-							NavigationLink {
-								ChannelPage(channel: channel)
-							} label: {
-								label(for: channel)
-							}
-							.contextMenu(for: channel)
-						}
-					}
-				}
-			}
-			.refreshable {
-				try await refreshMyShows()
-			}
-			.listStyle(.sidebar)
-			.navigationTitle("Nebula")
-			.task {
-				try await refreshMyShows()
-			}
-			.settingsSheet()
+	private var list: some View {
+		NavigationSplitView {
+			sidebar
+		} detail: {
+			detail
 		}
 	}
 	
-	func refreshMyShows() async throws {
+	private var sidebar: some View {
+		List(selection: $selection) {
+			Section("Home") {
+				NavigationLink(value: TopLevel.featured) {
+					Label("Featured", systemImage: "star.circle")
+				}
+				NavigationLink(value: TopLevel.myShows) {
+					Label("My Shows", systemImage: "suit.heart")
+				}
+				NavigationLink(value: TopLevel.browse) {
+					Label("Browse", systemImage: "list.dash")
+				}
+				NavigationLink(value: TopLevel.watchLater) {
+					Label("Watch Later", systemImage: "bookmark")
+				}
+				NavigationLink(value: TopLevel.downloads) {
+					Label("Downloads", systemImage: "arrow.down.circle")
+				}
+				NavigationLink(value: TopLevel.search) {
+					Label("Search", systemImage: "magnifyingglass")
+				}
+			}
+			if let myShows = myShows {
+				Section("My Shows") {
+					ForEach(myShows) { channel in
+						NavigationLink(value: TopLevel.channel(channel)) {
+							label(for: channel)
+						}
+						.contextMenu(for: channel)
+					}
+				}
+			}
+		}
+		.refreshable {
+			try await refreshMyShows()
+		}
+		.listStyle(.sidebar)
+		.navigationTitle("Nebula")
+		.task {
+			try await refreshMyShows()
+		}
+		.settingsSheet()
+	}
+	
+	private var detail: some View {
+		ZStack { // Workaround for Beta bug (No updates on selection change, FB91311311)
+			switch selection {
+			case .featured:
+				Featured()
+			case .myShows:
+				MyShows()
+			case .browse:
+				Browse()
+			case .watchLater:
+				WatchLater()
+			case .downloads:
+				Downloads()
+			case .search:
+				Search()
+			case .channel(let channel):
+				ChannelPage(channel: channel)
+			case nil:
+				Text("NebulaSwift")
+			}
+		}
+	}
+	
+	private func refreshMyShows() async throws {
 		myShows = try await api.libraryChannels(page: 1, pageSize: 200)
 	}
 	
-	func label(for channel: Channel) -> some View {
+	private func label(for channel: Channel) -> some View {
 		HStack {
 			AsyncImage(url: channel.assets.avatar["64"]?.original) { image in
 				image
@@ -117,29 +137,29 @@ struct ContentView: View {
 		}
 	}
 	
-	var tabView: some View {
+	private var tabView: some View {
 		TabView {
-			NavigationView {
+			NavigationStack {
 				Featured()
 			}
 			.tabItem { Label("Featured", systemImage: "star.circle") }
 			
-			NavigationView {
+			NavigationStack {
 				MyShows()
 			}
 			.tabItem { Label("My Shows", systemImage: "suit.heart") }
 			
-			NavigationView {
+			NavigationStack {
 				Browse()
 			}
 			.tabItem { Label("Browse", systemImage: "list.dash") }
 			
-			NavigationView {
+			NavigationStack {
 				Downloads()
 			}
 			.tabItem { Label("Downloads", systemImage: "arrow.down.circle") }
 			
-			NavigationView {
+			NavigationStack {
 				Search()
 			}
 			.tabItem { Label("Search", systemImage: "magnifyingglass") }

@@ -15,7 +15,7 @@ struct SettingsView: View {
 	
 	var body: some View {
 		#if os(iOS)
-		NavigationView {
+		NavigationStack {
 			content
 			.navigationTitle("Settings")
 			.toolbar {
