@@ -28,7 +28,6 @@ struct AutoVideoGrid: View {
 	
 	@State private var videos: [Video] = []
 	@State private var page = 1
-	@State private var channelInNavigation: Channel?
 	
 	/// Auto-loading VideoGrid
 	/// - Parameter fetch: Closure which loads the videos for a given page (1-indexed)
@@ -63,9 +62,6 @@ struct AutoVideoGrid: View {
 		.task {
 			print("Load Videos")
 			await refreshVideos()
-		}
-		.navigation(item: $channelInNavigation) { channel in
-			ChannelPage(channel: channel)
 		}
 	}
 	

@@ -20,11 +20,10 @@ struct VideoContextMenu: ViewModifier {
 	
 	@EnvironmentObject private var api: API
 	
-	@Environment(\.goToChannelEnabled) var goToChannelEnabled
-	
+	@Environment(\.goToChannelEnabled) private var goToChannelEnabled
+	@Environment(\.openItem) private var openItem
 	@Environment(\.refresh) private var refresh
 	
-	@State private var channelInNavigation: Channel?
 	@State private var shareURL: [Any]?
 	
 	func body(content: Content) -> some View {
@@ -73,16 +72,14 @@ struct VideoContextMenu: ViewModifier {
 					Label("Share", systemImage: "square.and.arrow.up")
 				}
 			}
-			.navigation(item: $channelInNavigation) { channel in
-				ChannelPage(channel: channel)
-			}
 			.shareSheet(items: $shareURL)
 	}
 	
 	func showChannel(slug: String) {
 		Task {
 			do {
-				channelInNavigation = try await api.channel(for: slug)
+				let channel = try await api.channel(for: slug)
+				openItem(channel)
 			} catch {
 				print(error)
 			}

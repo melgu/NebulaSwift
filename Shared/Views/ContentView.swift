@@ -22,6 +22,8 @@ struct ContentView: View {
 		case featured, myShows, browse, watchLater, downloads, search, channel(Channel)
 	}
 	
+	@State private var navigationPath = NavigationPath()
+	
 	var body: some View {
 		Group {
 			if api.isLoggedIn {
@@ -82,24 +84,32 @@ struct ContentView: View {
 	}
 	
 	private var detail: some View {
-		ZStack { // Workaround for Beta bug (No updates on selection change, FB91311311)
-			switch selection {
-			case .featured:
-				Featured()
-			case .myShows:
-				MyShows()
-			case .browse:
-				Browse()
-			case .watchLater:
-				WatchLater()
-			case .downloads:
-				Downloads()
-			case .search:
-				Search()
-			case .channel(let channel):
+		NavigationStack(path: $navigationPath) {
+			ZStack { // Workaround for Beta bug (No updates on selection change, FB91311311)
+				switch selection {
+				case .featured:
+					Featured()
+				case .myShows:
+					MyShows()
+				case .browse:
+					Browse()
+				case .watchLater:
+					WatchLater()
+				case .downloads:
+					Downloads()
+				case .search:
+					Search()
+				case .channel(let channel):
+					ChannelPage(channel: channel)
+				case nil:
+					Text("NebulaSwift")
+				}
+			}
+			.navigationDestination(for: Channel.self) { channel in
 				ChannelPage(channel: channel)
-			case nil:
-				Text("NebulaSwift")
+			}
+			.environment(\.openItem) { item in
+				navigationPath.append(item)
 			}
 		}
 	}

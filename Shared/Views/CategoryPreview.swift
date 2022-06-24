@@ -41,8 +41,6 @@ struct CategoryPreview: View {
 					throw CategoryPreviewError.categoryNotFound
 				}
 				return category
-			} destination: { category in
-				CategoryPage(category: category, initialViewType: target)
 			} label: { status in
 				ZStack {
 					label
@@ -50,6 +48,9 @@ struct CategoryPreview: View {
 						ProgressView()
 					}
 				}
+			}
+			.navigationDestination(for: Category.self) { category in
+				CategoryPage(category: category, initialViewType: target)
 			}
 		}
 	}

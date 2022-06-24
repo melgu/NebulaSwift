@@ -7,22 +7,20 @@
 
 import SwiftUI
 
-struct AsyncNavigationLink<Item, Destination: View, Label: View>: View {
+struct AsyncNavigationLink<Item: Hashable, Label: View>: View {
 	let fetch: () async throws -> Item
-	let destination: (Item) -> Destination
 	let label: (Status<Item>) -> Label
 	
+	@Environment(\.openItem) private var openItem
 	@Environment(\.errorHandler) private var errorHandler
 	
 	@State private var state: Status<Item> = .idle
 	
 	init(
 		fetch: @escaping () async throws -> Item,
-		destination: @escaping (Item) -> Destination,
-		@ViewBuilder label: @escaping (AsyncNavigationLink<Item, Destination, Label>.Status<Item>) -> Label
+		@ViewBuilder label: @escaping (AsyncNavigationLink<Item, Label>.Status<Item>) -> Label
 	) {
 		self.fetch = fetch
-		self.destination = destination
 		self.label = label
 	}
 	
@@ -32,15 +30,13 @@ struct AsyncNavigationLink<Item, Destination: View, Label: View>: View {
 				state = .loading
 				let item = try await fetch()
 				state = .success(item)
+				openItem(item)
 			} catch {
 				state = .failure(error)
 				errorHandler(error)
 			}
 		} label: {
 			label(state)
-		}
-		.navigation(item: $state.value) { item in
-			destination(item)
 		}
 	}
 }
@@ -73,11 +69,9 @@ extension AsyncNavigationLink {
 
 struct AsyncNavigationLink_Previews: PreviewProvider {
     static var previews: some View {
-		AsyncNavigationLink {
+		AsyncNavigationLink<String, _> {
 			try await Task.sleep(nanoseconds: 2_000_000_000)
 			return "Destination"
-		} destination: { item in
-			Text(verbatim: item)
 		} label: { status in
 			switch status {
 			case .idle:
