@@ -65,6 +65,10 @@ struct VideoContextMenu: ViewModifier {
 				}
 				Divider()
 				ShareLink(item: video.shareUrl)
+			} preview: {
+				LiveVideoPreviewView(video: video)
+					.environmentObject(api)
+					.padding(.vertical)
 			}
 	}
 	
@@ -125,6 +129,9 @@ struct ChannelContextMenu: ViewModifier {
 					Divider()
 				}
 				ShareLink(item: channel.shareUrl)
+			} preview: {
+				ChannelPreviewView(channel: channel)
+					.padding(.vertical)
 			}
 	}
 }

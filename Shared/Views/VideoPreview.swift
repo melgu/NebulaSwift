@@ -6,6 +6,10 @@
 //
 
 import SwiftUI
+import Combine
+import AVKit
+
+// MARK: - Environment
 
 private struct GoToChannelEnabledKey: EnvironmentKey {
 	static let defaultValue = true
@@ -24,6 +28,8 @@ extension View {
 	}
 }
 
+// MARK: Video Preview
+
 struct VideoPreview: View {
 	let video: Video
 	
@@ -40,8 +46,14 @@ struct VideoPreview: View {
 	}
 }
 
-struct VideoPreviewView: View {
+struct VideoPreviewView<Overlay: View>: View {
 	let video: Video
+	let overlay: () -> Overlay
+	
+	init(video: Video, @ViewBuilder overlay: @escaping () -> Overlay) {
+		self.video = video
+		self.overlay = overlay
+	}
 	
 	var body: some View {
 		VStack(alignment: .leading) {
@@ -55,6 +67,7 @@ struct VideoPreviewView: View {
 			}
 			.overlay(length)
 			.overlay(progressBar)
+			.overlay(overlay())
 			.cornerRadius(8)
 			
 			HStack(alignment: .top) {
@@ -77,9 +90,6 @@ struct VideoPreviewView: View {
 			}
 		}
 		.lineLimit(2)
-		#if canImport(UIKit)
-		.background(Color.primary.colorInvert())
-		#endif
 	}
 	
 	private var length: some View {
@@ -102,6 +112,59 @@ struct VideoPreviewView: View {
 		if let progress = video.engagement?.progress, progress != 0 {
 			ProgressView(value: Double(progress) / Double(video.duration))
 				.frame(maxHeight: .infinity, alignment: .bottom)
+		}
+	}
+}
+
+extension VideoPreviewView where Overlay == EmptyView {
+	init(video: Video) {
+		self.video = video
+		self.overlay = { EmptyView() }
+	}
+}
+
+struct LiveVideoPreviewView: View {
+	let video: Video
+	
+	@EnvironmentObject private var api: API
+	
+	@State private var player = AVPlayer()
+	@State private var task: Task<Void, Error>?
+	@State private var readyToPlay = false
+	@State private var cancellable: AnyCancellable?
+	
+	var body: some View {
+		VideoPreviewView(video: video) {
+			if readyToPlay {
+				VideoPlayer(player: player)
+					.transition(.opacity)
+			}
+		}
+		.task {
+			cancellable = player.publisher(for: \.status)
+				.print("Video Preview")
+				.filter { $0 == .readyToPlay }
+				.sink { _ in
+					Task {
+						await player.preroll(atRate: 1)
+						withAnimation { self.readyToPlay = true }
+						player.play()
+					}
+				}
+			
+			task = Task {
+				let stream = try await api.stream(for: video)
+				let item = AVPlayerItem(url: stream.manifest)
+				player.replaceCurrentItem(with: item)
+				if let progress = video.engagement?.progress {
+					await player.seek(to: CMTime(seconds: Double(progress), preferredTimescale: 1))
+				}
+			}
+			try await task?.value
+		}
+		.onDisappear {
+			task?.cancel()
+			player.replaceCurrentItem(with: nil)
 		}
 	}
 }
