@@ -34,6 +34,8 @@ import os.log
 		pipController?.canStartPictureInPictureAutomaticallyFromInline = true
 		#endif
 		
+		player.preventsDisplaySleepDuringVideoPlayback = true
+		
 		player.publisher(for: \.rate)
 			.sink { [unowned self] rate in
 				if rate.isZero {
