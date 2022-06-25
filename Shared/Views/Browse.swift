@@ -19,10 +19,13 @@ struct Browse: View {
 			ScrollView(.horizontal) {
 				HStack {
 					ForEach(categories) { category in
-						CategoryPreview(category: category, target: viewType)
+						CategoryPreview(category: category)
 					}
 				}
 				.padding()
+			}
+			.navigationDestination(for: Category.self) { category in
+				CategoryPage(category: category, initialViewType: viewType)
 			}
 			switch viewType {
 			case .videos:
