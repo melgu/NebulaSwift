@@ -53,7 +53,7 @@ extension API {
 	}
 	
 	func channels(for category: Category, page: Int, pageSize: Int = 24) async throws -> [Channel] {
-		let url = URL(string: "https://content.watchnebula.com/video/channels/?category=\(category)&page=\(page)&page_size=\(pageSize)")!
+		let url = URL(string: "https://content.watchnebula.com/video/channels/?category=\(category.slug)&page=\(page)&page_size=\(pageSize)")!
 		let response: ListContainer<Channel> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}
