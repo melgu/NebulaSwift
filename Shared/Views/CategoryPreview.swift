@@ -10,28 +10,23 @@ import SwiftUI
 struct CategoryPreview: View {
 	let slug: String
 	let category: Category?
-	let target: ContentType
 	
 	@EnvironmentObject private var api: API
 	@EnvironmentObject private var player: Player
 	
-	init(slug: String, target: ContentType) {
+	init(slug: String) {
 		self.slug = slug
 		self.category = nil
-		self.target = target
 	}
 	
-	init(category: Category, target: ContentType) {
+	init(category: Category) {
 		self.slug = category.slug
 		self.category = category
-		self.target = target
 	}
 	
 	var body: some View {
 		if let category = category {
-			NavigationLink {
-				CategoryPage(category: category, initialViewType: target)
-			} label: {
+			NavigationLink(value: category) {
 				label
 			}
 		} else {
@@ -48,9 +43,6 @@ struct CategoryPreview: View {
 						ProgressView()
 					}
 				}
-			}
-			.navigationDestination(for: Category.self) { category in
-				CategoryPage(category: category, initialViewType: target)
 			}
 		}
 	}
@@ -75,8 +67,8 @@ struct CategoryPreview_Previews: PreviewProvider {
 	
     static var previews: some View {
 		Group {
-			CategoryPreview(slug: "animation", target: .videos)
-			CategoryPreview(slug: "animation", target: .channels)
+			CategoryPreview(slug: "animation")
+			CategoryPreview(slug: "animation")
 		}
 		.environmentObject(api)
 		.environmentObject(Player(api: api))

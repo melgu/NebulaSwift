@@ -66,8 +66,11 @@ struct VideoPage: View {
 			if let categorySlugs = video.categorySlugs {
 				HStack {
 					ForEach(categorySlugs, id: \.self) { slug in
-						CategoryPreview(slug: slug, target: .videos)
+						CategoryPreview(slug: slug)
 					}
+				}
+				.navigationDestination(for: Category.self) { category in
+					CategoryPage(category: category, initialViewType: .videos)
 				}
 			}
 		}
