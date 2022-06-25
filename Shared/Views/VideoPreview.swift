@@ -110,7 +110,7 @@ struct VideoPreviewView<Overlay: View>: View {
 	@ViewBuilder
 	private var progressBar: some View {
 		if let progress = video.engagement?.progress, progress != 0 {
-			ProgressView(value: Double(progress) / Double(video.duration))
+			ProgressView(value: Double(progress), total: Double(video.duration))
 				.frame(maxHeight: .infinity, alignment: .bottom)
 		}
 	}
