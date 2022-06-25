@@ -65,8 +65,7 @@ struct VideoPreviewView<Overlay: View>: View {
 				Color.black
 					.aspectRatio(16/9, contentMode: .fit)
 			}
-			.overlay(length)
-			.overlay(progressBar)
+			.overlay(progressAndDuration)
 			.overlay(overlay())
 			.cornerRadius(8)
 			
@@ -92,27 +91,26 @@ struct VideoPreviewView<Overlay: View>: View {
 		.lineLimit(2)
 	}
 	
-	private var length: some View {
-		HStack(spacing: 2) {
-			if video.attributes.contains(.isNebulaPlus) {
-				Image(systemName: "plus")
-					.foregroundColor(.accentColor)
+	private var progressAndDuration: some View {
+		HStack {
+			if let progress = video.engagement?.progress, progress != 0 {
+				ProgressView(value: Double(progress), total: Double(video.duration))
+					.progressViewStyle(.watchTime)
 			}
-			Text((Date.now..<Date.now + Double(video.duration)).formatted(.timeDuration))
+			
+			HStack(spacing: 2) {
+				if video.attributes.contains(.isNebulaPlus) {
+					Image(systemName: "plus")
+						.foregroundColor(.accentColor)
+				}
+				Text((Date.now..<Date.now + Double(video.duration)).formatted(.timeDuration))
+			}
+			.font(.caption)
+			.padding(2)
+			.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
 		}
-		.font(.caption)
-		.padding(2)
-		.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
 		.padding(8)
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-	}
-	
-	@ViewBuilder
-	private var progressBar: some View {
-		if let progress = video.engagement?.progress, progress != 0 {
-			ProgressView(value: Double(progress), total: Double(video.duration))
-				.frame(maxHeight: .infinity, alignment: .bottom)
-		}
 	}
 }
 
