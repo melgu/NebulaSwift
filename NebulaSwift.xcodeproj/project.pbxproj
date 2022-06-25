@@ -49,6 +49,7 @@
 		B0E5BA3227FF6869001D8403 /* ChannelPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3127FF6869001D8403 /* ChannelPage.swift */; };
 		B0E5BA3527FF6C85001D8403 /* API+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3427FF6C85001D8403 /* API+Search.swift */; };
 		B0E5BA3827FF6CEB001D8403 /* ListContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E5BA3727FF6CEB001D8403 /* ListContainer.swift */; };
+		B0ED79B628672F7D0009F8EB /* VideoProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0ED79B528672F7D0009F8EB /* VideoProgress.swift */; };
 		B0FA4424281C5801002554A7 /* ContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0FA4423281C5801002554A7 /* ContentType.swift */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +98,7 @@
 		B0E5BA3127FF6869001D8403 /* ChannelPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelPage.swift; sourceTree = "<group>"; };
 		B0E5BA3427FF6C85001D8403 /* API+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Search.swift"; sourceTree = "<group>"; };
 		B0E5BA3727FF6CEB001D8403 /* ListContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListContainer.swift; sourceTree = "<group>"; };
+		B0ED79B528672F7D0009F8EB /* VideoProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoProgress.swift; sourceTree = "<group>"; };
 		B0FA4423281C5801002554A7 /* ContentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -179,6 +181,7 @@
 				B0E5BA3127FF6869001D8403 /* ChannelPage.swift */,
 				B0E5BA2E27FF66B1001D8403 /* VideoGrid.swift */,
 				B0E5BA2527FF6274001D8403 /* VideoPreview.swift */,
+				B0ED79B528672F7D0009F8EB /* VideoProgress.swift */,
 				B0E5BA2827FF62D3001D8403 /* VideoPage.swift */,
 				B0AA74B22829C2EE001B778B /* CategoryPreview.swift */,
 				B0AA74B52829C7A5001B778B /* CategoryPage.swift */,
@@ -277,6 +280,7 @@
 				B0045976271FB9D9002C7974 /* Network.swift in Sources */,
 				B0E5BA2F27FF66B1001D8403 /* VideoGrid.swift in Sources */,
 				B0DF9FB0268A36D900EF9392 /* API+Login.swift in Sources */,
+				B0ED79B628672F7D0009F8EB /* VideoProgress.swift in Sources */,
 				B0B7EED428009C3F007D3682 /* ChannelPreview.swift in Sources */,
 				B0508A3126856FDA006FED7E /* Downloads.swift in Sources */,
 				B0AA74B62829C7A5001B778B /* CategoryPage.swift in Sources */,
