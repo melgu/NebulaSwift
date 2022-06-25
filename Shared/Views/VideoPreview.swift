@@ -48,11 +48,11 @@ struct VideoPreview: View {
 
 struct VideoPreviewView<Overlay: View>: View {
 	let video: Video
-	let overlay: () -> Overlay
+	let externalOverlay: () -> Overlay
 	
 	init(video: Video, @ViewBuilder overlay: @escaping () -> Overlay) {
 		self.video = video
-		self.overlay = overlay
+		self.externalOverlay = overlay
 	}
 	
 	var body: some View {
@@ -65,8 +65,8 @@ struct VideoPreviewView<Overlay: View>: View {
 				Color.black
 					.aspectRatio(16/9, contentMode: .fit)
 			}
-			.overlay(progressAndDuration)
-			.overlay(overlay())
+			.overlay(informationOverlay)
+			.overlay(externalOverlay())
 			.cornerRadius(8)
 			
 			HStack(alignment: .top) {
@@ -91,23 +91,31 @@ struct VideoPreviewView<Overlay: View>: View {
 		.lineLimit(2)
 	}
 	
-	private var progressAndDuration: some View {
-		HStack {
-			if let progress = video.engagement?.progress, progress != 0 {
-				ProgressView(value: Double(progress), total: Double(video.duration))
-					.progressViewStyle(.watchTime)
+	private var informationOverlay: some View {
+		VStack(alignment: .trailing) {
+			if video.engagement?.watchLater == true {
+				Image(systemName: "bookmark")
+					.padding(2)
+					.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
 			}
-			
-			HStack(spacing: 2) {
-				if video.attributes.contains(.isNebulaPlus) {
-					Image(systemName: "plus")
-						.foregroundColor(.accentColor)
+			Spacer()
+			HStack {
+				if let progress = video.engagement?.progress, progress != 0 {
+					ProgressView(value: Double(progress), total: Double(video.duration))
+						.progressViewStyle(.watchTime)
 				}
-				Text((Date.now..<Date.now + Double(video.duration)).formatted(.timeDuration))
+				
+				HStack(spacing: 2) {
+					if video.attributes.contains(.isNebulaPlus) {
+						Image(systemName: "plus")
+							.foregroundColor(.accentColor)
+					}
+					Text((Date.now..<Date.now + Double(video.duration)).formatted(.timeDuration))
+				}
+				.font(.caption)
+				.padding(2)
+				.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
 			}
-			.font(.caption)
-			.padding(2)
-			.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
 		}
 		.padding(8)
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
@@ -117,7 +125,7 @@ struct VideoPreviewView<Overlay: View>: View {
 extension VideoPreviewView where Overlay == EmptyView {
 	init(video: Video) {
 		self.video = video
-		self.overlay = { EmptyView() }
+		self.externalOverlay = { EmptyView() }
 	}
 }
 
