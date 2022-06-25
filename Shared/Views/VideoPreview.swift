@@ -94,7 +94,7 @@ struct VideoPreviewView<Overlay: View>: View {
 	private var informationOverlay: some View {
 		VStack(alignment: .trailing) {
 			if video.engagement?.watchLater == true {
-				Image(systemName: "bookmark")
+				Image(systemName: "bookmark.fill")
 					.padding(2)
 					.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
 			}
