@@ -21,15 +21,16 @@ struct VideoContextMenu: ViewModifier {
 	@EnvironmentObject private var api: API
 	
 	@Environment(\.goToChannelEnabled) private var goToChannelEnabled
-	@Environment(\.openItem) private var openItem
 	@Environment(\.refresh) private var refresh
 	
 	func body(content: Content) -> some View {
 		content
 			.contextMenu {
 				if goToChannelEnabled {
-					Button(video.channelTitle) {
-						showChannel(slug: video.channelSlug)
+					AsyncNavigationLink {
+						try await api.channel(for: video.channelSlug)
+					} label: { _ in
+						Text(video.channelTitle)
 					}
 					Divider()
 				}
@@ -70,17 +71,6 @@ struct VideoContextMenu: ViewModifier {
 					.environmentObject(api)
 					.padding(.vertical)
 			}
-	}
-	
-	private func showChannel(slug: String) {
-		Task {
-			do {
-				let channel = try await api.channel(for: slug)
-				openItem(channel)
-			} catch {
-				print(error)
-			}
-		}
 	}
 }
 
