@@ -68,36 +68,28 @@ struct AutoVideoGrid: View {
 		}
 		.task {
 			print("Load Videos")
-			await refreshVideos()
+			try await refreshVideos()
 		}
 	}
 	
 	private var refreshButton: some View {
 		AsyncButton {
 			print("Refresh Videos")
-			await refreshVideos(animated: true)
+			try await refreshVideos()
 		} label: {
 			Image(systemName: "arrow.clockwise")
 		}
 		.asyncButtonStyle(.progress)
 	}
 	
-	private func refreshVideos(animated: Bool = false) async {
-		do {
-			let newVideos = try await fetch(1)
-			if newVideos != videos {
-				print("Video list changed")
-				page = 1
-				if animated {
-					withAnimation {
-						videos = newVideos
-					}
-				} else {
-					videos = newVideos
-				}
+	private func refreshVideos() async throws {
+		let newVideos = try await fetch(1)
+		if newVideos != videos {
+			print("Video list changed")
+			page = 1
+			withAnimation {
+				videos = newVideos
 			}
-		} catch {
-			print(error)
 		}
 	}
 }
