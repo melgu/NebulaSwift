@@ -51,6 +51,57 @@ extension View {
 	}
 }
 
+// MARK: - onTapGesture
+
+fileprivate struct OnTapGestureModifier: ViewModifier {
+	let count: Int
+	let action: @Sendable () async throws -> Void
+	
+	@Environment(\.errorHandler) private var errorHandler
+	
+	func body(content: Content) -> some View {
+		content.onTapGesture(count: count) {
+			Task {
+				do {
+					try await action()
+				} catch {
+					errorHandler(error)
+				}
+			}
+		}
+	}
+}
+
+fileprivate struct OnTapGestureWithCoordinateModifier: ViewModifier {
+	let count: Int
+	let coordinateSpace: CoordinateSpace
+	let action: @MainActor @Sendable (CGPoint) async throws -> Void
+	
+	@Environment(\.errorHandler) private var errorHandler
+	
+	func body(content: Content) -> some View {
+		content.onTapGesture(count: count, coordinateSpace: coordinateSpace) { point in
+			Task {
+				do {
+					try await action(point)
+				} catch {
+					errorHandler(error)
+				}
+			}
+		}
+	}
+}
+
+extension View {
+	func onTapGesture(count: Int = 1, perform action: @escaping @MainActor @Sendable () async throws -> Void) -> some View {
+		modifier(OnTapGestureModifier(count: count, action: action))
+	}
+	
+	func onTapGesture(count: Int = 1, coordinateSpace: CoordinateSpace = .local, perform action: @escaping @MainActor @Sendable (CGPoint) async throws -> Void) -> some View {
+		modifier(OnTapGestureWithCoordinateModifier(count: count, coordinateSpace: coordinateSpace, action: action))
+	}
+}
+
 // MARK: - task
 
 fileprivate struct TaskModifier: ViewModifier {
