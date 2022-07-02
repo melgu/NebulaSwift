@@ -68,36 +68,28 @@ struct AutoChannelGrid: View {
 		}
 		.task {
 			print("Load Channels")
-			await refreshChannels()
+			try await refreshChannels()
 		}
 	}
 	
 	private var refreshButton: some View {
 		AsyncButton {
 			print("Refresh Channels")
-			await refreshChannels(animated: true)
+			try await refreshChannels()
 		} label: {
 			Image(systemName: "arrow.clockwise")
 		}
 		.asyncButtonStyle(.progress)
 	}
 	
-	private func refreshChannels(animated: Bool = false) async {
-		do {
-			let newChannels = try await fetch(1)
-			if newChannels != channels {
-				print("Video list changed")
-				page = 1
-				if animated {
-					withAnimation {
-						channels = newChannels
-					}
-				} else {
-					channels = newChannels
-				}
+	private func refreshChannels() async throws {
+		let newChannels = try await fetch(1)
+		if newChannels != channels {
+			print("Video list changed")
+			page = 1
+			withAnimation {
+				channels = newChannels
 			}
-		} catch {
-			print(error)
 		}
 	}
 }
