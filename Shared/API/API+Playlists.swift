@@ -42,4 +42,22 @@ extension API {
 	func removeVideoFromWatchLater(_ video: Video) async throws {
 		try await removeVideo(video, fromPlaylist: "watch-later")
 	}
+	
+	func toggleWatchLater(for video: Video) async throws {
+		let watchLater: Bool
+		if let engagementWatchLater = video.engagement?.watchLater {
+			watchLater = engagementWatchLater
+		} else {
+			let video = try await self.video(for: video.slug)
+			guard let engagementWatchLater = video.engagement?.watchLater else {
+				throw APIError.missingEngagement
+			}
+			watchLater = engagementWatchLater
+		}
+		if watchLater {
+			try await removeVideoFromWatchLater(video)
+		} else {
+			try await addVideoToWatchLater(video)
+		}
+	}
 }

@@ -13,6 +13,7 @@ enum APIError: LocalizedError {
 	case missingToken
 	case missingBearer
 	case missingZypeAccessToken
+	case missingEngagement
 }
 
 extension APIError {
@@ -24,6 +25,8 @@ extension APIError {
 			return "Network issues"
 		case .missingToken, .missingBearer, .missingZypeAccessToken:
 			return "Missing authorization"
+		case .missingEngagement:
+			return "Missing engagement information"
 		}
 	}
 }
