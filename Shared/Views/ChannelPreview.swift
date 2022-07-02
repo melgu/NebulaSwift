@@ -13,9 +13,7 @@ struct ChannelPreview: View {
 	@EnvironmentObject private var api: API
 	
 	var body: some View {
-		NavigationLink {
-			ChannelPage(channel: channel)
-		} label: {
+		NavigationLink(value: channel) {
 			ChannelPreviewView(channel: channel)
 		}
 		.buttonStyle(.plain)
