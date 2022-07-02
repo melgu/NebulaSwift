@@ -55,6 +55,9 @@ struct AutoChannelGrid: View {
 			}
 			.padding()
 		}
+		.refreshable {
+			try await refreshChannels()
+		}
 		.toolbar {
 			#if canImport(UIKit)
 			ToolbarItem(placement: .navigationBarTrailing) {
