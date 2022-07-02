@@ -106,9 +106,16 @@ struct ContentView: View {
 				}
 			}
 			.navigationDestination(for: Channel.self) { channel in
+				#if os(macOS)
+				NavigationStack {
+					ChannelPage(channel: channel)
+				}
+				#else
 				ChannelPage(channel: channel)
+				#endif
 			}
 			.environment(\.openItem) { item in
+				print("Open Item: \(item)")
 				navigationPath.append(item)
 			}
 		}
