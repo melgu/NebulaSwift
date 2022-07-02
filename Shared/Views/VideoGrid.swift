@@ -55,6 +55,9 @@ struct AutoVideoGrid: View {
 			}
 			.padding()
 		}
+		.refreshable {
+			try await refreshVideos()
+		}
 		.toolbar {
 			#if canImport(UIKit)
 			ToolbarItem(placement: .navigationBarTrailing) {
