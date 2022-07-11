@@ -29,6 +29,12 @@ struct Video: Decodable, Equatable {
 extension Video: Identifiable {
 	var id: String { slug + "\(engagement?.progress ?? 0)" }
 }
+extension Video: Hashable {
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(slug)
+		hasher.combine(engagement)
+	}
+}
 
 extension Video {
 	struct Assets: Decodable, Equatable {
@@ -46,7 +52,7 @@ extension Video {
 		case isNebulaOriginal = "is_nebula_original"
 	}
 
-	struct Engagement: Decodable, Equatable {
+	struct Engagement: Decodable, Equatable, Hashable {
 		let contentSlug: String
 		let updatedAt: Date
 		let progress: Int
