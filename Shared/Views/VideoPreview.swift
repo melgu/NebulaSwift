@@ -36,9 +36,7 @@ struct VideoPreview: View {
 	@EnvironmentObject private var api: API
 	
 	var body: some View {
-		NavigationLink {
-			VideoPage(video: video)
-		} label: {
+		NavigationLink(value: video) {
 			VideoPreviewView(video: video)
 		}
 		.buttonStyle(.plain)
