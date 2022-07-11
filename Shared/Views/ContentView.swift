@@ -55,6 +55,26 @@ struct ContentView: View {
 				}
 			}
 		}
+		.onContinueUserActivity("de.melgu.NebulaSwift.video") { activity in
+			print("Continue User Activity. Video: \(String(describing: activity.webpageURL))")
+			Task {
+				guard let url = activity.webpageURL else { return }
+				let slug = url.lastPathComponent
+				guard !slug.isEmpty else { return }
+				let video = try await api.video(for: slug)
+				navigationPath.append(video)
+			}
+		}
+		.onContinueUserActivity("de.melgu.NebulaSwift.channel") { activity in
+			print("Continue User Activity. Channel: \(String(describing: activity.webpageURL))")
+			Task {
+				guard let url = activity.webpageURL else { return }
+				let slug = url.lastPathComponent
+				guard !slug.isEmpty else { return }
+				let channel = try await api.channel(for: slug)
+				navigationPath.append(channel)
+			}
+		}
 		.alertErrorHandling()
 	}
 	
