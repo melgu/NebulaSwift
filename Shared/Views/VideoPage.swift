@@ -29,6 +29,10 @@ struct VideoPage: View {
 			}
 			#endif
 		}
+		.userActivity("de.melgu.NebulaSwift.video") { activity in
+			activity.title = video.title
+			activity.webpageURL = video.shareUrl
+		}
 	}
 	
 	private var videoPlayer: some View {

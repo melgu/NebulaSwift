@@ -61,6 +61,10 @@ struct ChannelPage: View {
 		}
 		#endif
 		.onAppear { player.reset() }
+		.userActivity("de.melgu.NebulaSwift.channel") { activity in
+			activity.title = channel.title
+			activity.webpageURL = channel.shareUrl
+		}
 	}
 }
 
