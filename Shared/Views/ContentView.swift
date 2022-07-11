@@ -36,6 +36,25 @@ struct ContentView: View {
 				Login()
 			}
 		}
+		.onOpenURL { url in
+			print("Open URL: \(url)")
+			Task {
+				switch url.host() {
+				case "video":
+					// nebulaswift://video/slug
+					guard let slug = url.pathComponents.last else { return }
+					let video = try await api.video(for: slug)
+					navigationPath.append(video)
+				case "channel":
+					// nebulaswift://channel/slug
+					guard let slug = url.pathComponents.last else { return }
+					let channel = try await api.channel(for: slug)
+					navigationPath.append(channel)
+				default:
+					print("Unknown type: \(url.host() ?? "nil")")
+				}
+			}
+		}
 		.alertErrorHandling()
 	}
 	
