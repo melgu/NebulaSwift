@@ -37,23 +37,15 @@ struct VideoContextMenu: ViewModifier {
 				if let engagement = video.engagement {
 					if engagement.watchLater {
 						AsyncButton {
-							do {
-								try await api.removeVideoFromWatchLater(video)
-								await refresh?()
-							} catch {
-								print(error)
-							}
+							try await api.removeVideoFromWatchLater(video)
+							await refresh?()
 						} label: {
 							Label("Remove from Watch Later", systemImage: "bookmark.slash")
 						}
 					} else {
 						AsyncButton {
-							do {
-								try await api.addVideoToWatchLater(video)
-								await refresh?()
-							} catch {
-								print(error)
-							}
+							try await api.addVideoToWatchLater(video)
+							await refresh?()
 						} label: {
 							Label("Add to Watch Later", systemImage: "bookmark")
 						}
@@ -95,23 +87,15 @@ struct ChannelContextMenu: ViewModifier {
 				if let engagement = channel.engagement {
 					if engagement.following {
 						AsyncButton {
-							do {
-								try await api.unfollow(channel)
-								await refresh?()
-							} catch {
-								print(error)
-							}
+							try await api.unfollow(channel)
+							await refresh?()
 						} label: {
 							Label("Unfollow", systemImage: "person.fill.badge.minus")
 						}
 					} else {
 						AsyncButton {
-							do {
-								try await api.follow(channel)
-								await refresh?()
-							} catch {
-								print(error)
-							}
+							try await api.follow(channel)
+							await refresh?()
 						} label: {
 							Label("Follow", systemImage: "person.fill.badge.plus")
 						}

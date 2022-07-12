@@ -69,12 +69,8 @@ struct VideoPage: View {
 			.overlay(CustomVideoPlayer())
 			.task {
 				print("Load Video Stream Info")
-				do {
-					try await player.replaceVideo(with: video)
-					player.play()
-				} catch {
-					print(error)
-				}
+				try await player.replaceVideo(with: video)
+				player.play()
 			}
 	}
 	
