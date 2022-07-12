@@ -43,12 +43,8 @@ struct AutoVideoGrid: View {
 						.task {
 							if video == videos.last {
 								print("Last video did appear, loading next page")
-								do {
-									videos += try await fetch(page + 1)
-									page += 1
-								} catch {
-									print(error)
-								}
+								videos += try await fetch(page + 1)
+								page += 1
 							}
 						}
 				}

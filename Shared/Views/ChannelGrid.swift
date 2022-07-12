@@ -43,12 +43,8 @@ struct AutoChannelGrid: View {
 						.task {
 							if channel == channels.last {
 								print("Last channel did appear, loading next page")
-								do {
-									channels += try await fetch(page + 1)
-									page += 1
-								} catch {
-									print(error)
-								}
+								channels += try await fetch(page + 1)
+								page += 1
 							}
 						}
 				}
