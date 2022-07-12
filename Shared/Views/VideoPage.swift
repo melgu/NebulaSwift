@@ -13,6 +13,15 @@ struct VideoPage: View {
 	@EnvironmentObject private var api: API
 	@EnvironmentObject private var player: Player
 	
+	@Environment(\.refresh) private var refresh
+	
+	@State private var watchLater: Bool?
+	
+	init(video: Video) {
+		self.video = video
+		self._watchLater = State(initialValue: video.engagement?.watchLater)
+	}
+	
 	var body: some View {
 		ScrollView {
 			VStack(alignment: .leading) {
@@ -24,6 +33,25 @@ struct VideoPage: View {
 			#if canImport(UIKit)
 			.toolbar {
 				ToolbarItem(placement: .navigationBarTrailing) {
+					if let watchLater = watchLater {
+						if watchLater {
+							AsyncButton {
+								try await api.removeVideoFromWatchLater(video)
+								self.watchLater = false
+								await refresh?()
+							} label: {
+								Label("Remove from Watch Later", systemImage: "bookmark.fill")
+							}
+						} else {
+							AsyncButton {
+								try await api.addVideoToWatchLater(video)
+								self.watchLater = false
+								await refresh?()
+							} label: {
+								Label("Add to Watch Later", systemImage: "bookmark")
+							}
+						}
+					}
 					ShareLink(item: video.shareUrl)
 				}
 			}
