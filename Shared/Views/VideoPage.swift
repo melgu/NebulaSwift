@@ -32,7 +32,7 @@ struct VideoPage: View {
 			.navigationTitle(video.title)
 			#if canImport(UIKit)
 			.toolbar {
-				ToolbarItem(placement: .navigationBarTrailing) {
+				ToolbarItemGroup(placement: .navigationBarTrailing) {
 					if let watchLater = watchLater {
 						if watchLater {
 							AsyncButton {
