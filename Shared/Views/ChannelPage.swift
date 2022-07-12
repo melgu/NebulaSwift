@@ -34,28 +34,18 @@ struct ChannelPage: View {
 				if let following = following {
 					if following {
 						AsyncButton("Unfollow") {
-							do {
-								try await api.unfollow(channel)
-								self.following = false
-								await refresh?()
-							} catch {
-								print(error)
-							}
+							try await api.unfollow(channel)
+							self.following = false
+							await refresh?()
 						}
 					} else {
 						AsyncButton("Follow") {
-							do {
-								try await api.follow(channel)
-								self.following = true
-								await refresh?()
-							} catch {
-								print(error)
-							}
+							try await api.follow(channel)
+							self.following = true
+							await refresh?()
 						}
 					}
 				}
-			}
-			ToolbarItem(placement: .navigationBarTrailing) {
 				ShareLink(item: channel.shareUrl)
 			}
 		}
