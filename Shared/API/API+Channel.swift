@@ -12,7 +12,7 @@ struct ChannelEpisodesContainer: Decodable {
 	let episodes: ListContainer<Video>
 }
 
-struct Channel: Decodable, Equatable {
+struct Channel: Decodable, Equatable, Sendable {
 	let slug: String
 	let title: String
 	let resultDescription: String?
