@@ -30,7 +30,7 @@ struct ChannelPage: View {
 		.navigationTitle(channel.title)
 		#if canImport(UIKit)
 		.toolbar {
-			ToolbarItem(placement: .navigationBarTrailing) {
+			ToolbarItemGroup(placement: .navigationBarTrailing) {
 				if let following = following {
 					if following {
 						AsyncButton("Unfollow") {
