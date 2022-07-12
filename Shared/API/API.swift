@@ -30,10 +30,10 @@ import os.log
 	let logger = Logger(category: "API")
 	
 	init() {
-		print("Token: \(storage.token ?? "nil")")
-		print("Authorization: \(storage.bearer ?? "nil")")
-		print("Zype Access Token: \(storage.zypeAuthInfo.accessToken ?? "nil")")
-		print("Zype Refresh: \(storage.zypeAuthInfo.refreshToken ?? "nil")")
+		logger.debug("Token: \(self.storage.token ?? "nil")")
+		logger.debug("Authorization: \(self.storage.bearer ?? "nil")")
+		logger.debug("Zype Access Token: \(self.storage.zypeAuthInfo.accessToken ?? "nil")")
+		logger.debug("Zype Refresh: \(self.storage.zypeAuthInfo.refreshToken ?? "nil")")
 		
 		storage.$token
 			.combineLatest(storage.$bearer, storage.zypeAuthInfo.$accessToken)
