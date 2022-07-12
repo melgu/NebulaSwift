@@ -43,8 +43,12 @@ struct AutoChannelGrid: View {
 						.task {
 							if channel == channels.last {
 								print("Last channel did appear, loading next page")
-								channels += try await fetch(page + 1)
-								page += 1
+								do {
+									channels += try await fetch(page + 1)
+									page += 1
+								} catch APIError.invalidServerResponse(errorCode: 404) {
+									print("Last page")
+								}
 							}
 						}
 				}
