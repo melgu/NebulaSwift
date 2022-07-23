@@ -59,15 +59,9 @@ struct AutoChannelGrid: View {
 			try await refreshChannels()
 		}
 		.toolbar {
-			#if canImport(UIKit)
-			ToolbarItem(placement: .navigationBarTrailing) {
+			ToolbarItem(placement: .primaryAction) {
 				refreshButton
 			}
-			#else
-			ToolbarItem(placement: .navigation) {
-				refreshButton
-			}
-			#endif
 		}
 		.task {
 			print("Load Channels")
