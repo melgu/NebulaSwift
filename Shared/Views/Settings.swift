@@ -19,7 +19,7 @@ struct SettingsView: View {
 			content
 			.navigationTitle("Settings")
 			.toolbar {
-				ToolbarItem(placement: .navigationBarTrailing) {
+				ToolbarItem(placement: .primaryAction) {
 					Button {
 						dismiss()
 					} label: {
@@ -63,7 +63,7 @@ fileprivate struct SettingsSheet: ViewModifier {
 		content
 		#if os(iOS)
 			.toolbar {
-				ToolbarItem(placement: .navigationBarTrailing) {
+				ToolbarItem(placement: .primaryAction) {
 					Button {
 						showSettings = true
 					} label: {
