@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: Info
 
-struct Video: Decodable, Equatable {
+struct Video: Codable, Equatable {
 	let slug: String
 	let title: String
 	let description: String
@@ -37,22 +37,22 @@ extension Video: Hashable {
 }
 
 extension Video {
-	struct Assets: Decodable, Equatable {
+	struct Assets: Codable, Equatable {
 		let channelAvatar: [String: Channel.Avatar]
 		let thumbnail: [String: Thumbnail]
 	}
 	
-	struct Thumbnail: Decodable, Equatable {
+	struct Thumbnail: Codable, Equatable {
 		let original: URL
 	}
 	
-	enum Attribute: String, Decodable, Equatable {
+	enum Attribute: String, Codable, Equatable {
 		case freeSampleEligible = "free_sample_eligible"
 		case isNebulaPlus = "is_nebula_plus"
 		case isNebulaOriginal = "is_nebula_original"
 	}
 
-	struct Engagement: Decodable, Equatable, Hashable {
+	struct Engagement: Codable, Equatable, Hashable {
 		let contentSlug: String
 		let updatedAt: Date
 		let progress: Int
