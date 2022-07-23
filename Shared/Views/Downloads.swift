@@ -12,7 +12,9 @@ struct Downloads: View {
 	@EnvironmentObject private var player: Player
 	
     var body: some View {
-		Text("Downloads")
+		Text("Coming soon…")
+			.foregroundColor(.secondary)
+			.navigationTitle("Downloads")
 			.onAppear { player.reset() }
     }
 }
