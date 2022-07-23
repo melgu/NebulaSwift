@@ -26,6 +26,8 @@ struct Login: View {
 			AsyncButton("Login") {
 				try await api.login(email: email, password: password)
 			}
+			.buttonStyle(.bordered)
+			.tint(.accentColor)
 		}
         .textFieldStyle(.roundedBorder)
 		.padding()
