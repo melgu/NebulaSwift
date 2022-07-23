@@ -108,6 +108,32 @@ struct ChannelContextMenu: ViewModifier {
 	}
 }
 
+// MARK: - Channel
+
+extension View {
+	func contextMenu(for podcast: Podcast) -> some View {
+		modifier(PodcastContextMenu(podcast: podcast))
+	}
+}
+
+struct PodcastContextMenu: ViewModifier {
+	let podcast: Podcast
+	
+	func body(content: Content) -> some View {
+		content
+			.contextMenu {
+				Button("Copy RSS URL") {
+					Pasteboard.copy(string: podcast.rssUrl.absoluteString)
+				}
+				Divider()
+				ShareLink(item: podcast.shareUrl)
+			} preview: {
+				PodcastPreviewView(podcast: podcast)
+					.padding(.vertical)
+			}
+	}
+}
+
 struct ContextMenus_Previews: PreviewProvider {
     static var previews: some View {
         Text("No preview")

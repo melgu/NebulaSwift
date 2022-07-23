@@ -13,7 +13,7 @@ enum AsyncButtonStyle {
 	case disabled
 	
 	/// Shows an indeterminate progress view without a label.
-	case progress
+	case progress(replacesLabel: Bool)
 }
 
 struct AsyncButton<Label: View>: View {
@@ -46,7 +46,7 @@ struct AsyncButton<Label: View>: View {
 			}
 		} label: {
 			label()
-				.opacity(showProgressView ? 0 : 1)
+				.opacity(hideLabel ? 0 : 1)
 				.overlay(progressView)
 		}
 		.disabled(isRunning)
@@ -62,8 +62,18 @@ struct AsyncButton<Label: View>: View {
 		}
 	}
 	
+	private var hideLabel: Bool {
+		if case .progress(true) = asyncButtonStyle {
+			return isRunning
+		}
+		return false
+	}
+	
 	private var showProgressView: Bool {
-		isRunning && asyncButtonStyle == .progress
+		if case .progress = asyncButtonStyle {
+			return isRunning
+		}
+		return false
 	}
 	
 	typealias Action = @MainActor @Sendable () async throws -> Void

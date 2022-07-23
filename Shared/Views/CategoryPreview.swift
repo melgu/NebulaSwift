@@ -39,7 +39,7 @@ struct CategoryPreview: View {
 			} label: { _ in
 				label
 			}
-			.asyncButtonStyle(.progress)
+			.asyncButtonStyle(.progress(replacesLabel: false))
 		}
 	}
 	

@@ -38,12 +38,8 @@ extension Video: Hashable {
 
 extension Video {
 	struct Assets: Codable, Equatable {
-		let channelAvatar: [String: Channel.Avatar]
-		let thumbnail: [String: Thumbnail]
-	}
-	
-	struct Thumbnail: Codable, Equatable {
-		let original: URL
+		let channelAvatar: [String: ImageResource]
+		let thumbnail: [String: ImageResource]
 	}
 	
 	enum Attribute: String, Codable, Equatable {
