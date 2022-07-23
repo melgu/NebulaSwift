@@ -12,7 +12,7 @@ struct ChannelEpisodesContainer: Decodable {
 	let episodes: ListContainer<Video>
 }
 
-struct Channel: Decodable, Equatable, Sendable {
+struct Channel: Codable, Equatable, Sendable {
 	let slug: String
 	let title: String
 	let resultDescription: String?
@@ -42,19 +42,19 @@ extension Channel: Hashable {
 }
 
 extension Channel {
-	struct Assets: Decodable, Equatable {
+	struct Assets: Codable, Equatable {
 		let avatar: [String: Avatar]
 		let banner: [String: Avatar]
 		let hero: [String: Avatar]?
 		let featured: [String: Avatar]
 	}
 	
-	struct Avatar: Decodable, Equatable {
+	struct Avatar: Codable, Equatable {
 		let original: URL
 		let webp: URL
 	}
 	
-	struct Engagement: Decodable, Equatable, Hashable {
+	struct Engagement: Codable, Equatable, Hashable {
 		let following: Bool
 		
 		func hash(into hasher: inout Hasher) {
