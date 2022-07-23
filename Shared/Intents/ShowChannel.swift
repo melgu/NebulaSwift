@@ -23,7 +23,7 @@ struct ShowChannel: AppIntent {
 		#if os(iOS)
 		await UIApplication.shared.open(url)
 		#else
-		await NSApplication.shared.open(url)
+		NSWorkspace.shared.open(url)
 		#endif
 		return .result()
 	}
