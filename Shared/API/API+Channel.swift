@@ -56,10 +56,6 @@ extension Channel {
 	
 	struct Engagement: Codable, Equatable, Hashable {
 		let following: Bool
-		
-		func hash(into hasher: inout Hasher) {
-			hasher.combine(following)
-		}
 	}
 }
 
