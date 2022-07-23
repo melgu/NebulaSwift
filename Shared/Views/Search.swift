@@ -61,7 +61,11 @@ struct Search: View {
 }
 
 struct Search_Previews: PreviewProvider {
+	private static let api = API()
+	
     static var previews: some View {
         Search()
+			.environmentObject(api)
+			.environmentObject(Player(api: api))
     }
 }
