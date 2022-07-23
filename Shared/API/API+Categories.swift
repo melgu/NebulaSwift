@@ -30,7 +30,9 @@ extension Category {
 		let avatarBigLight: String
 		
 		enum CodingKeys: String, CodingKey {
-			case avatar, avatarBigDark = "avatar-big-dark", avatarBigLight = "avatar-big-light"
+			case avatar
+			case avatarBigDark = "avatar-big-dark"
+			case avatarBigLight = "avatar-big-light"
 		}
 	}
 	
