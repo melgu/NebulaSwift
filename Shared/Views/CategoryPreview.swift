@@ -36,14 +36,10 @@ struct CategoryPreview: View {
 					throw Error.categoryNotFound
 				}
 				return category
-			} label: { status in
-				ZStack {
-					label
-					if case .loading = status {
-						ProgressView()
-					}
-				}
+			} label: { _ in
+				label
 			}
+			.asyncButtonStyle(.progress)
 		}
 	}
 	
@@ -70,11 +66,8 @@ struct CategoryPreview_Previews: PreviewProvider {
 	private static let api = API()
 	
     static var previews: some View {
-		Group {
-			CategoryPreview(slug: "animation")
-			CategoryPreview(slug: "animation")
-		}
-		.environmentObject(api)
-		.environmentObject(Player(api: api))
+		CategoryPreview(slug: "animation")
+			.environmentObject(api)
+			.environmentObject(Player(api: api))
     }
 }
