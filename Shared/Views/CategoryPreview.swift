@@ -33,7 +33,7 @@ struct CategoryPreview: View {
 			AsyncNavigationLink { () -> Category in
 				let categories = try await api.allCategories(page: 1, pageSize: 100)
 				guard let category = categories.first(where: { $0.slug == slug }) else {
-					throw CategoryPreviewError.categoryNotFound
+					throw Error.categoryNotFound
 				}
 				return category
 			} label: { status in
@@ -48,6 +48,9 @@ struct CategoryPreview: View {
 	}
 	
 	private var label: some View {
+		#if os(macOS)
+		Text(category?.title ?? slug)
+		#else
 		Text(category?.title ?? slug)
 			.padding(8)
 			.background(
@@ -55,9 +58,10 @@ struct CategoryPreview: View {
 					.foregroundColor(.accentColor)
 					.opacity(0.2)
 			)
+		#endif
 	}
 	
-	private enum CategoryPreviewError: Error {
+	enum Error: Swift.Error {
 		case categoryNotFound
 	}
 }
