@@ -27,10 +27,8 @@ struct VideoContextMenu: ViewModifier {
 		content
 			.contextMenu {
 				if goToChannelEnabled {
-					AsyncNavigationLink {
+					AsyncNavigationLink(video.channelTitle) {
 						try await api.channel(for: video.channelSlug)
-					} label: { _ in
-						Text(video.channelTitle)
 					}
 					Divider()
 				}
