@@ -89,7 +89,7 @@ extension API {
 			request.httpBody = body
 			request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 		}
-		request.cachePolicy = .reloadIgnoringLocalCacheData
+		request.cachePolicy = .useProtocolCachePolicy
 		request.allHTTPHeaderFields = headerFields
 		
 		try setAuthorization(type: authorization, for: &request)
