@@ -75,7 +75,7 @@ struct AutoChannelGrid: View {
 		} label: {
 			Image(systemName: "arrow.clockwise")
 		}
-		.asyncButtonStyle(.progress)
+		.asyncButtonStyle(.progress(replacesLabel: true))
 	}
 	
 	private func refreshChannels() async throws {

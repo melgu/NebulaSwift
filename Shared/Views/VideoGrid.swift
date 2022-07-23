@@ -75,7 +75,7 @@ struct AutoVideoGrid: View {
 		} label: {
 			Image(systemName: "arrow.clockwise")
 		}
-		.asyncButtonStyle(.progress)
+		.asyncButtonStyle(.progress(replacesLabel: true))
 	}
 	
 	private func refreshVideos() async throws {
