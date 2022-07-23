@@ -77,13 +77,14 @@ extension API {
 	
 	func channelAndVideos(for slug: Channel.ID, page: Int, pageSize: Int = 24) async throws -> (Channel, [Video]) {
 		let url = URL(string: "https://content.watchnebula.com/video/channels/\(slug)/?page=\(page)&page_size=\(pageSize)")!
-		let container: ChannelEpisodesContainer = try await request(.get, url: url, authorization: .bearer)
-		return (container.details, container.episodes.results)
+		let response: ChannelEpisodesContainer = try await request(.get, url: url, authorization: .bearer)
+		return (response.details, response.episodes.results)
 	}
 	
 	func videos(for channel: Channel, page: Int, pageSize: Int = 24) async throws -> [Video] {
-		let (_, videos) = try await channelAndVideos(for: channel.slug, page: page, pageSize: pageSize)
-		return videos
+		let url = URL(string: "https://content.watchnebula.com/video/?channel=\(channel.slug)&page=\(page)&page_size=\(pageSize)")!
+		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
+		return response.results
 	}
 	
 	func follow(_ channel: Channel) async throws {
