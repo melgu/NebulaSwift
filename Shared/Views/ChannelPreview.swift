@@ -10,8 +10,6 @@ import SwiftUI
 struct ChannelPreview: View {
 	let channel: Channel
 	
-	@EnvironmentObject private var api: API
-	
 	var body: some View {
 		NavigationLink(value: channel) {
 			ChannelPreviewView(channel: channel)

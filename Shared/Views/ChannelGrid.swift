@@ -71,7 +71,6 @@ struct AutoChannelGrid: View {
 	
 	private var refreshButton: some View {
 		AsyncButton {
-			print("Refresh Channels")
 			try await refreshChannels()
 		} label: {
 			Image(systemName: "arrow.clockwise")
