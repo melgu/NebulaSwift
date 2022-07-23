@@ -71,7 +71,6 @@ struct AutoVideoGrid: View {
 	
 	private var refreshButton: some View {
 		AsyncButton {
-			print("Refresh Videos")
 			try await refreshVideos()
 		} label: {
 			Image(systemName: "arrow.clockwise")

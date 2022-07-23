@@ -33,8 +33,6 @@ extension View {
 struct VideoPreview: View {
 	let video: Video
 	
-	@EnvironmentObject private var api: API
-	
 	var body: some View {
 		NavigationLink(value: video) {
 			VideoPreviewView(video: video)
