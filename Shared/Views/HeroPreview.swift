@@ -29,7 +29,7 @@ struct HeroPreviewView: View {
 	
 	var body: some View {
 		VStack(alignment: .leading) {
-			AsyncImage(url: hero.assets.hero["960"]?.original) { image in
+			AsyncImage(url: hero.assets.mobileHero.original) { image in
 				image
 					.resizable()
 					.scaledToFit()
