@@ -22,7 +22,7 @@ struct Featured: View {
 			}
 		}
 		.refreshable {
-			try await refreshFeatured()
+			try await refreshFeatured(animated: true)
 		}
 		.navigationTitle("Featured")
 		.toolbar {
@@ -32,7 +32,7 @@ struct Featured: View {
 		}
 		.task {
 			player.reset()
-			try await refreshFeatured()
+			try await refreshFeatured(animated: false)
 		}
     }
 	
@@ -86,17 +86,21 @@ struct Featured: View {
 	
 	private var refreshButton: some View {
 		AsyncButton {
-			try await refreshFeatured()
+			try await refreshFeatured(animated: true)
 		} label: {
 			Image(systemName: "arrow.clockwise")
 		}
 		.asyncButtonStyle(.progress(replacesLabel: true))
 	}
 	
-	private func refreshFeatured() async throws {
+	private func refreshFeatured(animated: Bool) async throws {
 		let featured = try await api.featured()
 		if featured != self.featured {
-			withAnimation {
+			if animated {
+				withAnimation {
+					self.featured = featured
+				}
+			} else {
 				self.featured = featured
 			}
 		}
