@@ -66,6 +66,7 @@
 /* Begin PBXFileReference section */
 		B0045972271FAD5D002C7974 /* API+Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Authorization.swift"; sourceTree = "<group>"; };
 		B0045975271FB9D9002C7974 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		B00B64A3288D78BF00E72AB8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B041001E2817071700845750 /* Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		B04BFBC2288CD97300650BFC /* Inop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inop.swift; sourceTree = "<group>"; };
 		B04C868F284A9D9000EA2D59 /* API+Playlists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Playlists.swift"; sourceTree = "<group>"; };
@@ -136,6 +137,7 @@
 		B079EF1B26853A57009EFBAA = {
 			isa = PBXGroup;
 			children = (
+				B00B64A3288D78BF00E72AB8 /* README.md */,
 				B0B8856A287C1AD8003328DA /* NebulaSwift-Info.plist */,
 				B079EF2026853A57009EFBAA /* Shared */,
 				B079EF2926853A57009EFBAA /* Products */,
