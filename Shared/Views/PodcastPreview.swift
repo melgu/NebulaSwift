@@ -35,12 +35,11 @@ struct PodcastPreviewView: View {
 				image
 					.resizable()
 					.scaledToFit()
-					.cornerRadius(8)
 			} placeholder: {
 				Color.black
 					.aspectRatio(16/9, contentMode: .fit)
 			}
-			.cornerRadius(4)
+			.cornerRadius(8)
 			
 			Text(podcast.title)
 		}
