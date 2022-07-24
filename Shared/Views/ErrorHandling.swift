@@ -37,7 +37,7 @@ fileprivate struct AlertErrorHandlerModifier: ViewModifier {
 				self.error = error
 				isPresented = true
 			}
-			.alert("Error", isPresented: $isPresented, presenting: error) { _ in
+			.alert("Something went wrong.", isPresented: $isPresented, presenting: error) { _ in
 				Button("OK") {}
 			} message: { error in
 				Text(error.localizedDescription)
