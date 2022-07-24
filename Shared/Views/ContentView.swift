@@ -36,6 +36,10 @@ struct ContentView: View {
 				Login()
 			}
 		}
+		.environment(\.openItem) { item in
+			print("Open Item: \(item)")
+			navigationPath.append(item)
+		}
 		.onOpenURL { url in
 			print("Open URL: \(url)")
 			Task {
@@ -171,10 +175,6 @@ struct ContentView: View {
 				#else
 				ChannelPage(channel: channel)
 				#endif
-			}
-			.environment(\.openItem) { item in
-				print("Open Item: \(item)")
-				navigationPath.append(item)
 			}
 		}
 	}

@@ -86,6 +86,10 @@ struct VideoPage: View {
 			}
 			#endif
 			
+			channelLink
+			
+			Divider()
+			
 			if let attributedDescription = attributedDescription {
 				Text(attributedDescription)
 			} else {
@@ -103,6 +107,30 @@ struct VideoPage: View {
 				}
 			}
 		}
+	}
+	
+	private var channelLink: some View {
+		AsyncNavigationLink { () -> Channel in
+			try await api.channel(for: video.channelSlug)
+		} label: { _ in
+			HStack(spacing: 16) {
+				AsyncImage(url: video.assets.channelAvatar["128"]?.original) { image in
+					image
+						.resizable()
+						.scaledToFit()
+						.clipShape(Circle())
+				} placeholder: {
+					Color.clear
+						.aspectRatio(1, contentMode: .fit)
+				}
+				.frame(width: 64, height: 64)
+				
+				Text(video.channelTitle)
+					.font(.headline)
+			}
+		}
+		.buttonStyle(.plain)
+		.asyncButtonStyle(.progress(replacesLabel: false))
 	}
 	
 	private var attributedDescription: AttributedString? {
