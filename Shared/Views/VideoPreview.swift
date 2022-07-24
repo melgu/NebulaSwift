@@ -131,7 +131,8 @@ struct LiveVideoPreviewView: View {
 	@EnvironmentObject private var api: API
 	
 	@State private var player = AVPlayer()
-	@State private var task: Task<Void, Error>?
+	@State private var loadingTask: Task<Void, Error>?
+	@State private var prerollTask: Task<Void, Error>?
 	@State private var readyToPlay = false
 	@State private var cancellable: AnyCancellable?
 	
@@ -147,14 +148,16 @@ struct LiveVideoPreviewView: View {
 				.print("Video Preview")
 				.filter { $0 == .readyToPlay }
 				.sink { _ in
-					Task {
+					prerollTask = Task {
 						await player.preroll(atRate: 1)
+						try Task.checkCancellation()
 						withAnimation { self.readyToPlay = true }
 						player.play()
 					}
+					Task { try await prerollTask?.value }
 				}
 			
-			task = Task {
+			loadingTask = Task {
 				let stream = try await api.stream(for: video)
 				let item = AVPlayerItem(url: stream.manifest)
 				player.replaceCurrentItem(with: item)
@@ -162,10 +165,12 @@ struct LiveVideoPreviewView: View {
 					await player.seek(to: CMTime(seconds: Double(progress), preferredTimescale: 1))
 				}
 			}
-			try await task?.value
+			try await loadingTask?.value
 		}
 		.onDisappear {
-			task?.cancel()
+			loadingTask?.cancel()
+			prerollTask?.cancel()
+			cancellable = nil
 			player.replaceCurrentItem(with: nil)
 		}
 	}
