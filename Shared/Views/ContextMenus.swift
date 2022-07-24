@@ -26,12 +26,16 @@ struct VideoContextMenu: ViewModifier {
 	func body(content: Content) -> some View {
 		content
 			.contextMenu {
+				Text(video.title)
+				
 				if goToChannelEnabled {
 					AsyncNavigationLink(video.channelTitle) {
 						try await api.channel(for: video.channelSlug)
 					}
-					Divider()
 				}
+				
+				Divider()
+				
 				if let engagement = video.engagement {
 					if engagement.watchLater {
 						AsyncButton {
@@ -49,17 +53,19 @@ struct VideoContextMenu: ViewModifier {
 						}
 					}
 				}
+				
 				AsyncButton {
 					throw Inop.comingSoon
 				} label: {
 					Label("Download", systemImage: "arrow.down")
 				}
+				
 				Divider()
+				
 				ShareLink(item: video.shareUrl)
 			} preview: {
 				LiveVideoPreviewView(video: video)
 					.environmentObject(api)
-					.padding(.vertical)
 			}
 	}
 }

@@ -137,10 +137,26 @@ struct LiveVideoPreviewView: View {
 	@State private var cancellable: AnyCancellable?
 	
 	var body: some View {
-		VideoPreviewView(video: video) {
+		AsyncImage(url: video.assets.thumbnail["960"]?.original) { image in
+			image
+				.resizable()
+		} placeholder: {
+			// This image is most likely already cached
+			AsyncImage(url: video.assets.thumbnail["480"]?.original) { image in
+				image
+					.resizable()
+			} placeholder: {
+				ProgressView()
+					.controlSize(.large)
+			}
+		}
+		.overlay {
 			if readyToPlay {
 				VideoPlayer(player: player)
 					.transition(.opacity)
+			} else {
+				ProgressView()
+					.controlSize(.large)
 			}
 		}
 		.task {
