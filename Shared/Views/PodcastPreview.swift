@@ -37,7 +37,7 @@ struct PodcastPreviewView: View {
 					.scaledToFit()
 			} placeholder: {
 				Color.black
-					.aspectRatio(16/9, contentMode: .fit)
+					.aspectRatio(1, contentMode: .fit)
 			}
 			.cornerRadius(8)
 			
