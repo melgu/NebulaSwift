@@ -42,13 +42,11 @@ struct VideoPreview: View {
 	}
 }
 
-struct VideoPreviewView<Overlay: View>: View {
+struct VideoPreviewView: View {
 	let video: Video
-	let externalOverlay: () -> Overlay
 	
-	init(video: Video, @ViewBuilder overlay: @escaping () -> Overlay) {
+	init(video: Video) {
 		self.video = video
-		self.externalOverlay = overlay
 	}
 	
 	var body: some View {
@@ -62,7 +60,6 @@ struct VideoPreviewView<Overlay: View>: View {
 					.aspectRatio(16/9, contentMode: .fit)
 			}
 			.overlay(informationOverlay)
-			.overlay(externalOverlay())
 			.cornerRadius(8)
 			
 			HStack(alignment: .top) {
@@ -115,13 +112,6 @@ struct VideoPreviewView<Overlay: View>: View {
 		}
 		.padding(8)
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-	}
-}
-
-extension VideoPreviewView where Overlay == EmptyView {
-	init(video: Video) {
-		self.video = video
-		self.externalOverlay = { EmptyView() }
 	}
 }
 
