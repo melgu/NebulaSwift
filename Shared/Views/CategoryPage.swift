@@ -20,7 +20,7 @@ struct CategoryPage: View {
 		self.viewType = initialViewType
 	}
 	
-    var body: some View {
+	var body: some View {
 		Group {
 			switch viewType {
 			case .videos:
@@ -47,11 +47,11 @@ struct CategoryPage: View {
 			}
 		}
 		.onAppear { player.reset() }
-    }
+	}
 }
 
 struct CategoryPage_Previews: PreviewProvider {
-    static var previews: some View {
+	static var previews: some View {
 		Text("No preview")
-    }
+	}
 }

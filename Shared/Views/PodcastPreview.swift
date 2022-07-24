@@ -48,7 +48,7 @@ struct PodcastPreviewView: View {
 }
 
 struct PodcastPreview_Previews: PreviewProvider {
-    static var previews: some View {
-        Text("No Preview")
-    }
+	static var previews: some View {
+		Text("No Preview")
+	}
 }

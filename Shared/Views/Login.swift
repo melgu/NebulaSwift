@@ -13,7 +13,7 @@ struct Login: View {
 	@State private var email = ""
 	@State private var password = ""
 	
-    var body: some View {
+	var body: some View {
 		VStack {
 			Text("Login")
 				.font(.title)
@@ -29,16 +29,16 @@ struct Login: View {
 			.buttonStyle(.bordered)
 			.tint(.accentColor)
 		}
-        .textFieldStyle(.roundedBorder)
+		.textFieldStyle(.roundedBorder)
 		.padding()
 		.frame(width: 300)
-    }
+	}
 }
 
 struct Login_Previews: PreviewProvider {
-    static var previews: some View {
-        Login()
+	static var previews: some View {
+		Login()
 			.environmentObject(API())
 			.alertErrorHandling()
-    }
+	}
 }

@@ -146,11 +146,11 @@ extension View {
 }
 
 struct AsyncButton_Previews: PreviewProvider {
-    static var previews: some View {
+	static var previews: some View {
 		AsyncButton {
 			try? await Task.sleep(nanoseconds: 2_000_000_000)
 		} label: {
 			Text("Button")
 		}
-    }
+	}
 }

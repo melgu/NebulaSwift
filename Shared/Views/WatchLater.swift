@@ -23,9 +23,9 @@ struct WatchLater: View {
 struct WatchLater_Previews: PreviewProvider {
 	private static let api = API()
 	
-    static var previews: some View {
-        WatchLater()
+	static var previews: some View {
+		WatchLater()
 			.environmentObject(api)
 			.environmentObject(Player(api: api))
-    }
+	}
 }

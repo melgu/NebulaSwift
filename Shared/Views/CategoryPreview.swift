@@ -65,9 +65,9 @@ struct CategoryPreview: View {
 struct CategoryPreview_Previews: PreviewProvider {
 	private static let api = API()
 	
-    static var previews: some View {
+	static var previews: some View {
 		CategoryPreview(slug: "animation")
 			.environmentObject(api)
 			.environmentObject(Player(api: api))
-    }
+	}
 }

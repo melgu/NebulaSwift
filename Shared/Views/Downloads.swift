@@ -11,16 +11,16 @@ struct Downloads: View {
 	@EnvironmentObject private var api: API
 	@EnvironmentObject private var player: Player
 	
-    var body: some View {
+	var body: some View {
 		Text("Coming soon…")
 			.foregroundColor(.secondary)
 			.navigationTitle("Downloads")
 			.onAppear { player.reset() }
-    }
+	}
 }
 
 struct Downloads_Previews: PreviewProvider {
-    static var previews: some View {
-        Downloads()
-    }
+	static var previews: some View {
+		Downloads()
+	}
 }

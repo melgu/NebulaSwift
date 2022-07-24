@@ -208,7 +208,7 @@ struct HeroContextMenu: ViewModifier {
 }
 
 struct ContextMenus_Previews: PreviewProvider {
-    static var previews: some View {
-        Text("No preview")
-    }
+	static var previews: some View {
+		Text("No preview")
+	}
 }

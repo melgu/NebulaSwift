@@ -34,7 +34,7 @@ struct Featured: View {
 			player.reset()
 			try await refreshFeatured(animated: false)
 		}
-    }
+	}
 	
 	@ViewBuilder
 	private func row(for feature: Feature) -> some View {
@@ -110,9 +110,9 @@ struct Featured: View {
 struct Featured_Previews: PreviewProvider {
 	private static let api = API()
 	
-    static var previews: some View {
-        Featured()
+	static var previews: some View {
+		Featured()
 			.environmentObject(api)
 			.environmentObject(Player(api: api))
-    }
+	}
 }

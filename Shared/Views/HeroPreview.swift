@@ -47,7 +47,7 @@ struct HeroPreviewView: View {
 }
 
 struct HeroPreview_Previews: PreviewProvider {
-    static var previews: some View {
-        Text("No Preview")
-    }
+	static var previews: some View {
+		Text("No Preview")
+	}
 }

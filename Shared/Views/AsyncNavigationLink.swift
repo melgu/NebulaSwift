@@ -215,7 +215,7 @@ private struct Demo: View {
 }
 
 struct AsyncNavigationLink_Previews: PreviewProvider {
-    static var previews: some View {
+	static var previews: some View {
 		Demo()
-    }
+	}
 }

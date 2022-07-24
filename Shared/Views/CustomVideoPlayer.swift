@@ -39,8 +39,8 @@ struct CustomVideoPlayer: NSViewRepresentable {
 #endif
 
 struct CustomVideoPlayer_Previews: PreviewProvider {
-    static var previews: some View {
-        CustomVideoPlayer()
+	static var previews: some View {
+		CustomVideoPlayer()
 			.environmentObject(Player(api: API()))
-    }
+	}
 }

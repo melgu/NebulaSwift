@@ -16,7 +16,7 @@ struct Search: View {
 	@State private var videoResults: [Video] = []
 	@State private var task: Task<(), Never>?
 	
-    var body: some View {
+	var body: some View {
 		ScrollView {
 			VStack(alignment: .leading) {
 				TextField("Search", text: $searchTerm) {
@@ -57,15 +57,15 @@ struct Search: View {
 		}
 		.navigationTitle("Search")
 		.onAppear { player.reset() }
-    }
+	}
 }
 
 struct Search_Previews: PreviewProvider {
 	private static let api = API()
 	
-    static var previews: some View {
-        Search()
+	static var previews: some View {
+		Search()
 			.environmentObject(api)
 			.environmentObject(Player(api: api))
-    }
+	}
 }

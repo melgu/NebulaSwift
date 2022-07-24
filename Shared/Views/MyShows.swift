@@ -44,8 +44,8 @@ struct MyShows: View {
 }
 
 struct MyShows_Previews: PreviewProvider {
-    static var previews: some View {
-        MyShows()
+	static var previews: some View {
+		MyShows()
 			.environmentObject(API())
-    }
+	}
 }

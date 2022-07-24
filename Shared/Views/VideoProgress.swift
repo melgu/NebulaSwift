@@ -41,7 +41,7 @@ extension ProgressViewStyle where Self == WatchTimeProgressViewStyle {
 }
 
 struct VideoProgress_Previews: PreviewProvider {
-    static var previews: some View {
+	static var previews: some View {
 		VStack {
 			Group {
 				ProgressView("Demo")
@@ -63,5 +63,5 @@ struct VideoProgress_Previews: PreviewProvider {
 			}
 		}
 		.progressViewStyle(.watchTime)
-    }
+	}
 }

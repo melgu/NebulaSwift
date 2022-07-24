@@ -19,12 +19,12 @@ struct NebulaSwiftApp: App {
 		_player = StateObject(wrappedValue: player)
 	}
 	
-    var body: some Scene {
+	var body: some Scene {
 		WindowGroup {
 			ContentView()
 				.environmentObject(api)
 				.environmentObject(player)
-        }
+		}
 		.commands {
 			CommandMenu("Account") {
 				Button("Logout") {
@@ -40,5 +40,5 @@ struct NebulaSwiftApp: App {
 				.environmentObject(player)
 		}
 		#endif
-    }
+	}
 }
