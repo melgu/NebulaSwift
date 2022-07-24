@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: Environment
 
 private struct OpenItemKey: EnvironmentKey {
-	static let defaultValue: (any Hashable) -> Void = { print($0) }
+	static let defaultValue: (any Hashable) -> Void = { print("openItem environment has not been set. \($0)") }
 }
 
 extension EnvironmentValues {
