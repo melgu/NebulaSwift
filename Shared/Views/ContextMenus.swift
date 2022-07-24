@@ -175,6 +175,38 @@ struct PodcastContextMenu: ViewModifier {
 	}
 }
 
+// MARK: - Hero
+
+extension View {
+	func contextMenu(for hero: Hero) -> some View {
+		modifier(HeroContextMenu(hero: hero))
+	}
+}
+
+struct HeroContextMenu: ViewModifier {
+	let hero: Hero
+	
+	func body(content: Content) -> some View {
+		content
+			.contextMenu {
+				Text(hero.title)
+				
+				Divider()
+				
+				ShareLink(item: hero.url)
+			} preview: {
+				// This image is most likely already cached
+				AsyncImage(url: hero.assets.mobileHero.original) { image in
+					image
+						.resizable()
+				} placeholder: {
+					Color.black
+						.aspectRatio(1, contentMode: .fit)
+				}
+			}
+	}
+}
+
 struct ContextMenus_Previews: PreviewProvider {
     static var previews: some View {
         Text("No preview")

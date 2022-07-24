@@ -21,6 +21,7 @@ struct HeroPreview: View {
 		.buttonStyle(.plain)
 		.controlSize(.large)
 		.asyncButtonStyle(.progress(replacesLabel: false))
+		.contextMenu(for: hero)
 	}
 }
 
