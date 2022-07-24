@@ -82,6 +82,10 @@ struct ChannelContextMenu: ViewModifier {
 	func body(content: Content) -> some View {
 		content
 			.contextMenu {
+				Text(channel.title)
+				
+				Divider()
+				
 				if let engagement = channel.engagement {
 					if engagement.following {
 						AsyncButton {
@@ -100,10 +104,22 @@ struct ChannelContextMenu: ViewModifier {
 					}
 					Divider()
 				}
+				
 				ShareLink(item: channel.shareUrl)
 			} preview: {
-				ChannelPreviewView(channel: channel)
-					.padding(.vertical)
+				AsyncImage(url: channel.assets.banner["960"]?.original) { image in
+					image
+						.resizable()
+				} placeholder: {
+					// This image is most likely already cached
+					AsyncImage(url: channel.assets.banner["480"]?.original) { image in
+						image
+							.resizable()
+					} placeholder: {
+						ProgressView()
+							.controlSize(.large)
+					}
+				}
 			}
 	}
 }
