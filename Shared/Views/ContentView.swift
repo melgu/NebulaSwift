@@ -22,6 +22,8 @@ struct ContentView: View {
 		case featured, myShows, browse, watchLater, downloads, search, channel(Channel)
 	}
 	
+	@State private var searchTerm = ""
+	
 	@State private var navigationPath = NavigationPath()
 	
 	var body: some View {
@@ -94,29 +96,31 @@ struct ContentView: View {
 	
 	private var sidebar: some View {
 		List(selection: $selection) {
-			Section("Home") {
-				NavigationLink(value: TopLevel.featured) {
-					Label("Featured", systemImage: "star.circle")
-				}
-				NavigationLink(value: TopLevel.myShows) {
-					Label("My Shows", systemImage: "suit.heart")
-				}
-				NavigationLink(value: TopLevel.browse) {
-					Label("Browse", systemImage: "list.dash")
-				}
-				NavigationLink(value: TopLevel.watchLater) {
-					Label("Watch Later", systemImage: "bookmark")
-				}
-				NavigationLink(value: TopLevel.downloads) {
-					Label("Downloads", systemImage: "arrow.down.circle")
-				}
-				NavigationLink(value: TopLevel.search) {
-					Label("Search", systemImage: "magnifyingglass")
+			if searchTerm.isEmpty {
+				Section("Home") {
+					NavigationLink(value: TopLevel.featured) {
+						Label("Featured", systemImage: "star.circle")
+					}
+					NavigationLink(value: TopLevel.myShows) {
+						Label("My Shows", systemImage: "suit.heart")
+					}
+					NavigationLink(value: TopLevel.browse) {
+						Label("Browse", systemImage: "list.dash")
+					}
+					NavigationLink(value: TopLevel.watchLater) {
+						Label("Watch Later", systemImage: "bookmark")
+					}
+					NavigationLink(value: TopLevel.downloads) {
+						Label("Downloads", systemImage: "arrow.down.circle")
+					}
+					NavigationLink(value: TopLevel.search) {
+						Label("Search", systemImage: "magnifyingglass")
+					}
 				}
 			}
-			if let myShows = myShows {
+			if let filteredMyShows {
 				Section("My Shows") {
-					ForEach(myShows) { channel in
+					ForEach(filteredMyShows) { channel in
 						NavigationLink(value: TopLevel.channel(channel)) {
 							label(for: channel)
 						}
@@ -125,6 +129,7 @@ struct ContentView: View {
 				}
 			}
 		}
+		.searchable(text: $searchTerm, placement: .sidebar, prompt: Text("Search My Shows"))
 		.refreshable {
 			try await refreshMyShows()
 		}
@@ -134,6 +139,12 @@ struct ContentView: View {
 			try await refreshMyShows()
 		}
 		.settingsSheet()
+	}
+	
+	private var filteredMyShows: [Channel]? {
+		guard let myShows else { return nil }
+		guard !searchTerm.isEmpty else { return myShows }
+		return myShows.filter { $0.title.lowercased().contains(searchTerm.lowercased()) }
 	}
 	
 	private var detail: some View {
