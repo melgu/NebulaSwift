@@ -14,7 +14,7 @@ struct Browse: View {
 	@State private var viewType: ContentType = .videos
 	@State private var categories: [Category] = []
 	
-    var body: some View {
+	var body: some View {
 		VStack {
 			ScrollView(.horizontal) {
 				HStack {
@@ -55,11 +55,11 @@ struct Browse: View {
 			player.reset()
 			categories = try await api.allCategories(page: 1, pageSize: 100)
 		}
-    }
+	}
 }
 
 struct Browse_Previews: PreviewProvider {
-    static var previews: some View {
-        Text("No preview")
-    }
+	static var previews: some View {
+		Text("No preview")
+	}
 }

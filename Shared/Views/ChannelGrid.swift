@@ -91,7 +91,7 @@ struct AutoChannelGrid: View {
 }
 
 struct ChannelGrid_Previews: PreviewProvider {
-    static var previews: some View {
-        Text("No preview")
-    }
+	static var previews: some View {
+		Text("No preview")
+	}
 }

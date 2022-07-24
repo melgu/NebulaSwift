@@ -213,11 +213,11 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    private static let api = API()
-    
-    static var previews: some View {
-        ContentView()
-            .environmentObject(api)
-            .environmentObject(Player(api: api))
-    }
+	private static let api = API()
+	
+	static var previews: some View {
+		ContentView()
+			.environmentObject(api)
+			.environmentObject(Player(api: api))
+	}
 }

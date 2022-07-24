@@ -17,16 +17,16 @@ struct SettingsView: View {
 		#if os(iOS)
 		NavigationStack {
 			content
-			.navigationTitle("Settings")
-			.toolbar {
-				ToolbarItem(placement: .primaryAction) {
-					Button {
-						dismiss()
-					} label: {
-						Label("Close", systemImage: "xmark.circle.fill")
+				.navigationTitle("Settings")
+				.toolbar {
+					ToolbarItem(placement: .primaryAction) {
+						Button {
+							dismiss()
+						} label: {
+							Label("Close", systemImage: "xmark.circle.fill")
+						}
 					}
 				}
-			}
 		}
 		#else
 		content
@@ -61,7 +61,7 @@ fileprivate struct SettingsSheet: ViewModifier {
 	
 	func body(content: Content) -> some View {
 		content
-		#if os(iOS)
+			#if os(iOS)
 			.toolbar {
 				ToolbarItem(placement: .primaryAction) {
 					Button {
@@ -74,12 +74,12 @@ fileprivate struct SettingsSheet: ViewModifier {
 			.sheet(isPresented: $showSettings) {
 				SettingsView()
 			}
-		#endif
+			#endif
 	}
 }
 
 struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        SettingsView()
-    }
+	static var previews: some View {
+		SettingsView()
+	}
 }

@@ -24,7 +24,7 @@ extension EnvironmentValues {
 }
 
 struct Navigation_Previews: PreviewProvider {
-    static var previews: some View {
-        Text("No preview")
-    }
+	static var previews: some View {
+		Text("No preview")
+	}
 }

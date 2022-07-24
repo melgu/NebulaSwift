@@ -47,7 +47,7 @@ extension Video {
 		case isNebulaPlus = "is_nebula_plus"
 		case isNebulaOriginal = "is_nebula_original"
 	}
-
+	
 	struct Engagement: Codable, Equatable, Hashable {
 		let contentSlug: String
 		let updatedAt: Date

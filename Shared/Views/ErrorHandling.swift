@@ -181,7 +181,7 @@ extension View {
 }
 
 struct ErrorHandling_Previews: PreviewProvider {
-    static var previews: some View {
+	static var previews: some View {
 		VStack {
 			AsyncButton("Throw first Error") {
 				throw DemoError.unknown
@@ -192,7 +192,7 @@ struct ErrorHandling_Previews: PreviewProvider {
 		}
 		.buttonStyle(.bordered)
 		.alertErrorHandling()
-    }
+	}
 	
 	private enum DemoError: Error, LocalizedError {
 		case unknown
