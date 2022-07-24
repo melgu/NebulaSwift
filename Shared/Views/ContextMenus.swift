@@ -130,7 +130,7 @@ struct ChannelContextMenu: ViewModifier {
 	}
 }
 
-// MARK: - Channel
+// MARK: - Podcast
 
 extension View {
 	func contextMenu(for podcast: Podcast) -> some View {
@@ -144,14 +144,33 @@ struct PodcastContextMenu: ViewModifier {
 	func body(content: Content) -> some View {
 		content
 			.contextMenu {
+				Text(podcast.title)
+				
+				Divider()
+				
 				Button("Copy RSS URL") {
 					Pasteboard.copy(string: podcast.rssUrl.absoluteString)
 				}
+				
 				Divider()
+				
 				ShareLink(item: podcast.shareUrl)
 			} preview: {
-				PodcastPreviewView(podcast: podcast)
-					.padding(.vertical)
+				AsyncImage(url: podcast.assets["square-888"]) { image in
+					image
+						.resizable()
+				} placeholder: {
+					// This image is most likely already cached
+					AsyncImage(url: podcast.assets["square-400"]) { image in
+						image
+							.resizable()
+							.scaledToFit()
+					} placeholder: {
+						Color.black
+							.aspectRatio(1, contentMode: .fit)
+					}
+				}
+				
 			}
 	}
 }
