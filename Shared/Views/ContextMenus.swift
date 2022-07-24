@@ -49,8 +49,8 @@ struct VideoContextMenu: ViewModifier {
 						}
 					}
 				}
-				Button {
-					print("Download")
+				AsyncButton {
+					throw Inop.comingSoon
 				} label: {
 					Label("Download", systemImage: "arrow.down")
 				}
