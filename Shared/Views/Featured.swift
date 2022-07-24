@@ -38,18 +38,18 @@ struct Featured: View {
 	
 	@ViewBuilder
 	private func row(for feature: Feature) -> some View {
-		ScrollView(.horizontal) {
-			VStack(alignment: .leading) {
-				switch feature.items {
-				case .heroes(_):
-					EmptyView()
-				default:
-					Text(feature.title)
-						.font(.title)
-						.bold()
-						.padding(.horizontal)
-				}
-				
+		VStack(alignment: .leading, spacing: 0) {
+			switch feature.items {
+			case .heroes:
+				EmptyView()
+			default:
+				Text(feature.title)
+					.font(.title)
+					.bold()
+					.padding(.horizontal)
+			}
+			
+			ScrollView(.horizontal) {
 				HStack(alignment: .top) {
 					switch feature.items {
 					case .heroes(let array):
