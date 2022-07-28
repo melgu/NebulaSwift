@@ -54,15 +54,20 @@ struct AutoVideoGrid: View {
 				}
 			}
 			.padding()
+			.refreshable {
+				try await refreshVideos()
+			}
 		}
 		.refreshable {
 			try await refreshVideos()
 		}
+		#if os(macOS)
 		.toolbar {
 			ToolbarItem(placement: .primaryAction) {
 				refreshButton
 			}
 		}
+		#endif
 		.task {
 			print("Load Videos")
 			try await refreshVideos()
