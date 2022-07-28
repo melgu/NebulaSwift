@@ -25,11 +25,13 @@ struct Featured: View {
 			try await refreshFeatured(animated: true)
 		}
 		.navigationTitle("Featured")
+		#if os(macOS)
 		.toolbar {
 			ToolbarItem(placement: .primaryAction) {
 				refreshButton
 			}
 		}
+		#endif
 		.task {
 			player.reset()
 			try await refreshFeatured(animated: false)
@@ -80,6 +82,9 @@ struct Featured: View {
 					}
 				}
 				.padding()
+				.refreshable {
+					try await refreshFeatured(animated: true)
+				}
 			}
 		}
 	}

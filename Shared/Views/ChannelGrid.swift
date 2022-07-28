@@ -54,15 +54,20 @@ struct AutoChannelGrid: View {
 				}
 			}
 			.padding()
+			.refreshable {
+				try await refreshChannels()
+			}
 		}
 		.refreshable {
 			try await refreshChannels()
 		}
+		#if os(macOS)
 		.toolbar {
 			ToolbarItem(placement: .primaryAction) {
 				refreshButton
 			}
 		}
+		#endif
 		.task {
 			print("Load Channels")
 			try await refreshChannels()
