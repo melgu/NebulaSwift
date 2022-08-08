@@ -14,7 +14,7 @@ struct PodcastPreview: View {
 		AsyncButton {
 			let url = podcast.apple ?? podcast.shareUrl
 			#if os(iOS)
-			await UIApplication.shared.open(url)
+			_ = await UIApplication.shared.open(url)
 			#else
 			NSWorkspace.shared.open(url)
 			#endif
