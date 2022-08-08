@@ -24,7 +24,7 @@ struct CategoryPage: View {
 		Group {
 			switch viewType {
 			case .videos:
-				AutoVideoGrid { page in
+				AutoVideoGrid(id: category) { page in
 					try await api.videos(for: category, page: page)
 				}
 			case .channels:
