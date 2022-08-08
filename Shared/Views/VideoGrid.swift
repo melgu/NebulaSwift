@@ -22,16 +22,19 @@ struct VideoGrid: View {
 	}
 }
 
-/// Auto-loading VideoGrid
-struct AutoVideoGrid: View {
+/// Auto-loading VideoGrid.
+struct AutoVideoGrid<Value: Equatable>: View {
+	let value: Value
 	let fetch: (Int) async throws -> [Video]
 	
 	@State private var videos: [Video] = []
 	@State private var page = 1
 	
-	/// Auto-loading VideoGrid
+	/// Auto-loading VideoGrid that reloads when a specified value changes.
+	/// - Parameter id: The value to observe for changes. When the value changes, videos are refreshed. The value must conform to the `Equatable` protocol.
 	/// - Parameter fetch: Closure which loads the videos for a given page (1-indexed)
-	init(fetch: @escaping (Int) async throws -> [Video]) {
+	init(id value: Value, fetch: @escaping (Int) async throws -> [Video]) {
+		self.value = value
 		self.fetch = fetch
 	}
 	
@@ -68,7 +71,7 @@ struct AutoVideoGrid: View {
 			}
 		}
 		#endif
-		.task {
+		.task(id: value) {
 			print("Load Videos")
 			try await refreshVideos()
 		}
@@ -92,6 +95,15 @@ struct AutoVideoGrid: View {
 				videos = newVideos
 			}
 		}
+	}
+}
+
+extension AutoVideoGrid where Value == Bool {
+	/// Auto-loading VideoGrid.
+	/// - Parameter fetch: Closure which loads the videos for a given page (1-indexed)
+	init(fetch: @escaping (Int) async throws -> [Video]) {
+		self.value = false
+		self.fetch = fetch
 	}
 }
 

@@ -23,7 +23,7 @@ struct ChannelPage: View {
 	}
 	
 	var body: some View {
-		AutoVideoGrid(fetch: { page in
+		AutoVideoGrid(id: channel, fetch: { page in
 			try await api.videos(for: channel, page: page)
 		})
 		.disableGoToChannel()
