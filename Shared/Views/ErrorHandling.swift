@@ -122,14 +122,14 @@ fileprivate struct TaskModifier: ViewModifier {
 	}
 }
 
-fileprivate struct TaskModifierWithID<T: Equatable>: ViewModifier {
-	let value: T // ID
+fileprivate struct TaskModifierWithID<V: Equatable>: ViewModifier {
+	let value: V // ID
 	let priority: TaskPriority
 	let action: @MainActor @Sendable () async throws -> Void
 	
 	@Environment(\.errorHandler) private var errorHandler
 	
-	init(id value: T, priority: TaskPriority, action: @MainActor @escaping @Sendable () async throws -> Void) {
+	init(id value: V, priority: TaskPriority, action: @MainActor @escaping @Sendable () async throws -> Void) {
 		self.value = value
 		self.priority = priority
 		self.action = action
@@ -151,7 +151,7 @@ extension View {
 		modifier(TaskModifier(priority: priority, action: action))
 	}
 	
-	func task<T>(id value: T, priority: TaskPriority = .userInitiated, _ action: @escaping @MainActor @Sendable () async throws -> Void) -> some View where T : Equatable {
+	func task<V>(id value: V, priority: TaskPriority = .userInitiated, _ action: @escaping @MainActor @Sendable () async throws -> Void) -> some View where V : Equatable {
 		modifier(TaskModifierWithID(id: value, priority: priority, action: action))
 	}
 }
