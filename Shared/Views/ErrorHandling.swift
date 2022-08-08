@@ -156,6 +156,38 @@ extension View {
 	}
 }
 
+// MARK: - onChange
+
+fileprivate struct OnChangeModifier<V: Equatable>: ViewModifier {
+	let value: V
+	let action: @MainActor @Sendable (V) async throws -> Void
+	
+	@Environment(\.errorHandler) private var errorHandler
+	
+	init(value: V, action: @MainActor @escaping @Sendable (V) async throws -> Void) {
+		self.value = value
+		self.action = action
+	}
+	
+	func body(content: Content) -> some View {
+		content.onChange(of: value) { newValue in
+			Task {
+				do {
+					try await action(newValue)
+				} catch {
+					errorHandler(error)
+				}
+			}
+		}
+	}
+}
+
+extension View {
+	func onChange<V: Equatable>(of value: V, perform action: @escaping @MainActor @Sendable (V) async throws -> Void) -> some View {
+		modifier(OnChangeModifier(value: value, action: action))
+	}
+}
+
 // MARK: - refreshable
 
 fileprivate struct RefreshableModifier: ViewModifier {
