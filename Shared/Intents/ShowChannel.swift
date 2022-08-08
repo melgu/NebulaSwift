@@ -21,7 +21,7 @@ struct ShowChannel: AppIntent {
 	func perform() async throws -> some IntentResult {
 		let url = URL(string: "NebulaSwift://channel/\(channel.slug)")!
 		#if os(iOS)
-		await UIApplication.shared.open(url)
+		_ = await UIApplication.shared.open(url)
 		#else
 		NSWorkspace.shared.open(url)
 		#endif
