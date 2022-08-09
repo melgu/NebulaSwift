@@ -23,6 +23,7 @@ struct NebulaSwiftApp: App {
 		WindowGroup {
 			ContentView()
 				.environmentObject(api)
+				.environmentObject(api.storage)
 				.environmentObject(player)
 		}
 		.commands {
@@ -38,6 +39,7 @@ struct NebulaSwiftApp: App {
 			SettingsView()
 				.environmentObject(api)
 				.environmentObject(player)
+				.environmentObject(api.storage)
 		}
 		#endif
 	}
