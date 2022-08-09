@@ -31,7 +31,7 @@ import os.log
 		
 		#if canImport(UIKit)
 		try? AVAudioSession.sharedInstance().setCategory(.playback)
-		pipController?.canStartPictureInPictureAutomaticallyFromInline = true
+		pipController!.canStartPictureInPictureAutomaticallyFromInline = true
 		#endif
 		
 		player.preventsDisplaySleepDuringVideoPlayback = true
@@ -55,11 +55,10 @@ import os.log
 	
 	func pause() {
 		logger.debug("Pause")
+		player.pause()
 		#if canImport(UIKit)
 		try? AVAudioSession.sharedInstance().setActive(false)
 		#endif
-		sendProgress()
-		player.pause()
 	}
 	
 	func replaceVideo(with video: Video) async throws {
