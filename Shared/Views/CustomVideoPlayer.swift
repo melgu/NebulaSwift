@@ -11,10 +11,12 @@ import AVKit
 #if canImport(UIKit)
 struct CustomVideoPlayer: UIViewControllerRepresentable {
 	@EnvironmentObject private var player: Player
+	@EnvironmentObject private var storage: Storage
 	
 	func makeUIViewController(context: Context) -> AVPlayerViewController {
 		let playerViewController = AVPlayerViewController()
 		playerViewController.player = player.player
+		playerViewController.entersFullScreenWhenPlaybackBegins = storage.automaticFullscreen
 		playerViewController.exitsFullScreenWhenPlaybackEnds = true
 		playerViewController.canStartPictureInPictureAutomaticallyFromInline = true
 		return playerViewController

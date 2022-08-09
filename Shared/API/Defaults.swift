@@ -16,6 +16,8 @@ extension Defaults {
 	static let nebulaContentApi = "nebulaContentApi"
 	static let zypeApi = "zypeApi"
 	
+	static let automaticFullscreen = "automaticFullscreen"
+	
 	enum ZypeAuthInfo {
 		static let accessToken = "ZypeAuthInfo-accessToken"
 		static let expiresAt = "ZypeAuthInfo-expiresAt"

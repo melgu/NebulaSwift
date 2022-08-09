@@ -8,12 +8,14 @@
 import SwiftUI
 import Combine
 
-class Storage {
+@MainActor class Storage: ObservableObject {
 	@Published var token: String?
 	@Published var bearer: String?
 	@Published var nebulaAuthApi: String?
 	@Published var nebulaContentApi: String?
 	@Published var zypeApi: String?
+	
+	@Published var automaticFullscreen: Bool
 	
 	let zypeAuthInfo = ZypeAuthInfo()
 	
@@ -26,6 +28,8 @@ class Storage {
 		nebulaAuthApi = defaults.string(forKey: Defaults.nebulaAuthApi)
 		nebulaContentApi = defaults.string(forKey: Defaults.nebulaContentApi)
 		zypeApi = defaults.string(forKey: Defaults.zypeApi)
+		
+		automaticFullscreen = defaults.bool(forKey: Defaults.automaticFullscreen)
 		
 		$token
 			.dropFirst()
@@ -47,11 +51,16 @@ class Storage {
 			.dropFirst()
 			.sink { defaults.set($0, forKey: Defaults.zypeApi) }
 			.store(in: &cancellables)
+		
+		$automaticFullscreen
+			.dropFirst()
+			.sink { defaults.set($0, forKey: Defaults.automaticFullscreen) }
+			.store(in: &cancellables)
 	}
 }
 
 extension Storage {
-	class ZypeAuthInfo {
+	@MainActor class ZypeAuthInfo {
 		@Published var accessToken: String?
 		@Published var expiresAt: Int?
 		@Published var refreshToken: String?
