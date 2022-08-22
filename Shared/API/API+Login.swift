@@ -37,7 +37,9 @@ extension API {
 	func logout() {
 		URLSession.shared.configuration.httpCookieStorage?.removeCookies(since: Date.distantPast)
 		
-		storage.token = nil
-		storage.bearer = nil
+		Task { @MainActor in
+			storage.token = nil
+			storage.bearer = nil
+		}
 	}
 }
