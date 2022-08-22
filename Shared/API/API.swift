@@ -32,12 +32,10 @@ import os.log
 	init() {
 		logger.debug("Token: \(self.storage.token ?? "nil")")
 		logger.debug("Authorization: \(self.storage.bearer ?? "nil")")
-		logger.debug("Zype Access Token: \(self.storage.zypeAuthInfo.accessToken ?? "nil")")
-		logger.debug("Zype Refresh: \(self.storage.zypeAuthInfo.refreshToken ?? "nil")")
 		
 		storage.$token
-			.combineLatest(storage.$bearer, storage.zypeAuthInfo.$accessToken)
-			.map { $0 != nil && $1 != nil && $2 != nil }
+			.combineLatest(storage.$bearer)
+			.map { $0 != nil && $1 != nil }
 			.assign(to: &$isLoggedIn)
 	}
 }
