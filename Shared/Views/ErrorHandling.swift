@@ -7,19 +7,39 @@
 
 import SwiftUI
 
-// MARK: Environment
+// MARK: Action
 
-private struct ErrorHandlerKey: EnvironmentKey {
-	static let defaultValue: (Error) -> Void = { print($0) }
+struct ErrorAction {
+	let action: (Error) -> Void
+	
+	init(_ action: @escaping (Error) -> Void) {
+		self.action = action
+	}
+	
+	func callAsFunction(_ error: Error) {
+		action(error)
+	}
+}
+
+// MARK: - Environment
+
+private struct ErrorKey: EnvironmentKey {
+	static let defaultValue: ErrorAction = ErrorAction({ print($0) })
 }
 
 extension EnvironmentValues {
 	/// Set a handler for errors.
 	///
 	/// The default error handler prints errors that occur.
-	var errorHandler: (Error) -> Void {
-		get { self[ErrorHandlerKey.self] }
-		set { self[ErrorHandlerKey.self] = newValue }
+	var handleError: ErrorAction {
+		get { self[ErrorKey.self] }
+		set { self[ErrorKey.self] = newValue }
+	}
+}
+
+extension View {
+	func handleError(action: @escaping (Error) -> Void) -> some View {
+		environment(\.handleError, ErrorAction(action))
 	}
 }
 
@@ -31,7 +51,7 @@ fileprivate struct AlertErrorHandlerModifier: ViewModifier {
 	
 	func body(content: Content) -> some View {
 		content
-			.environment(\.errorHandler) { error in
+			.handleError { error in
 				print(error)
 				if let error = error as? URLError, error.code == .cancelled { return }
 				self.error = error
@@ -58,7 +78,7 @@ fileprivate struct OnTapGestureModifier: ViewModifier {
 	let count: Int
 	let action: @Sendable () async throws -> Void
 	
-	@Environment(\.errorHandler) private var errorHandler
+	@Environment(\.handleError) private var handleError
 	
 	func body(content: Content) -> some View {
 		content.onTapGesture(count: count) {
@@ -66,7 +86,7 @@ fileprivate struct OnTapGestureModifier: ViewModifier {
 				do {
 					try await action()
 				} catch {
-					errorHandler(error)
+					handleError(error)
 				}
 			}
 		}
@@ -78,7 +98,7 @@ fileprivate struct OnTapGestureWithCoordinateModifier: ViewModifier {
 	let coordinateSpace: CoordinateSpace
 	let action: @MainActor @Sendable (CGPoint) async throws -> Void
 	
-	@Environment(\.errorHandler) private var errorHandler
+	@Environment(\.handleError) private var handleError
 	
 	func body(content: Content) -> some View {
 		content.onTapGesture(count: count, coordinateSpace: coordinateSpace) { point in
@@ -86,7 +106,7 @@ fileprivate struct OnTapGestureWithCoordinateModifier: ViewModifier {
 				do {
 					try await action(point)
 				} catch {
-					errorHandler(error)
+					handleError(error)
 				}
 			}
 		}
@@ -109,14 +129,14 @@ fileprivate struct TaskModifier: ViewModifier {
 	let priority: TaskPriority
 	let action: @MainActor @Sendable () async throws -> Void
 	
-	@Environment(\.errorHandler) private var errorHandler
+	@Environment(\.handleError) private var handleError
 	
 	func body(content: Content) -> some View {
 		content.task(priority: priority) {
 			do {
 				try await action()
 			} catch {
-				errorHandler(error)
+				handleError(error)
 			}
 		}
 	}
@@ -127,7 +147,7 @@ fileprivate struct TaskModifierWithID<V: Equatable>: ViewModifier {
 	let priority: TaskPriority
 	let action: @MainActor @Sendable () async throws -> Void
 	
-	@Environment(\.errorHandler) private var errorHandler
+	@Environment(\.handleError) private var handleError
 	
 	init(id value: V, priority: TaskPriority, action: @MainActor @escaping @Sendable () async throws -> Void) {
 		self.value = value
@@ -140,7 +160,7 @@ fileprivate struct TaskModifierWithID<V: Equatable>: ViewModifier {
 			do {
 				try await action()
 			} catch {
-				errorHandler(error)
+				handleError(error)
 			}
 		}
 	}
@@ -162,7 +182,7 @@ fileprivate struct OnChangeModifier<V: Equatable>: ViewModifier {
 	let value: V
 	let action: @MainActor @Sendable (V) async throws -> Void
 	
-	@Environment(\.errorHandler) private var errorHandler
+	@Environment(\.handleError) private var handleError
 	
 	init(value: V, action: @MainActor @escaping @Sendable (V) async throws -> Void) {
 		self.value = value
@@ -175,7 +195,7 @@ fileprivate struct OnChangeModifier<V: Equatable>: ViewModifier {
 				do {
 					try await action(newValue)
 				} catch {
-					errorHandler(error)
+					handleError(error)
 				}
 			}
 		}
@@ -193,14 +213,14 @@ extension View {
 fileprivate struct RefreshableModifier: ViewModifier {
 	let action: @Sendable () async throws -> Void
 	
-	@Environment(\.errorHandler) private var errorHandler
+	@Environment(\.handleError) private var handleError
 	
 	func body(content: Content) -> some View {
 		content.refreshable {
 			do {
 				try await action()
 			} catch {
-				errorHandler(error)
+				handleError(error)
 			}
 		}
 	}
