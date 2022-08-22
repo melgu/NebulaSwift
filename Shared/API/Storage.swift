@@ -13,11 +13,8 @@ import Combine
 	@Published var bearer: String?
 	@Published var nebulaAuthApi: String?
 	@Published var nebulaContentApi: String?
-	@Published var zypeApi: String?
 	
 	@Published var automaticFullscreen: Bool
-	
-	let zypeAuthInfo = ZypeAuthInfo()
 	
 	private var cancellables = Set<AnyCancellable>()
 	
@@ -27,7 +24,6 @@ import Combine
 		bearer = defaults.string(forKey: Defaults.bearer)
 		nebulaAuthApi = defaults.string(forKey: Defaults.nebulaAuthApi)
 		nebulaContentApi = defaults.string(forKey: Defaults.nebulaContentApi)
-		zypeApi = defaults.string(forKey: Defaults.zypeApi)
 		
 		automaticFullscreen = defaults.bool(forKey: Defaults.automaticFullscreen)
 		
@@ -46,10 +42,6 @@ import Combine
 		$nebulaContentApi
 			.dropFirst()
 			.sink { defaults.set($0, forKey: Defaults.nebulaContentApi) }
-			.store(in: &cancellables)
-		$zypeApi
-			.dropFirst()
-			.sink { defaults.set($0, forKey: Defaults.zypeApi) }
 			.store(in: &cancellables)
 		
 		$automaticFullscreen

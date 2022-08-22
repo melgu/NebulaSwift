@@ -12,7 +12,6 @@ enum APIError: LocalizedError {
 	case networkIssues
 	case missingToken
 	case missingBearer
-	case missingZypeAccessToken
 	case missingEngagement
 }
 
@@ -23,7 +22,7 @@ extension APIError {
 			return "Invalid server response. Error code \(errorCode)"
 		case .networkIssues:
 			return "Network issues"
-		case .missingToken, .missingBearer, .missingZypeAccessToken:
+		case .missingToken, .missingBearer:
 			return "Missing authorization"
 		case .missingEngagement:
 			return "Missing engagement information"
@@ -35,7 +34,6 @@ extension API {
 	enum AuthorizationType {
 		case token
 		case bearer
-		case zypeAccess
 	}
 }
 
@@ -62,9 +60,6 @@ extension API {
 		case .bearer:
 			guard let bearer = storage.bearer else { throw APIError.missingBearer }
 			request.setValue("Bearer \(bearer)", forHTTPHeaderField: "Authorization")
-		case .zypeAccess:
-			guard let zypeAccessToken = storage.zypeAuthInfo.accessToken else { throw APIError.missingZypeAccessToken }
-			request.setValue("Token \(zypeAccessToken)", forHTTPHeaderField: "Authorization") // TODO: Token?
 		case .none:
 			break
 		}
@@ -103,8 +98,6 @@ extension API {
 					throw error
 				case .bearer:
 					try await refreshAuthorization()
-				case .zypeAccess:
-					try await refreshZypeAuthorization()
 				case .none:
 					throw error
 				}

@@ -32,7 +32,6 @@ extension API {
 		storage.token = loginResponse.key
 		
 		try await refreshAuthorization()
-		try await refreshZypeAuthorization()
 	}
 	
 	func logout() {
@@ -40,7 +39,5 @@ extension API {
 		
 		storage.token = nil
 		storage.bearer = nil
-		storage.zypeAuthInfo.accessToken = nil
-		storage.zypeAuthInfo.refreshToken = nil
 	}
 }
