@@ -195,7 +195,7 @@ private struct Demo: View {
 				}
 			}
 			.buttonStyle(.borderedProminent)
-			.environment(\.openItem) { item in
+			.onOpenItem { item in
 				path.append(item)
 			}
 			.navigationDestination(for: String.self, destination: destination)
