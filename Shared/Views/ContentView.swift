@@ -38,7 +38,7 @@ struct ContentView: View {
 				Login()
 			}
 		}
-		.environment(\.openItem) { item in
+		.onOpenItem { item in
 			print("Open Item: \(item)")
 			navigationPath.append(item)
 		}
