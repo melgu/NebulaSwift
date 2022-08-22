@@ -22,7 +22,7 @@ struct AsyncButton<Label: View>: View {
 	private let label: () -> Label
 	
 	@Environment(\.asyncButtonStyle) private var asyncButtonStyle
-	@Environment(\.errorHandler) private var errorHandler
+	@Environment(\.handleError) private var handleError
 	
 	@State private var isRunning = false
 	
@@ -41,7 +41,7 @@ struct AsyncButton<Label: View>: View {
 					isRunning = false
 				} catch {
 					isRunning = false
-					errorHandler(error)
+					handleError(error)
 				}
 			}
 		} label: {

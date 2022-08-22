@@ -14,7 +14,7 @@ struct AsyncNavigationLink<Item: Hashable, Label: View, Destination: View>: View
 	private let variant: Variant
 	
 	@Environment(\.openItem) private var openItem
-	@Environment(\.errorHandler) private var errorHandler
+	@Environment(\.handleError) private var handleError
 	
 	@State private var state: Status<Item> = .idle
 	@State private var isPresented = false
@@ -49,7 +49,7 @@ struct AsyncNavigationLink<Item: Hashable, Label: View, Destination: View>: View
 				}
 			} catch {
 				state = .failure(error)
-				errorHandler(error)
+				handleError(error)
 			}
 		} label: {
 			label(state)
