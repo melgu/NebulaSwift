@@ -51,16 +51,19 @@ struct VideoPreviewView: View {
 	
 	var body: some View {
 		VStack(alignment: .leading) {
-			AsyncImage(url: video.assets.thumbnail["480"]?.original) { image in
-				image
-					.resizable()
-					.scaledToFit()
-			} placeholder: {
-				Color.black
-					.aspectRatio(16/9, contentMode: .fit)
-			}
-			.overlay(informationOverlay)
-			.cornerRadius(8)
+			Color.black
+				.aspectRatio(16/9, contentMode: .fit)
+				.overlay {
+					AsyncImage(url: video.assets.thumbnail["480"]?.original) { image in
+						image
+							.resizable()
+							.scaledToFill()
+					} placeholder: {
+						EmptyView()
+					}
+				}
+				.overlay(informationOverlay)
+				.cornerRadius(8)
 			
 			HStack(alignment: .top) {
 				AsyncImage(url: video.assets.channelAvatar["64"]?.original) { image in
