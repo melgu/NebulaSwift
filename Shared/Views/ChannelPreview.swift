@@ -24,15 +24,18 @@ struct ChannelPreviewView: View {
 	
 	var body: some View {
 		VStack(alignment: .leading) {
-			AsyncImage(url: channel.assets.banner["480"]?.original) { image in
-				image
-					.resizable()
-					.scaledToFit()
-			} placeholder: {
-				Color.black
-					.aspectRatio(16/9, contentMode: .fit)
-			}
-			.cornerRadius(8)
+			Color.black
+				.aspectRatio(16/9, contentMode: .fit)
+				.overlay {
+					AsyncImage(url: channel.assets.banner["480"]?.original) { image in
+						image
+							.resizable()
+							.scaledToFit()
+					} placeholder: {
+						EmptyView()
+					}
+				}
+				.cornerRadius(8)
 			
 			Text(channel.title)
 		}
