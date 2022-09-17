@@ -38,6 +38,7 @@ struct Search: View {
 					Task { await task?.value }
 				}
 				.textFieldStyle(.roundedBorder)
+				.autocorrectionDisabled()
 				
 				if !channelResults.isEmpty {
 					Text("Channels")
