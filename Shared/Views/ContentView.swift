@@ -130,6 +130,7 @@ struct ContentView: View {
 			}
 		}
 		.searchable(text: $searchTerm, placement: .sidebar, prompt: Text("Search My Shows"))
+		.autocorrectionDisabled()
 		.refreshable {
 			try await refreshMyShows()
 		}
