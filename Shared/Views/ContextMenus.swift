@@ -19,6 +19,7 @@ struct VideoContextMenu: ViewModifier {
 	let video: Video
 	
 	@EnvironmentObject private var api: API
+	@EnvironmentObject private var storage: Storage
 	
 	@Environment(\.goToChannelEnabled) private var goToChannelEnabled
 	@Environment(\.assumeWatchLater) private var assumeWatchLater
@@ -87,8 +88,12 @@ struct VideoContextMenu: ViewModifier {
 				
 				ShareLink(item: video.shareUrl)
 			} preview: {
-				LiveVideoPreviewView(video: video)
-					.environmentObject(api)
+				if storage.videoPreview {
+					LiveVideoPreviewView(video: video)
+						.environmentObject(api)
+				} else {
+					VideoPreviewImage(video: video)
+				}
 			}
 	}
 }

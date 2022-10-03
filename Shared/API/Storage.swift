@@ -15,6 +15,7 @@ import Combine
 	@Published var nebulaContentApi: String?
 	
 	@Published var automaticFullscreen: Bool
+	@Published var videoPreview: Bool
 	
 	private var cancellables = Set<AnyCancellable>()
 	
@@ -26,6 +27,7 @@ import Combine
 		nebulaContentApi = defaults.string(forKey: Defaults.nebulaContentApi)
 		
 		automaticFullscreen = defaults.bool(forKey: Defaults.automaticFullscreen)
+		videoPreview = defaults.optionalBool(forKey: Defaults.videoPreview) ?? true
 		
 		$token
 			.dropFirst()
@@ -47,6 +49,11 @@ import Combine
 		$automaticFullscreen
 			.dropFirst()
 			.sink { defaults.set($0, forKey: Defaults.automaticFullscreen) }
+			.store(in: &cancellables)
+		
+		$videoPreview
+			.dropFirst()
+			.sink { defaults.set($0, forKey: Defaults.videoPreview) }
 			.store(in: &cancellables)
 	}
 }
@@ -78,5 +85,12 @@ extension Storage {
 				.sink { defaults.set($0, forKey: Defaults.ZypeAuthInfo.refreshToken) }
 				.store(in: &cancellables)
 		}
+	}
+}
+
+private extension UserDefaults {
+	func optionalBool(forKey defaultName: String) -> Bool? {
+		guard object(forKey: defaultName) != nil else { return nil }
+		return bool(forKey: defaultName)
 	}
 }

@@ -137,16 +137,8 @@ struct VideoPreviewView: View {
 	}
 }
 
-struct LiveVideoPreviewView: View {
+struct VideoPreviewImage: View {
 	let video: Video
-	
-	@EnvironmentObject private var api: API
-	
-	@State private var player = AVPlayer()
-	@State private var loadingTask: Task<Void, Error>?
-	@State private var prerollTask: Task<Void, Error>?
-	@State private var readyToPlay = false
-	@State private var cancellable: AnyCancellable?
 	
 	var body: some View {
 		AsyncImage(url: video.assets.thumbnail["960"]?.original) { image in
@@ -162,49 +154,65 @@ struct LiveVideoPreviewView: View {
 					.controlSize(.large)
 			}
 		}
-		.overlay {
-			if readyToPlay {
-				VideoPlayer(player: player)
-					.transition(.opacity)
-			} else {
-				ProgressView()
-					.controlSize(.large)
+	}
+}
+
+struct LiveVideoPreviewView: View {
+	let video: Video
+	
+	@EnvironmentObject private var api: API
+	
+	@State private var player = AVPlayer()
+	@State private var loadingTask: Task<Void, Error>?
+	@State private var prerollTask: Task<Void, Error>?
+	@State private var readyToPlay = false
+	@State private var cancellable: AnyCancellable?
+	
+	var body: some View {
+		VideoPreviewImage(video: video)
+			.overlay {
+				if readyToPlay {
+					VideoPlayer(player: player)
+						.transition(.opacity)
+				} else {
+					ProgressView()
+						.controlSize(.large)
+				}
 			}
-		}
-		.task {
-			cancellable = player.publisher(for: \.status)
-				.print("Video Preview")
-				.handleEvents(receiveCompletion: { _ in
-					player.replaceCurrentItem(with: nil)
-				}, receiveCancel: {
-					player.replaceCurrentItem(with: nil)
-				})
-				.filter { $0 == .readyToPlay }
-				.sink { _ in
-					prerollTask = Task {
-						await player.preroll(atRate: 1)
-						try Task.checkCancellation()
-						withAnimation { self.readyToPlay = true }
-						player.play()
+			.task {
+				cancellable = player.publisher(for: \.status)
+					.print("Video Preview")
+					.handleEvents(receiveCompletion: { _ in
+						player.replaceCurrentItem(with: nil)
+					}, receiveCancel: {
+						player.replaceCurrentItem(with: nil)
+					})
+					.filter { $0 == .readyToPlay }
+					.sink { _ in
+						prerollTask = Task {
+							await player.preroll(atRate: 1)
+							try Task.checkCancellation()
+							withAnimation { self.readyToPlay = true }
+							player.play()
+						}
+						Task { try await prerollTask?.value }
 					}
-					Task { try await prerollTask?.value }
+				
+				loadingTask = Task {
+					let stream = try await api.stream(for: video)
+					let item = AVPlayerItem(url: stream.manifest)
+					player.replaceCurrentItem(with: item)
+					if let progress = video.engagement?.progress {
+						await player.seek(to: CMTime(seconds: Double(progress), preferredTimescale: 1))
+					}
 				}
-			
-			loadingTask = Task {
-				let stream = try await api.stream(for: video)
-				let item = AVPlayerItem(url: stream.manifest)
-				player.replaceCurrentItem(with: item)
-				if let progress = video.engagement?.progress {
-					await player.seek(to: CMTime(seconds: Double(progress), preferredTimescale: 1))
-				}
+				try await loadingTask?.value
 			}
-			try await loadingTask?.value
-		}
-		.onDisappear {
-			loadingTask?.cancel()
-			prerollTask?.cancel()
-			cancellable?.cancel()
-		}
+			.onDisappear {
+				loadingTask?.cancel()
+				prerollTask?.cancel()
+				cancellable?.cancel()
+			}
 	}
 }
 

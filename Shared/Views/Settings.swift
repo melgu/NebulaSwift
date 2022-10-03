@@ -39,6 +39,7 @@ struct SettingsView: View {
 			#if os(iOS) // No way to automatically enter fullscreen on macOS (without crashing the OS)
 			Section("Playback") {
 				Toggle("Automatic Fullscreen", isOn: $storage.automaticFullscreen)
+				Toggle("Video Preview", isOn: $storage.videoPreview)
 			}
 			#endif
 			Section("User") {
