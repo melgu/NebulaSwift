@@ -9,7 +9,7 @@ import Foundation
 
 extension API {
 	private func videos(for playlist: String, page: Int, pageSize: Int = 24) async throws -> [Video] {
-		let url = URL(string: "https://content.watchnebula.com/engagement/playlist/list/\(playlist)/?&page=\(page)&page_size=\(pageSize)")!
+		let url = URL(string: "https://content.watchnebula.com/engagement/playlist/list/\(playlist)/?page=\(page)&page_size=\(pageSize)")!
 		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}
