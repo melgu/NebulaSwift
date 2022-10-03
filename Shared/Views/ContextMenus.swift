@@ -61,6 +61,28 @@ struct VideoContextMenu: ViewModifier {
 					Label("Download", systemImage: "arrow.down")
 				}
 				
+				if let engagement = video.engagement {
+					Divider()
+					
+					if !engagement.completed {
+						AsyncButton {
+							try await api.markVideoAsWatched(video)
+							await refresh?()
+						} label: {
+							Label("Mark as watched", systemImage: "checkmark.circle")
+						}
+					}
+					
+					if engagement.progress != 0 {
+						AsyncButton {
+							try await api.clearProgress(for: video)
+							await refresh?()
+						} label: {
+							Label("Clear progress", systemImage: "clock.arrow.circlepath")
+						}
+					}
+				}
+				
 				Divider()
 				
 				ShareLink(item: video.shareUrl)
