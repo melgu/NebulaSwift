@@ -174,6 +174,11 @@ struct LiveVideoPreviewView: View {
 		.task {
 			cancellable = player.publisher(for: \.status)
 				.print("Video Preview")
+				.handleEvents(receiveCompletion: { _ in
+					player.replaceCurrentItem(with: nil)
+				}, receiveCancel: {
+					player.replaceCurrentItem(with: nil)
+				})
 				.filter { $0 == .readyToPlay }
 				.sink { _ in
 					prerollTask = Task {
@@ -198,8 +203,7 @@ struct LiveVideoPreviewView: View {
 		.onDisappear {
 			loadingTask?.cancel()
 			prerollTask?.cancel()
-			cancellable = nil
-			player.replaceCurrentItem(with: nil)
+			cancellable?.cancel()
 		}
 	}
 }
