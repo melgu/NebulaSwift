@@ -62,6 +62,11 @@ struct Progress: Encodable {
 	let value: Int
 }
 
+struct Completed: Encodable {
+	let contentSlug: String
+	let completed = true
+}
+
 // MARK: - Stream
 
 struct VideoStream: Decodable {
@@ -106,5 +111,17 @@ extension API {
 		let url = URL(string: "https://content.watchnebula.com/engagement/video/progress/")!
 		let progress = Progress(contentSlug: video.slug, value: seconds)
 		return try await request(.post, url: url, body: progress, authorization: .bearer)
+	}
+	
+	@discardableResult
+	func markVideoAsWatched(_ video: Video) async throws -> Video.Engagement {
+		let url = URL(string: "https://content.watchnebula.com/engagement/video/progress/")!
+		let progress = Completed(contentSlug: video.slug)
+		return try await request(.post, url: url, body: progress, authorization: .bearer)
+	}
+	
+	func clearProgress(for video: Video) async throws {
+		let url = URL(string: "https://content.api.nebula.app/engagement/video/progress/\(video.slug)/")!
+		return try await request(.delete, url: url, authorization: .bearer)
 	}
 }
