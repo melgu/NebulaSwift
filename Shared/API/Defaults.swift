@@ -17,6 +17,7 @@ extension Defaults {
 	static let zypeApi = "zypeApi"
 	
 	static let automaticFullscreen = "automaticFullscreen"
+	static let videoPreview = "videoPreview"
 	
 	enum ZypeAuthInfo {
 		static let accessToken = "ZypeAuthInfo-accessToken"
