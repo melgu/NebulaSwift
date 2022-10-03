@@ -21,6 +21,7 @@ struct VideoContextMenu: ViewModifier {
 	@EnvironmentObject private var api: API
 	
 	@Environment(\.goToChannelEnabled) private var goToChannelEnabled
+	@Environment(\.assumeWatchLater) private var assumeWatchLater
 	@Environment(\.refresh) private var refresh
 	
 	func body(content: Content) -> some View {
@@ -37,7 +38,7 @@ struct VideoContextMenu: ViewModifier {
 				Divider()
 				
 				if let engagement = video.engagement {
-					if engagement.watchLater {
+					if engagement.watchLater || assumeWatchLater {
 						AsyncButton {
 							try await api.removeVideoFromWatchLater(video)
 							await refresh?()

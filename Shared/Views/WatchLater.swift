@@ -15,6 +15,7 @@ struct WatchLater: View {
 		AutoVideoGrid(fetch: { page in
 			try await api.watchLaterVideos(page: page)
 		})
+		.assumeWatchLater()
 		.navigationTitle("Watch Later")
 		.onAppear { player.reset() }
 	}
