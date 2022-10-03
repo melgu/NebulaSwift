@@ -171,22 +171,10 @@ struct ContentView: View {
 				}
 			}
 			.navigationDestination(for: Video.self) { video in
-				#if os(macOS)
-				NavigationStack {
-					VideoPage(video: video)
-				}
-				#else
 				VideoPage(video: video)
-				#endif
 			}
 			.navigationDestination(for: Channel.self) { channel in
-				#if os(macOS)
-				NavigationStack {
-					ChannelPage(channel: channel)
-				}
-				#else
 				ChannelPage(channel: channel)
-				#endif
 			}
 		}
 	}
