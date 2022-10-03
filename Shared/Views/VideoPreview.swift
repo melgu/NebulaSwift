@@ -28,6 +28,23 @@ extension View {
 	}
 }
 
+private struct AssumeWatchLaterKey: EnvironmentKey {
+	static let defaultValue = false
+}
+
+extension EnvironmentValues {
+	var assumeWatchLater: Bool {
+		get { self[AssumeWatchLaterKey.self] }
+		set { self[AssumeWatchLaterKey.self] = newValue }
+	}
+}
+
+extension View {
+	func assumeWatchLater() -> some View {
+		environment(\.assumeWatchLater, true)
+	}
+}
+
 // MARK: Video Preview
 
 struct VideoPreview: View {
@@ -44,6 +61,8 @@ struct VideoPreview: View {
 
 struct VideoPreviewView: View {
 	let video: Video
+	
+	@Environment(\.assumeWatchLater) private var assumeWatchLater
 	
 	init(video: Video) {
 		self.video = video
@@ -89,7 +108,7 @@ struct VideoPreviewView: View {
 	
 	private var informationOverlay: some View {
 		VStack(alignment: .trailing) {
-			if video.engagement?.watchLater == true {
+			if video.engagement?.watchLater == true || assumeWatchLater {
 				Image(systemName: "bookmark.fill")
 					.padding(2)
 					.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
