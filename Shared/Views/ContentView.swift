@@ -150,7 +150,7 @@ struct ContentView: View {
 	
 	private var detail: some View {
 		NavigationStack(path: $navigationPath) {
-			ZStack { // Workaround for Beta bug (No updates on selection change, FB91311311)
+			Group {
 				switch selection {
 				case .featured:
 					Featured()
