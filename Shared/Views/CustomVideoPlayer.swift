@@ -19,10 +19,25 @@ struct CustomVideoPlayer: UIViewControllerRepresentable {
 		playerViewController.entersFullScreenWhenPlaybackBegins = storage.automaticFullscreen
 		playerViewController.exitsFullScreenWhenPlaybackEnds = true
 		playerViewController.canStartPictureInPictureAutomaticallyFromInline = true
+		if storage.automaticFullscreen {
+			playerViewController.goFullScreen()
+		}
 		return playerViewController
 	}
 	
 	func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {}
+}
+
+extension AVPlayerViewController {
+	// TODO: Does this prevent me from getting into the app store?
+	func goFullScreen() {
+		let selectorName = "_transitionToFullScreenAnimated:interactive:completionHandler:"
+		let selectorToForceFullScreenMode = NSSelectorFromString(selectorName)
+		
+		if responds(to: selectorToForceFullScreenMode) {
+			perform(selectorToForceFullScreenMode, with: true, with: nil)
+		}
+	}
 }
 #else
 struct CustomVideoPlayer: NSViewRepresentable {
