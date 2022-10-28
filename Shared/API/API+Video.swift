@@ -46,6 +46,7 @@ extension Video {
 		case freeSampleEligible = "free_sample_eligible"
 		case isNebulaPlus = "is_nebula_plus"
 		case isNebulaOriginal = "is_nebula_original"
+		case isNebulaFirst = "is_nebula_first"
 	}
 	
 	struct Engagement: Codable, Equatable, Hashable {
