@@ -19,8 +19,10 @@ struct Login: View {
 				.font(.title)
 			TextField("email", text: $email)
 				.textContentType(.username)
+				.autocorrectionDisabled()
 				#if os(iOS)
 				.keyboardType(.emailAddress)
+				.textInputAutocapitalization(.never)
 				#endif
 			SecureField("password", text: $password)
 			AsyncButton("Login") {
