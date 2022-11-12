@@ -221,6 +221,33 @@ extension View {
 	}
 }
 
+// MARK: - onSubmit
+
+fileprivate struct OnSubmitModifier: ViewModifier {
+	let triggers: SubmitTriggers
+	let action: @MainActor @Sendable () async throws -> Void
+	
+	@Environment(\.handleError) private var handleError
+	
+	func body(content: Content) -> some View {
+		content.onSubmit {
+			Task {
+				do {
+					try await action()
+				} catch {
+					handleError(error)
+				}
+			}
+		}
+	}
+}
+
+extension View {
+	func onSubmit(of triggers: SubmitTriggers = .text, _ action: @escaping @MainActor @Sendable () async throws -> Void) -> some View {
+		modifier(OnSubmitModifier(triggers: triggers, action: action))
+	}
+}
+
 // MARK: - Previews
 
 struct ErrorHandling_Previews: PreviewProvider {
