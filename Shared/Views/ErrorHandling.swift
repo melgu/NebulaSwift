@@ -149,12 +149,6 @@ fileprivate struct TaskModifierWithID<V: Equatable>: ViewModifier {
 	
 	@Environment(\.handleError) private var handleError
 	
-	init(id value: V, priority: TaskPriority, action: @MainActor @escaping @Sendable () async throws -> Void) {
-		self.value = value
-		self.priority = priority
-		self.action = action
-	}
-	
 	func body(content: Content) -> some View {
 		content.task(id: value, priority: priority) {
 			do {
@@ -172,7 +166,7 @@ extension View {
 	}
 	
 	func task<V>(id value: V, priority: TaskPriority = .userInitiated, _ action: @escaping @MainActor @Sendable () async throws -> Void) -> some View where V : Equatable {
-		modifier(TaskModifierWithID(id: value, priority: priority, action: action))
+		modifier(TaskModifierWithID(value: value, priority: priority, action: action))
 	}
 }
 
@@ -183,11 +177,6 @@ fileprivate struct OnChangeModifier<V: Equatable>: ViewModifier {
 	let action: @MainActor @Sendable (V) async throws -> Void
 	
 	@Environment(\.handleError) private var handleError
-	
-	init(value: V, action: @MainActor @escaping @Sendable (V) async throws -> Void) {
-		self.value = value
-		self.action = action
-	}
 	
 	func body(content: Content) -> some View {
 		content.onChange(of: value) { newValue in
@@ -211,7 +200,7 @@ extension View {
 // MARK: - refreshable
 
 fileprivate struct RefreshableModifier: ViewModifier {
-	let action: @Sendable () async throws -> Void
+	let action: @MainActor @Sendable () async throws -> Void
 	
 	@Environment(\.handleError) private var handleError
 	
@@ -231,6 +220,8 @@ extension View {
 		modifier(RefreshableModifier(action: action))
 	}
 }
+
+// MARK: - Previews
 
 struct ErrorHandling_Previews: PreviewProvider {
 	static var previews: some View {
