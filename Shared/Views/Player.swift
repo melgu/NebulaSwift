@@ -31,7 +31,7 @@ import os.log
 		
 		#if canImport(UIKit)
 		try? AVAudioSession.sharedInstance().setCategory(.playback)
-		pipController!.canStartPictureInPictureAutomaticallyFromInline = true
+		pipController?.canStartPictureInPictureAutomaticallyFromInline = true
 		#endif
 		
 		player.preventsDisplaySleepDuringVideoPlayback = true
