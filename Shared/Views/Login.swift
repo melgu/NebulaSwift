@@ -25,6 +25,9 @@ struct Login: View {
 				.textInputAutocapitalization(.never)
 				#endif
 			SecureField("password", text: $password)
+				.onSubmit {
+					try await api.login(email: email, password: password)
+				}
 			AsyncButton("Login") {
 				try await api.login(email: email, password: password)
 			}
