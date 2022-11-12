@@ -79,15 +79,23 @@ struct ContentView: View {
 		.onContinueUserActivity("de.melgu.NebulaSwift.channel") { activity in
 			if let channel = try? activity.typedPayload(Channel.self) {
 				print("Continue User Activity. Channel: \(channel.title)")
-				navigationPath.append(channel)
+				if let channel = myShows?.first(where: { $0.slug == channel.slug }) {
+					selection = .channel(channel)
+				} else {
+					navigationPath.append(channel)
+				}
 			} else {
 				print("Continue User Activity. Channel URL: \(activity.webpageURL?.absoluteString ?? "nil")")
-				Task {
-					guard let url = activity.webpageURL else { return }
-					let slug = url.lastPathComponent
-					guard !slug.isEmpty else { return }
-					let channel = try await api.channel(for: slug)
-					navigationPath.append(channel)
+				guard let url = activity.webpageURL else { return }
+				let slug = url.lastPathComponent
+				guard !slug.isEmpty else { return }
+				if let channel = myShows?.first(where: { $0.slug == slug }) {
+					selection = .channel(channel)
+				} else {
+					Task {
+						let channel = try await api.channel(for: slug)
+						navigationPath.append(channel)
+					}
 				}
 			}
 		}
