@@ -16,6 +16,7 @@ import Combine
 	
 	@Published var automaticFullscreen: Bool
 	@Published var videoPreview: Bool
+	@Published var videoPreviewWithSound: Bool
 	
 	private var cancellables = Set<AnyCancellable>()
 	
@@ -28,6 +29,7 @@ import Combine
 		
 		automaticFullscreen = defaults.bool(forKey: Defaults.automaticFullscreen)
 		videoPreview = defaults.optionalBool(forKey: Defaults.videoPreview) ?? true
+		videoPreviewWithSound = defaults.optionalBool(forKey: Defaults.videoPreviewWithSound) ?? true
 		
 		$token
 			.dropFirst()
@@ -54,6 +56,11 @@ import Combine
 		$videoPreview
 			.dropFirst()
 			.sink { defaults.set($0, forKey: Defaults.videoPreview) }
+			.store(in: &cancellables)
+		
+		$videoPreviewWithSound
+			.dropFirst()
+			.sink { defaults.set($0, forKey: Defaults.videoPreviewWithSound) }
 			.store(in: &cancellables)
 	}
 }

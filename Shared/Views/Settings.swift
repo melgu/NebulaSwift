@@ -40,6 +40,9 @@ struct SettingsView: View {
 			Section("Playback") {
 				Toggle("Automatic Fullscreen", isOn: $storage.automaticFullscreen)
 				Toggle("Video Preview", isOn: $storage.videoPreview)
+				if storage.videoPreview {
+					Toggle("Preview with sound", isOn: $storage.videoPreviewWithSound)
+				}
 			}
 			#endif
 			Section("User") {
