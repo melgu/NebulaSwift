@@ -58,36 +58,6 @@ import Combine
 	}
 }
 
-extension Storage {
-	@MainActor class ZypeAuthInfo {
-		@Published var accessToken: String?
-		@Published var expiresAt: Int?
-		@Published var refreshToken: String?
-		
-		private var cancellables = Set<AnyCancellable>()
-		
-		fileprivate init() {
-			let defaults = UserDefaults.standard
-			accessToken = defaults.string(forKey: Defaults.ZypeAuthInfo.accessToken)
-			expiresAt = defaults.integer(forKey: Defaults.ZypeAuthInfo.expiresAt)
-			refreshToken = defaults.string(forKey: Defaults.ZypeAuthInfo.refreshToken)
-			
-			$accessToken
-				.dropFirst()
-				.sink { defaults.set($0, forKey: Defaults.ZypeAuthInfo.accessToken) }
-				.store(in: &cancellables)
-			$expiresAt
-				.dropFirst()
-				.sink { defaults.set($0, forKey: Defaults.ZypeAuthInfo.expiresAt) }
-				.store(in: &cancellables)
-			$refreshToken
-				.dropFirst()
-				.sink { defaults.set($0, forKey: Defaults.ZypeAuthInfo.refreshToken) }
-				.store(in: &cancellables)
-		}
-	}
-}
-
 private extension UserDefaults {
 	func optionalBool(forKey defaultName: String) -> Bool? {
 		guard object(forKey: defaultName) != nil else { return nil }

@@ -18,10 +18,4 @@ extension Defaults {
 	
 	static let automaticFullscreen = "automaticFullscreen"
 	static let videoPreview = "videoPreview"
-	
-	enum ZypeAuthInfo {
-		static let accessToken = "ZypeAuthInfo-accessToken"
-		static let expiresAt = "ZypeAuthInfo-expiresAt"
-		static let refreshToken = "ZypeAuthInfo-refreshToken"
-	}
 }
