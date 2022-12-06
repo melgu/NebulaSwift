@@ -53,6 +53,11 @@ struct VideoPreview: View {
 	var body: some View {
 		NavigationLink(value: video) {
 			VideoPreviewView(video: video)
+				.draggable(video.shareUrl) {
+					VideoPreviewView(video: video)
+						.background(Color.systemBackground)
+						.cornerRadius(8)
+				}
 		}
 		.buttonStyle(.plain)
 		.contextMenu(for: video)
