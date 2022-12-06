@@ -161,6 +161,7 @@ struct LiveVideoPreviewView: View {
 	let video: Video
 	
 	@EnvironmentObject private var api: API
+	@EnvironmentObject private var storage: Storage
 	
 	@State private var player = AVPlayer()
 	@State private var loadingTask: Task<Void, Error>?
@@ -180,6 +181,8 @@ struct LiveVideoPreviewView: View {
 				}
 			}
 			.task {
+				player.volume = storage.videoPreviewWithSound ? 1 : 0
+				
 				cancellable = player.publisher(for: \.status)
 					.print("Video Preview")
 					.handleEvents(receiveCompletion: { _ in

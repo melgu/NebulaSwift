@@ -91,6 +91,7 @@ struct VideoContextMenu: ViewModifier {
 				if storage.videoPreview {
 					LiveVideoPreviewView(video: video)
 						.environmentObject(api)
+						.environmentObject(storage)
 				} else {
 					VideoPreviewImage(video: video)
 				}

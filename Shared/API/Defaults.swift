@@ -18,4 +18,5 @@ extension Defaults {
 	
 	static let automaticFullscreen = "automaticFullscreen"
 	static let videoPreview = "videoPreview"
+	static let videoPreviewWithSound = "videoPreviewWithSound"
 }
