@@ -13,6 +13,11 @@ struct ChannelPreview: View {
 	var body: some View {
 		NavigationLink(value: channel) {
 			ChannelPreviewView(channel: channel)
+				.draggable(channel.shareUrl) {
+					ChannelPreviewView(channel: channel)
+						.background(Color.systemBackground)
+						.cornerRadius(8)
+				}
 		}
 		.buttonStyle(.plain)
 		.contextMenu(for: channel)
