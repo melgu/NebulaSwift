@@ -131,6 +131,7 @@ struct ContentView: View {
 					ForEach(filteredMyShows) { channel in
 						NavigationLink(value: TopLevel.channel(channel)) {
 							label(for: channel)
+								.draggable(channel.shareUrl)
 						}
 						.contextMenu(for: channel)
 					}
