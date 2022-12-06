@@ -64,13 +64,11 @@ struct AutoVideoGrid<Value: Equatable>: View {
 		.refreshable {
 			try await refreshVideos()
 		}
-		#if os(macOS)
 		.toolbar {
 			ToolbarItem(placement: .primaryAction) {
 				refreshButton
 			}
 		}
-		#endif
 		.task(id: value) {
 			print("Load Videos")
 			try await refreshVideos()
@@ -84,6 +82,10 @@ struct AutoVideoGrid<Value: Equatable>: View {
 			Image(systemName: "arrow.clockwise")
 		}
 		.asyncButtonStyle(.progress(replacesLabel: true))
+		.keyboardShortcut("r", modifiers: .command)
+		#if os(iOS)
+		.hidden()
+		#endif
 	}
 	
 	private func refreshVideos() async throws {
