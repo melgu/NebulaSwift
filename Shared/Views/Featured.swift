@@ -25,11 +25,18 @@ struct Featured: View {
 			try await refreshFeatured(animated: true)
 		}
 		.navigationTitle("Featured")
+		#if os(macOS)
 		.toolbar {
 			ToolbarItem(placement: .primaryAction) {
 				refreshButton
 			}
 		}
+		#else
+		.background {
+			refreshButton
+				.hidden()
+		}
+		#endif
 		.task {
 			player.reset()
 			try await refreshFeatured(animated: false)
@@ -95,9 +102,6 @@ struct Featured: View {
 		}
 		.asyncButtonStyle(.progress(replacesLabel: true))
 		.keyboardShortcut("r", modifiers: .command)
-		#if os(iOS)
-		.hidden()
-		#endif
 	}
 	
 	private func refreshFeatured(animated: Bool) async throws {

@@ -61,11 +61,18 @@ struct AutoChannelGrid: View {
 		.refreshable {
 			try await refreshChannels()
 		}
+		#if os(macOS)
 		.toolbar {
 			ToolbarItem(placement: .primaryAction) {
 				refreshButton
 			}
 		}
+		#else
+		.background {
+			refreshButton
+				.hidden()
+		}
+		#endif
 		.task {
 			print("Load Channels")
 			try await refreshChannels()
@@ -80,9 +87,6 @@ struct AutoChannelGrid: View {
 		}
 		.asyncButtonStyle(.progress(replacesLabel: true))
 		.keyboardShortcut("r", modifiers: .command)
-		#if os(iOS)
-		.hidden()
-		#endif
 	}
 	
 	private func refreshChannels() async throws {
