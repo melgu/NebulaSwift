@@ -10,6 +10,7 @@ import Foundation
 enum APIError: LocalizedError {
 	case invalidServerResponse(errorCode: Int)
 	case networkIssues
+	case requestTimedOut(url: URL?)
 	case missingToken
 	case missingBearer
 	case missingEngagement
@@ -22,6 +23,8 @@ extension APIError {
 			return "Invalid server response. Error code \(errorCode)"
 		case .networkIssues:
 			return "Network issues"
+		case .requestTimedOut(let url):
+			return "Request time out. URL: \(url?.absoluteString ?? "nil")"
 		case .missingToken, .missingBearer:
 			return "Missing authorization"
 		case .missingEngagement:
@@ -66,14 +69,18 @@ extension API {
 	}
 	
 	private func execute(request: URLRequest) async throws -> Data {
-		let (data, response) = try await URLSession.shared.data(for: request)
-		guard let httpResponse = response as? HTTPURLResponse else {
-			throw APIError.networkIssues
+		do {
+			let (data, response) = try await URLSession.shared.data(for: request)
+			guard let httpResponse = response as? HTTPURLResponse else {
+				throw APIError.networkIssues
+			}
+			guard httpResponse.statusCode == 200 else {
+				throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
+			}
+			return data
+		} catch URLError.timedOut {
+			throw APIError.requestTimedOut(url: request.url)
 		}
-		guard httpResponse.statusCode == 200 else {
-			throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
-		}
-		return data
 	}
 	
 	private func _request(_ method: HTTPMethod, url: URL, headerFields: [String: String], body: Data?, authorization: AuthorizationType?) async throws -> Data {
