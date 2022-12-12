@@ -50,7 +50,10 @@ extension View {
 struct VideoPreview: View {
 	let video: Video
 	
+	@Environment(\.openItem) private var openItem
+	
 	var body: some View {
+		#if os(macOS)
 		NavigationLink(value: video) {
 			VideoPreviewView(video: video)
 				.draggable(video.shareUrl) {
@@ -61,6 +64,20 @@ struct VideoPreview: View {
 		}
 		.buttonStyle(.plain)
 		.contextMenu(for: video)
+		#else
+		Button {
+			openItem(video)
+		} label: {
+			VideoPreviewView(video: video)
+				.draggable(video.shareUrl) {
+					VideoPreviewView(video: video)
+						.background(Color.systemBackground)
+						.cornerRadius(8)
+				}
+		}
+		.buttonStyle(.plain)
+		.contextMenu(for: video)
+		#endif
 	}
 }
 

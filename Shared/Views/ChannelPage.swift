@@ -50,7 +50,6 @@ struct ChannelPage: View {
 			}
 		}
 		#endif
-		.onAppear { player.reset() }
 		.userActivity("de.melgu.NebulaSwift.channel") { activity in
 			activity.title = channel.title
 			try! activity.setTypedPayload(channel)

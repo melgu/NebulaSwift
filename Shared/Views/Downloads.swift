@@ -15,7 +15,6 @@ struct Downloads: View {
 		Text("Coming soon…")
 			.foregroundColor(.secondary)
 			.navigationTitle("Downloads")
-			.onAppear { player.reset() }
 	}
 }
 

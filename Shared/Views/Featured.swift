@@ -38,7 +38,6 @@ struct Featured: View {
 		}
 		#endif
 		.task {
-			player.reset()
 			try await refreshFeatured(animated: false)
 		}
 	}

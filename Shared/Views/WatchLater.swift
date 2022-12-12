@@ -20,7 +20,6 @@ struct WatchLater: View {
 		})
 		.assumeWatchLater()
 		.navigationTitle("Watch Later")
-		.onAppear { player.reset() }
 		.toolbar {
 			AsyncButton {
 				guard statistics == nil else {

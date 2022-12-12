@@ -11,10 +11,6 @@ import Combine
 struct ContentView: View {
 	@EnvironmentObject private var api: API
 	
-	#if canImport(UIKit)
-	@Environment(\.horizontalSizeClass) private var horizontalSizeClass
-	#endif
-	
 	@State private var myShows: [Channel]?
 	
 	@State private var selection: TopLevel? = .myShows
@@ -25,6 +21,7 @@ struct ContentView: View {
 	@State private var searchTerm = ""
 	
 	@State private var navigationPath = NavigationPath()
+	@State private var playerVideo: Video?
 	
 	var body: some View {
 		Group {
@@ -40,7 +37,11 @@ struct ContentView: View {
 		}
 		.onOpenItem { item in
 			print("Open Item: \(item)")
-			navigationPath.append(item)
+			if let video = item as? Video {
+				playerVideo = video
+			} else {
+				navigationPath.append(item)
+			}
 		}
 		.onOpenURL { url in
 			print("Open URL: \(url)")
@@ -50,7 +51,7 @@ struct ContentView: View {
 					// nebulaswift://video/slug
 					guard let slug = url.pathComponents.last else { return }
 					let video = try await api.video(for: slug)
-					navigationPath.append(video)
+					playerVideo = video
 				case "channel":
 					// nebulaswift://channel/slug
 					guard let slug = url.pathComponents.last else { return }
@@ -64,7 +65,7 @@ struct ContentView: View {
 		.onContinueUserActivity("de.melgu.NebulaSwift.video") { activity in
 			if let video = try? activity.typedPayload(Video.self) {
 				print("Continue User Activity. Video: \(video.title)")
-				navigationPath.append(video)
+				playerVideo = video
 			} else {
 				print("Continue User Activity. Video URL: \(activity.webpageURL?.absoluteString ?? "nil")")
 				Task {
@@ -72,7 +73,7 @@ struct ContentView: View {
 					let slug = url.lastPathComponent
 					guard !slug.isEmpty else { return }
 					let video = try await api.video(for: slug)
-					navigationPath.append(video)
+					playerVideo = video
 				}
 			}
 		}
@@ -179,12 +180,14 @@ struct ContentView: View {
 					Text("NebulaSwift")
 				}
 			}
-			.navigationDestination(for: Video.self) { video in
-				VideoPage(video: video)
-			}
 			.navigationDestination(for: Channel.self) { channel in
 				ChannelPage(channel: channel)
 			}
+			#if os(iOS)
+			.fullScreenCover(item: $playerVideo) { video in
+				VideoPage(video: video)
+			}
+			#endif
 		}
 	}
 	

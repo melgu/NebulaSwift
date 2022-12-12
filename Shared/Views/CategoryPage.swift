@@ -46,7 +46,6 @@ struct CategoryPage: View {
 				}
 			}
 		}
-		.onAppear { player.reset() }
 	}
 }
 
