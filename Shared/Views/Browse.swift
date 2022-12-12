@@ -52,7 +52,6 @@ struct Browse: View {
 			}
 		}
 		.task {
-			player.reset()
 			categories = try await api.allCategories(page: 1, pageSize: 100)
 		}
 	}

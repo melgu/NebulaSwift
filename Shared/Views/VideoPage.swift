@@ -14,6 +14,8 @@ struct VideoPage: View {
 	@EnvironmentObject private var player: Player
 	
 	@Environment(\.refresh) private var refresh
+	@Environment(\.dismiss) private var dismiss
+	@Environment(\.openItem) private var openItem
 	
 	@State private var watchLater: Bool?
 	
@@ -23,13 +25,18 @@ struct VideoPage: View {
 	}
 	
 	var body: some View {
-		ScrollView {
-			VStack(alignment: .leading) {
-				videoPlayer
-				description
+		NavigationStack {
+			ScrollView {
+				VStack(alignment: .leading) {
+					videoPlayer
+					description
+				}
+				.padding()
 			}
-			.padding()
 			.navigationTitle(video.title)
+			.navigationBarCloseButton {
+				player.reset()
+			}
 			#if canImport(UIKit)
 			.toolbar {
 				ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -110,9 +117,12 @@ struct VideoPage: View {
 	}
 	
 	private var channelLink: some View {
-		AsyncNavigationLink { () -> Channel in
-			try await api.channel(for: video.channelSlug)
-		} label: { _ in
+		AsyncButton {
+			dismiss()
+			player.reset()
+			let channel = try await api.channel(for: video.channelSlug)
+			openItem(channel)
+		} label: {
 			HStack(spacing: 16) {
 				AsyncImage(url: video.assets.channelAvatar["128"]?.original) { image in
 					image

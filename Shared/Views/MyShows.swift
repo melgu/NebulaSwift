@@ -39,7 +39,6 @@ struct MyShows: View {
 				}
 			}
 		}
-		.onAppear { player.reset() }
 	}
 }
 

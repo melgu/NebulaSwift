@@ -19,15 +19,7 @@ struct SettingsView: View {
 		NavigationStack {
 			content
 				.navigationTitle("Settings")
-				.toolbar {
-					ToolbarItem(placement: .primaryAction) {
-						Button {
-							dismiss()
-						} label: {
-							Label("Close", systemImage: "xmark.circle.fill")
-						}
-					}
-				}
+				.navigationBarCloseButton()
 		}
 		#else
 		content
