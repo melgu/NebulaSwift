@@ -103,15 +103,13 @@ struct VideoPage: View {
 				Text(video.description)
 			}
 			
-			if let categorySlugs = video.categorySlugs {
-				HStack {
-					ForEach(categorySlugs, id: \.self) { slug in
-						CategoryPreview(slug: slug)
-					}
+			HStack {
+				ForEach(video.categorySlugs, id: \.self) { slug in
+					CategoryPreview(slug: slug)
 				}
-				.navigationDestination(for: Category.self) { category in
-					CategoryPage(category: category, initialViewType: .videos)
-				}
+			}
+			.navigationDestination(for: Category.self) { category in
+				CategoryPage(category: category, initialViewType: .videos)
 			}
 		}
 	}
