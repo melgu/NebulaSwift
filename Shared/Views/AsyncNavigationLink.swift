@@ -161,16 +161,17 @@ private struct Demo: View {
 					try await Task.sleep(nanoseconds: 2_000_000_000)
 					return "Label Test"
 				} label: { status in
-					switch status {
-					case .idle:
-						Text("Item Idle")
-					case .loading:
-						Text("Loading")
-					case .success:
-						Text("Success")
-					case .failure:
-						Text("Failure")
-					}
+					Text("Replacement because of compiler bug")
+//					switch status {
+//					case .idle:
+//						Text("Item Idle")
+//					case .loading:
+//						Text("Loading")
+//					case .success:
+//						Text("Success")
+//					case .failure:
+//						Text("Failure")
+//					}
 				}
 				
 				AsyncNavigationLink("Item", fetch: fetch)
@@ -180,16 +181,17 @@ private struct Demo: View {
 				}
 				
 				AsyncNavigationLink(fetch: fetch) { status in
-					switch status {
-					case .idle:
-						Text("Destination Idle")
-					case .loading:
-						Text("Loading")
-					case .success:
-						Text("Success")
-					case .failure:
-						Text("Failure")
-					}
+					Text("Replacement because of compiler bug")
+//					switch status {
+//					case .idle:
+//						Text("Destination Idle")
+//					case .loading:
+//						Text("Loading")
+//					case .success:
+//						Text("Success")
+//					case .failure:
+//						Text("Failure")
+//					}
 				} destination: { string in
 					destination(for: string)
 				}
