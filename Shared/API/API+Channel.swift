@@ -83,10 +83,28 @@ extension API {
 		return (response.details, response.episodes.results)
 	}
 	
-	func videos(for channel: Channel, page: Int, pageSize: Int = 24) async throws -> [Video] {
+	private func videoContainer(for channel: Channel, page: Int, pageSize: Int) async throws -> ListContainer<Video> {
+		assert(pageSize <= 100, "The Nebula API only supports page sizes up to 100")
 		let url = URL(string: "https://content.watchnebula.com/video/?channel=\(channel.slug)&page=\(page)&page_size=\(pageSize)")!
-		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
-		return response.results
+		return try await request(.get, url: url, authorization: .bearer)
+	}
+	
+	func videos(for channel: Channel, page: Int, pageSize: Int = 24) async throws -> [Video] {
+		let container = try await videoContainer(for: channel, page: page, pageSize: pageSize)
+		return container.results
+	}
+	
+	func videos(for channel: Channel, count: Int) async throws -> [Video] {
+		var result: [Video] = []
+		var page = 1
+		repeat {
+			let pageSize = min(count - result.count, 100)
+			let container = try await videoContainer(for: channel, page: page, pageSize: pageSize)
+			result += container.results
+			guard container.next != nil else { return result }
+			page += 1
+		} while result.count <= count
+		return result
 	}
 	
 	func follow(_ channel: Channel) async throws {
