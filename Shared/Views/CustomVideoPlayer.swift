@@ -36,6 +36,8 @@ extension AVPlayerViewController {
 		
 		if responds(to: selectorToForceFullScreenMode) {
 			perform(selectorToForceFullScreenMode, with: true, with: nil)
+		} else {
+			print("Go to fullscreen selector doesn't work")
 		}
 	}
 }

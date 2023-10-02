@@ -23,11 +23,14 @@ import os.log
 	
 	private let logger = Logger(category: "Player")
 	
+	private let pipDelegate = PiPDelegate()
+	
 	init(api: API) {
 		self.api = api
 		
 		let layer = AVPlayerLayer(player: player)
 		pipController = AVPictureInPictureController(playerLayer: layer)
+		pipController?.delegate = pipDelegate
 		
 		#if canImport(UIKit)
 		try? AVAudioSession.sharedInstance().setCategory(.playback)
@@ -48,7 +51,7 @@ import os.log
 	func play() {
 		logger.debug("Play")
 		#if canImport(UIKit)
-		try? AVAudioSession.sharedInstance().setActive(true, options: [])
+		try? AVAudioSession.sharedInstance().setActive(true)
 		#endif
 		player.play()
 	}
@@ -59,6 +62,14 @@ import os.log
 		#if canImport(UIKit)
 		try? AVAudioSession.sharedInstance().setActive(false)
 		#endif
+	}
+	
+	func startPiP() {
+		print("Possible: \(String(describing: pipController?.isPictureInPicturePossible)), active: \(String(describing: pipController?.isPictureInPictureActive)), suspended: \(String(describing: pipController?.isPictureInPictureSuspended))")
+		#if canImport(UIKit)
+		print("Activation state is: \(String(describing: UIApplication.shared.connectedScenes.first?.activationState))")
+		#endif
+		pipController?.startPictureInPicture()
 	}
 	
 	func replaceVideo(with video: Video) async throws {
@@ -106,3 +117,49 @@ import os.log
 		}
 	}
 }
+
+private class PiPDelegate: NSObject, AVPictureInPictureControllerDelegate {
+	func pictureInPictureControllerDidStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+		print("PiP Delegate: didStart")
+	}
+	
+	func pictureInPictureControllerDidStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+		print("PiP Delegate: didStop")
+	}
+	
+	func pictureInPictureControllerShouldProhibitBackgroundAudioPlayback(_ pictureInPictureController: AVPictureInPictureController) -> Bool {
+		// We do not support audio through the pipify controller, as such we will allow other background audio to
+		// continue playing
+		return false
+	}
+	
+	func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController, failedToStartPictureInPictureWithError error: Error) {
+		print("PiP Delegate: failed to start: \(error)")
+	}
+	
+	func pictureInPictureController(
+		_ pictureInPictureController: AVPictureInPictureController,
+		restoreUserInterfaceForPictureInPictureStopWithCompletionHandler completionHandler: @escaping (Bool) -> Void
+	) {
+		print("PiP Delegate: restore UI")
+	}
+}
+
+#if canImport(UIKit)
+extension UIScene.ActivationState: CustomStringConvertible {
+	public var description: String {
+		switch self {
+		case .unattached:
+			return "unattached"
+		case .foregroundActive:
+			return "foregroundActive"
+		case .foregroundInactive:
+			return "foregroundInactive"
+		case .background:
+			return "background"
+		@unknown default:
+			return "unknown state: \(rawValue)"
+		}
+	}
+}
+#endif
