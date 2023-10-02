@@ -20,7 +20,7 @@ struct Podcast: Decodable {
 	let instagram: URL?
 	let facebook: URL?
 	let merch: URL?
-	let merchCollection: URL?
+	let merchCollection: String?
 	let apple: URL?
 	let google: URL?
 	let spotify: URL?

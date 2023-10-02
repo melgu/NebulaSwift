@@ -72,8 +72,8 @@ struct Completed: Encodable {
 
 struct VideoStream: Decodable {
 	let manifest: URL
-	let download: URL
-	let iframe: URL
+//	let download: URL
+	let iframe: URL?
 //	let bif: Bif
 	let subtitles: [Subtitle]
 }
