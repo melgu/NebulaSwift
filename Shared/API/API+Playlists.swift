@@ -8,10 +8,28 @@
 import Foundation
 
 extension API {
-	private func videos(for playlist: String, page: Int, pageSize: Int = 24) async throws -> [Video] {
+	private func videoContainer(for playlist: String, page: Int, pageSize: Int) async throws -> ListContainer<Video> {
+		assert(pageSize <= 100, "The Nebula API only supports page sizes up to 100")
 		let url = URL(string: "https://content.watchnebula.com/engagement/playlist/list/\(playlist)/?page=\(page)&page_size=\(pageSize)")!
-		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
-		return response.results
+		return try await request(.get, url: url, authorization: .bearer)
+	}
+	
+	private func videos(for playlist: String, page: Int, pageSize: Int = 24) async throws -> [Video] {
+		let container = try await videoContainer(for: playlist, page: page, pageSize: pageSize)
+		return container.results
+	}
+	
+	private func videos(for playlist: String, count: Int) async throws -> [Video] {
+		var result: [Video] = []
+		var page = 1
+		repeat {
+			let pageSize = min(count - result.count, 100)
+			let container = try await videoContainer(for: playlist, page: page, pageSize: pageSize)
+			result += container.results
+			guard container.next != nil else { return result }
+			page += 1
+		} while result.count <= count
+		return result
 	}
 	
 	private func addVideo(_ video: Video, toPlaylist playlist: String) async throws {
@@ -33,6 +51,10 @@ extension API {
 	
 	func watchLaterVideos(page: Int, pageSize: Int = 24) async throws -> [Video] {
 		try await videos(for: "watch-later", page: page, pageSize: pageSize)
+	}
+	
+	func watchLaterVideos(count: Int) async throws -> [Video] {
+		try await videos(for: "watch-later", count: count)
 	}
 	
 	func addVideoToWatchLater(_ video: Video) async throws {
