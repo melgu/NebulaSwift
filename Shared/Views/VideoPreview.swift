@@ -53,18 +53,6 @@ struct VideoPreview: View {
 	@Environment(\.openItem) private var openItem
 	
 	var body: some View {
-		#if os(macOS)
-		NavigationLink(value: video) {
-			VideoPreviewView(video: video)
-				.draggable(video.shareUrl) {
-					VideoPreviewView(video: video)
-						.background(Color.systemBackground)
-						.cornerRadius(8)
-				}
-		}
-		.buttonStyle(.plain)
-		.contextMenu(for: video)
-		#else
 		Button {
 			openItem(video)
 		} label: {
@@ -77,7 +65,6 @@ struct VideoPreview: View {
 		}
 		.buttonStyle(.plain)
 		.contextMenu(for: video)
-		#endif
 	}
 }
 
@@ -147,7 +134,7 @@ struct VideoPreviewView: View {
 						Image(systemName: "plus")
 							.foregroundColor(.accentColor)
 					}
-					Text((Date.now..<Date.now + Double(video.duration)).formatted(.timeDuration))
+					Text((Date.now ..< Date.now + Double(video.duration)).formatted(.timeDuration))
 				}
 				.font(.caption)
 				.padding(2)
