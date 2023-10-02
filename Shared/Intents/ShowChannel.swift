@@ -11,7 +11,7 @@ import SwiftUI
 
 struct ShowChannel: AppIntent {
 	@Parameter(title: "Channel")
-	var channel: Channel
+	var channel: Channel?
 	
 	static var title: LocalizedStringResource = "Show Channel"
 	
@@ -19,6 +19,10 @@ struct ShowChannel: AppIntent {
 	
 	@MainActor
 	func perform() async throws -> some IntentResult {
+		guard let channel else {
+			throw $channel.needsValueError("Which channel do you want to show?")
+		}
+		
 		let url = URL(string: "NebulaSwift://channel/\(channel.slug)")!
 		#if os(iOS)
 		_ = await UIApplication.shared.open(url)

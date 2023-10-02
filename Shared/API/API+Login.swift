@@ -32,6 +32,7 @@ extension API {
 		storage.token = loginResponse.key
 		
 		try await refreshAuthorization()
+		NebulaSwiftAppShortcutsProvider.updateAppShortcutParameters()
 	}
 	
 	func logout() {
