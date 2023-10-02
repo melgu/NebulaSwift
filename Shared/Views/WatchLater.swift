@@ -26,7 +26,7 @@ struct WatchLater: View {
 					showStatistics = true
 					return
 				}
-				let videos = try await api.watchLaterVideos(page: 1, pageSize: 8_192)
+				let videos = try await api.watchLaterVideos(count: .max)
 				statistics = Statistics(
 					count: videos.count,
 					duration: .seconds(videos.map(\.duration).reduce(0, +))
