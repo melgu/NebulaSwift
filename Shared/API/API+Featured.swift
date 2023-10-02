@@ -8,7 +8,7 @@
 import Foundation
 
 struct Feature: Decodable {
-	let id: UUID
+	let id: String
 	let title: String
 	let viewAllURL: URL?
 	let items: Content
@@ -23,7 +23,7 @@ struct Feature: Decodable {
 	
 	init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
-		self.id = try container.decode(UUID.self, forKey: .id)
+		self.id = try container.decode(String.self, forKey: .id)
 		self.title = try container.decode(String.self, forKey: .title)
 		self.viewAllURL = try container.decodeIfPresent(URL.self, forKey: .viewAllURL)
 		
@@ -44,6 +44,8 @@ struct Feature: Decodable {
 		case .podcastChannels:
 			let items = try container.decode([Podcast].self, forKey: .items)
 			self.items = .podcastChannels(items)
+		case .classes:
+			self.items = .classes
 		}
 	}
 }
@@ -57,6 +59,7 @@ extension Feature {
 		case videoChannels = "video_channels"
 		case featuredCreators = "featured_creators"
 		case podcastChannels = "podcast_channels"
+		case classes
 	}
 	
 	enum Content: Equatable {
@@ -65,6 +68,7 @@ extension Feature {
 		case videoChannels([Channel])
 		case featuredCreators([Channel])
 		case podcastChannels([Podcast])
+		case classes
 	}
 }
 
