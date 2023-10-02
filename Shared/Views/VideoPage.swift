@@ -60,6 +60,11 @@ struct VideoPage: View {
 						}
 					}
 					ShareLink(item: video.shareUrl)
+					Button {
+						player.startPiP()
+					} label: {
+						Label("Start Picture in Picture", systemImage: "chevron.down")
+					}
 				}
 			}
 			#endif
