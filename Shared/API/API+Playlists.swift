@@ -32,6 +32,20 @@ extension API {
 		return result
 	}
 	
+	private func statistics(for playlist: String) async throws -> VideoListStatistics {
+		var count = 0
+		var seconds = 0
+		var page = 1
+		while true {
+			let container = try await videoContainer(for: playlist, page: page, pageSize: 100)
+			count += container.results.count
+			seconds += container.results.map(\.duration).reduce(0, +)
+			guard container.next != nil else { break }
+			page += 1
+		}
+		return .init(count: count, duration: .seconds(seconds))
+	}
+	
 	private func addVideo(_ video: Video, toPlaylist playlist: String) async throws {
 		let url = URL(string: "https://content.watchnebula.com/engagement/playlist/add/")!
 		let body = PlaylistManagementBody(contentSlug: video.slug, playlistSlug: playlist)
@@ -55,6 +69,10 @@ extension API {
 	
 	func watchLaterVideos(count: Int) async throws -> [Video] {
 		try await videos(for: "watch-later", count: count)
+	}
+	
+	func watchLaterStatistics() async throws -> VideoListStatistics {
+		try await statistics(for: "watch-later")
 	}
 	
 	func addVideoToWatchLater(_ video: Video) async throws {

@@ -17,7 +17,7 @@ struct WatchLater: View {
 		})
 		.assumeWatchLater()
 		.navigationTitle("Watch Later")
-		.statisticsAlert { try await api.watchLaterVideos(count: .max) }
+		.statisticsAlert { try await api.watchLaterStatistics() }
 	}
 }
 

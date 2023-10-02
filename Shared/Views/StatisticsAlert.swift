@@ -8,25 +8,21 @@
 import SwiftUI
 
 extension View {
-	func statisticsAlert(fetch: @escaping () async throws -> [Video]) -> some View {
+	func statisticsAlert(fetch: @escaping () async throws -> VideoListStatistics) -> some View {
 		modifier(StatisticsAlertViewModifier(fetch: fetch))
 	}
 }
 
 private struct StatisticsAlertViewModifier: ViewModifier {
-	let fetch: () async throws -> [Video]
+	let fetch: () async throws -> VideoListStatistics
 	
-	@State private var statistics: Statistics?
+	@State private var statistics: VideoListStatistics?
 	
 	func body(content: Content) -> some View {
 		content
 			.toolbar {
 				AsyncButton {
-					let videos = try await fetch()
-					statistics = Statistics(
-						count: videos.count,
-						duration: .seconds(videos.map(\.duration).reduce(0, +))
-					)
+					statistics = try await fetch()
 				} label: {
 					Label("Statistics", systemImage: "info.circle")
 				}
@@ -42,11 +38,6 @@ private struct StatisticsAlertViewModifier: ViewModifier {
 				Total duration: \(statistics.duration.formatted()) h
 				""")
 			}
-	}
-	
-	private struct Statistics {
-		let count: Int
-		let duration: Duration
 	}
 }
 
@@ -66,7 +57,7 @@ private extension Optional {
 	return NavigationStack {
 		Text("Demo")
 			.statisticsAlert {
-				try await api.watchLaterVideos(count: .max)
+				try await api.watchLaterStatistics()
 			}
 	}
 }
