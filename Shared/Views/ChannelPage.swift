@@ -28,6 +28,7 @@ struct ChannelPage: View {
 		})
 		.disableGoToChannel()
 		.navigationTitle(channel.title)
+		.statisticsAlert { try await api.videos(for: channel, count: .max) }
 		#if canImport(UIKit)
 		.toolbar {
 			ToolbarItemGroup(placement: .navigationBarTrailing) {
