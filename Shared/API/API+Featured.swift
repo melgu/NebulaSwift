@@ -81,8 +81,8 @@ extension Hero: Identifiable {}
 
 extension Hero {
 	struct Assets: Decodable, Equatable {
-		let hero: [String: ImageResource]
-		let mobileHero: ImageResource
+		let hero: [String: NebulaImageResource]
+		let mobileHero: NebulaImageResource
 	}
 }
 

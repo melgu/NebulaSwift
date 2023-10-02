@@ -126,13 +126,13 @@ extension AsyncNavigationLink where Label == Text, Destination == EmptyView {
 }
 
 extension AsyncNavigationLink {
-	enum Status<Item> {
+	enum Status<StatusItem> {
 		case idle
 		case loading
-		case success(Item)
+		case success(StatusItem)
 		case failure(Error)
 		
-		var value: Item? {
+		var value: StatusItem? {
 			get {
 				if case .success(let item) = self {
 					return item

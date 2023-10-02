@@ -1,5 +1,5 @@
 //
-//  ImageResource.swift
+//  NebulaImageResource.swift
 //  NebulaSwift
 //
 //  Created by Melvin Gundlach on 23.07.22.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ImageResource: Codable, Equatable {
+struct NebulaImageResource: Codable, Equatable {
 	let original: URL
 	
 	init(from decoder: Decoder) throws {

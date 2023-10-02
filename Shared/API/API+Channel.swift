@@ -43,10 +43,10 @@ extension Channel: Hashable {
 
 extension Channel {
 	struct Assets: Codable, Equatable {
-		let avatar: [String: ImageResource]
-		let banner: [String: ImageResource]
-		let hero: [String: ImageResource]?
-		let featured: [String: ImageResource]
+		let avatar: [String: NebulaImageResource]
+		let banner: [String: NebulaImageResource]
+		let hero: [String: NebulaImageResource]?
+		let featured: [String: NebulaImageResource]
 	}
 	
 	struct Engagement: Codable, Equatable, Hashable {
