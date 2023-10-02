@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppIntents
 
 struct ChannelEpisodesContainer: Decodable {
 	let details: Channel
@@ -54,6 +55,16 @@ extension Channel {
 	}
 }
 
+extension Channel: AppEntity {
+	static var defaultQuery: ChannelQuery = .init()
+	
+	static var typeDisplayRepresentation: TypeDisplayRepresentation = .init(name: "Channel")
+	
+	var displayRepresentation: DisplayRepresentation {
+		.init(stringLiteral: title)
+	}
+}
+
 extension API {
 	func allChannels(page: Int, pageSize: Int = 24) async throws -> [Channel] {
 		let url = URL(string: "https://content.watchnebula.com/video/channels/?page=\(page)&page_size=\(pageSize)")!
@@ -81,12 +92,14 @@ extension API {
 	func follow(_ channel: Channel) async throws {
 		let url = URL(string: "https://content.watchnebula.com/engagement/video/follow/")!
 		let body = FollowBody(channelSlug: channel.slug)
+		NebulaSwiftAppShortcutsProvider.updateAppShortcutParameters()
 		try await request(.post, url: url, body: body, authorization: .bearer)
 	}
 	
 	func unfollow(_ channel: Channel) async throws {
 		let url = URL(string: "https://content.watchnebula.com/engagement/video/unfollow/")!
 		let body = FollowBody(channelSlug: channel.slug)
+		NebulaSwiftAppShortcutsProvider.updateAppShortcutParameters()
 		try await request(.post, url: url, body: body, authorization: .bearer)
 	}
 	
