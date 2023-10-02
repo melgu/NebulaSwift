@@ -107,6 +107,20 @@ extension API {
 		return result
 	}
 	
+	func statistics(for channel: Channel) async throws -> VideoListStatistics {
+		var count = 0
+		var seconds = 0
+		var page = 1
+		while true {
+			let container = try await videoContainer(for: channel, page: page, pageSize: 100)
+			count += container.results.count
+			seconds += container.results.map(\.duration).reduce(0, +)
+			guard container.next != nil else { break }
+			page += 1
+		}
+		return .init(count: count, duration: .seconds(seconds))
+	}
+	
 	func follow(_ channel: Channel) async throws {
 		let url = URL(string: "https://content.watchnebula.com/engagement/video/follow/")!
 		let body = FollowBody(channelSlug: channel.slug)
