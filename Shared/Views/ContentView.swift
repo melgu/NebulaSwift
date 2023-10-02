@@ -187,6 +187,11 @@ struct ContentView: View {
 			.fullScreenCover(item: $playerVideo) { video in
 				VideoPage(video: video)
 			}
+			#else
+			.sheet(item: $playerVideo) { video in
+				VideoPage(video: video)
+					.frame(idealWidth: 760, idealHeight: 640)
+			}
 			#endif
 		}
 	}
