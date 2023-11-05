@@ -33,7 +33,7 @@ import os.log
 		pipController?.delegate = pipDelegate
 		
 		#if canImport(UIKit)
-		try? AVAudioSession.sharedInstance().setCategory(.playback)
+		try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback)
 		pipController?.canStartPictureInPictureAutomaticallyFromInline = true
 		#endif
 		
