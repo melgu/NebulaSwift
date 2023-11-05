@@ -102,10 +102,16 @@ struct VideoPage: View {
 			
 			Divider()
 			
-			if let attributedDescription = attributedDescription {
-				Text(attributedDescription)
-			} else {
-				Text(video.description)
+			VStack(alignment: .leading, spacing: 4) {
+				Text(video.publishedAt.formatted())
+					.font(.caption.bold())
+					.foregroundStyle(.secondary)
+				
+				if let attributedDescription = attributedDescription {
+					Text(attributedDescription)
+				} else {
+					Text(video.description)
+				}
 			}
 			
 			HStack {
