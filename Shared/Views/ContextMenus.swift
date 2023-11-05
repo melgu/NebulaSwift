@@ -30,6 +30,8 @@ struct VideoContextMenu: ViewModifier {
 			.contextMenu {
 				Text(video.title)
 				
+				Text(video.publishedAt.formatted(date: .long, time: .omitted))
+				
 				if goToChannelEnabled {
 					AsyncNavigationLink(video.channelTitle) {
 						try await api.channel(for: video.channelSlug)
