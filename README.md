@@ -69,9 +69,3 @@ Works on iPhone, iPad and Mac.
 ![My Shows iPad](README.assets/My-Shows-iPad.PNG)
 
 ![My Shows Mac](README.assets/My-Shows-Mac.PNG)
-
-
-
-## Build
-
-Since I've used the project to try out new things from WWDC22, the *main* branch requires Xcode 14 and macOS 13 or iOS 16. The *release* branch still supports macOS 12 and iOS 15, but doesn't contain all features.
