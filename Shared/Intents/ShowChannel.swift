@@ -13,9 +13,9 @@ struct ShowChannel: AppIntent {
 	@Parameter(title: "Channel")
 	var channel: Channel?
 	
-	static var title: LocalizedStringResource = "Show Channel"
+	static let title: LocalizedStringResource = "Show Channel"
 	
-	static var openAppWhenRun = true
+	static let openAppWhenRun = true
 	
 	@MainActor
 	func perform() async throws -> some IntentResult {

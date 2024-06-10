@@ -37,10 +37,12 @@ struct ContentView: View {
 		}
 		.onOpenItem { item in
 			print("Open Item: \(item)")
-			if let video = item as? Video {
-				playerVideo = video
-			} else {
-				navigationPath.append(item)
+			Task { @MainActor in
+				if let video = item as? Video {
+					playerVideo = video
+				} else {
+					navigationPath.append(item)
+				}
 			}
 		}
 		.onOpenURL { url in

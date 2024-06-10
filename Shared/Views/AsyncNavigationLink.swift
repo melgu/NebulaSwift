@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct AsyncNavigationLink<Item: Hashable, Label: View, Destination: View>: View {
-	private let fetch: () async throws -> Item
+struct AsyncNavigationLink<Item: Hashable & Sendable, Label: View, Destination: View>: View {
+	private let fetch: @MainActor () async throws -> Item
 	private let label: (Status<Item>) -> Label
 	private let destination: (Item) -> Destination
 	private let variant: Variant
@@ -198,7 +198,9 @@ private struct Demo: View {
 			}
 			.buttonStyle(.borderedProminent)
 			.onOpenItem { item in
-				path.append(item)
+				Task { @MainActor in
+					path.append(item)
+				}
 			}
 			.navigationDestination(for: String.self, destination: destination)
 			.navigationTitle("Demo")
