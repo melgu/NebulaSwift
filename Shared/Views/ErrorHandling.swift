@@ -9,10 +9,10 @@ import SwiftUI
 
 // MARK: Action
 
-struct ErrorAction {
-	let action: (Error) -> Void
+struct ErrorAction : Sendable{
+	let action: @Sendable (Error) -> Void
 	
-	init(_ action: @escaping (Error) -> Void) {
+	init(_ action: @escaping @Sendable (Error) -> Void) {
 		self.action = action
 	}
 	
@@ -38,7 +38,7 @@ extension EnvironmentValues {
 }
 
 extension View {
-	func handleError(action: @escaping (Error) -> Void) -> some View {
+	func handleError(action: @escaping @Sendable (Error) -> Void) -> some View {
 		environment(\.handleError, ErrorAction(action))
 	}
 }
@@ -54,8 +54,10 @@ fileprivate struct AlertErrorHandlerModifier: ViewModifier {
 			.handleError { error in
 				print(error)
 				if let error = error as? URLError, error.code == .cancelled { return }
-				self.error = error
-				isPresented = true
+				Task { @MainActor in
+					self.error = error
+					isPresented = true
+				}
 			}
 			.alert("Something went wrong.", isPresented: $isPresented, presenting: error) { _ in
 				Button("OK") {}
@@ -179,7 +181,7 @@ fileprivate struct OnChangeModifier<V: Equatable>: ViewModifier {
 	@Environment(\.handleError) private var handleError
 	
 	func body(content: Content) -> some View {
-		content.onChange(of: value) { newValue in
+		content.onChange(of: value) { _, newValue in
 			Task {
 				do {
 					try await action(newValue)

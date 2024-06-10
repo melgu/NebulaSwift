@@ -56,9 +56,9 @@ extension Channel {
 }
 
 extension Channel: AppEntity {
-	static var defaultQuery: ChannelQuery = .init()
+	static let defaultQuery: ChannelQuery = .init()
 	
-	static var typeDisplayRepresentation: TypeDisplayRepresentation = .init(name: "Channel")
+	static let typeDisplayRepresentation: TypeDisplayRepresentation = .init(name: "Channel")
 	
 	var displayRepresentation: DisplayRepresentation {
 		.init(stringLiteral: title)
