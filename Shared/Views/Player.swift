@@ -146,7 +146,7 @@ private class PiPDelegate: NSObject, AVPictureInPictureControllerDelegate {
 }
 
 #if canImport(UIKit)
-extension UIScene.ActivationState: CustomStringConvertible {
+extension UIScene.ActivationState: @retroactive CustomStringConvertible {
 	public var description: String {
 		switch self {
 		case .unattached:
