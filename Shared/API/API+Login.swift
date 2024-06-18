@@ -35,12 +35,11 @@ extension API {
 		NebulaSwiftAppShortcutsProvider.updateAppShortcutParameters()
 	}
 	
+	@MainActor
 	func logout() {
 		URLSession.shared.configuration.httpCookieStorage?.removeCookies(since: Date.distantPast)
 		
-		Task { @MainActor in
-			storage.token = nil
-			storage.bearer = nil
-		}
+		storage.token = nil
+		storage.bearer = nil
 	}
 }
