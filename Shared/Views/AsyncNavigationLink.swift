@@ -20,7 +20,7 @@ struct AsyncNavigationLink<Item: Hashable & Sendable, Label: View, Destination: 
 	@State private var isPresented = false
 	
 	init(
-		fetch: @escaping () async throws -> Item,
+		fetch: @Sendable @escaping () async throws -> Item,
 		@ViewBuilder label: @escaping (AsyncNavigationLink<Item, Label, Destination>.Status<Item>) -> Label,
 		@ViewBuilder destination: @escaping (Item) -> Destination
 	) {
@@ -70,7 +70,7 @@ struct AsyncNavigationLink<Item: Hashable & Sendable, Label: View, Destination: 
 extension AsyncNavigationLink where Label == Text {
 	init(
 		_ titleKey: LocalizedStringKey,
-		fetch: @escaping () async throws -> Item,
+		fetch: @Sendable @escaping () async throws -> Item,
 		@ViewBuilder destination: @escaping (Item) -> Destination
 	) {
 		self.fetch = fetch
@@ -81,7 +81,7 @@ extension AsyncNavigationLink where Label == Text {
 	
 	init<S: StringProtocol>(
 		_ title: S,
-		fetch: @escaping () async throws -> Item,
+		fetch: @Sendable @escaping () async throws -> Item,
 		@ViewBuilder destination: @escaping (Item) -> Destination
 	) {
 		self.fetch = fetch
@@ -93,7 +93,7 @@ extension AsyncNavigationLink where Label == Text {
 
 extension AsyncNavigationLink where Destination == EmptyView {
 	init(
-		fetch: @escaping () async throws -> Item,
+		fetch: @Sendable @escaping () async throws -> Item,
 		@ViewBuilder label: @escaping (AsyncNavigationLink<Item, Label, Destination>.Status<Item>) -> Label
 	) {
 		self.fetch = fetch
@@ -106,7 +106,7 @@ extension AsyncNavigationLink where Destination == EmptyView {
 extension AsyncNavigationLink where Label == Text, Destination == EmptyView {
 	init(
 		_ titleKey: LocalizedStringKey,
-		fetch: @escaping () async throws -> Item
+		fetch: @Sendable @escaping () async throws -> Item
 	) {
 		self.fetch = fetch
 		self.label = { _ in Text(titleKey) }
@@ -116,7 +116,7 @@ extension AsyncNavigationLink where Label == Text, Destination == EmptyView {
 	
 	init<S: StringProtocol>(
 		_ title: S,
-		fetch: @escaping () async throws -> Item
+		fetch: @Sendable @escaping () async throws -> Item
 	) {
 		self.fetch = fetch
 		self.label = { _ in Text(title) }
