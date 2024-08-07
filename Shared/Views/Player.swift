@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 import AVKit
-import os.log
+import OSLog
 
 @MainActor class Player: ObservableObject {
 	let player = AVPlayer()
