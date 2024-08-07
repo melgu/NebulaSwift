@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import OSLog
 
 struct VideoGrid: View {
 	let videos: [Video]
@@ -21,6 +22,8 @@ struct VideoGrid: View {
 		}
 	}
 }
+
+private let logger = Logger(category: "AutoVideoGrid")
 
 /// Auto-loading VideoGrid.
 struct AutoVideoGrid<Value: Equatable>: View {
@@ -45,12 +48,12 @@ struct AutoVideoGrid<Value: Equatable>: View {
 					VideoPreview(video: video)
 						.task {
 							if video == videos.last {
-								print("Last video did appear, loading next page")
+								logger.debug("Last video did appear, loading next page")
 								do {
 									videos += try await fetch(page + 1)
 									page += 1
 								} catch APIError.invalidServerResponse(errorCode: 404) {
-									print("Last page")
+									logger.debug("Last page")
 								}
 							}
 						}
@@ -77,7 +80,7 @@ struct AutoVideoGrid<Value: Equatable>: View {
 		}
 		#endif
 		.task(id: value) {
-			print("Load Videos")
+			logger.debug("Load Videos")
 			try await refreshVideos()
 		}
 	}
@@ -95,7 +98,7 @@ struct AutoVideoGrid<Value: Equatable>: View {
 	private func refreshVideos() async throws {
 		let newVideos = try await fetch(1)
 		if newVideos != videos {
-			print("Video list changed")
+			logger.debug("Video list changed")
 			page = 1
 			withAnimation {
 				videos = newVideos

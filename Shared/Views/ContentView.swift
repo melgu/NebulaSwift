@@ -7,6 +7,9 @@
 
 import SwiftUI
 import Combine
+import OSLog
+
+private let logger = Logger(category: "ContentView")
 
 struct ContentView: View {
 	@EnvironmentObject private var api: API
@@ -36,7 +39,7 @@ struct ContentView: View {
 			}
 		}
 		.onOpenItem { item in
-			print("Open Item: \(item)")
+			logger.debug("Open Item: \(String(describing: item))")
 			Task { @MainActor in
 				if let video = item as? Video {
 					playerVideo = video
@@ -46,7 +49,7 @@ struct ContentView: View {
 			}
 		}
 		.onOpenURL { url in
-			print("Open URL: \(url)")
+			logger.debug("Open URL: \(url)")
 			Task {
 				switch url.host() {
 				case "video":
@@ -60,16 +63,16 @@ struct ContentView: View {
 					let channel = try await api.channel(for: slug)
 					navigationPath.append(channel)
 				default:
-					print("Unknown type: \(url.host() ?? "nil")")
+					logger.debug("Unknown type: \(url.host() ?? "nil")")
 				}
 			}
 		}
 		.onContinueUserActivity("de.melgu.NebulaSwift.video") { activity in
 			if let video = try? activity.typedPayload(Video.self) {
-				print("Continue User Activity. Video: \(video.title)")
+				logger.debug("Continue User Activity. Video: \(video.title)")
 				playerVideo = video
 			} else {
-				print("Continue User Activity. Video URL: \(activity.webpageURL?.absoluteString ?? "nil")")
+				logger.debug("Continue User Activity. Video URL: \(activity.webpageURL?.absoluteString ?? "nil")")
 				Task {
 					guard let url = activity.webpageURL else { return }
 					let slug = url.lastPathComponent
@@ -81,14 +84,14 @@ struct ContentView: View {
 		}
 		.onContinueUserActivity("de.melgu.NebulaSwift.channel") { activity in
 			if let channel = try? activity.typedPayload(Channel.self) {
-				print("Continue User Activity. Channel: \(channel.title)")
+				logger.debug("Continue User Activity. Channel: \(channel.title)")
 				if let channel = myShows?.first(where: { $0.slug == channel.slug }) {
 					selection = .channel(channel)
 				} else {
 					navigationPath.append(channel)
 				}
 			} else {
-				print("Continue User Activity. Channel URL: \(activity.webpageURL?.absoluteString ?? "nil")")
+				logger.debug("Continue User Activity. Channel URL: \(activity.webpageURL?.absoluteString ?? "nil")")
 				guard let url = activity.webpageURL else { return }
 				let slug = url.lastPathComponent
 				guard !slug.isEmpty else { return }

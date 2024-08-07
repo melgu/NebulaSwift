@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import OSLog
+
+private let logger = Logger(category: "Search")
 
 struct Search: View {
 	@EnvironmentObject private var api: API
@@ -32,7 +35,7 @@ struct Search: View {
 							channelResults = both.channels
 							videoResults = both.videos
 						} catch {
-							print(error)
+							logger.error("Search failed. Error: \(error)")
 						}
 					}
 					Task { await task?.value }

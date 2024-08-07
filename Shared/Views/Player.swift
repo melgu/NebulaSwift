@@ -65,9 +65,9 @@ import OSLog
 	}
 	
 	func startPiP() {
-		print("Possible: \(String(describing: pipController?.isPictureInPicturePossible)), active: \(String(describing: pipController?.isPictureInPictureActive)), suspended: \(String(describing: pipController?.isPictureInPictureSuspended))")
+		logger.debug("Possible: \(String(describing: self.pipController?.isPictureInPicturePossible)), active: \(String(describing: self.pipController?.isPictureInPictureActive)), suspended: \(String(describing: self.pipController?.isPictureInPictureSuspended))")
 		#if canImport(UIKit)
-		print("Activation state is: \(String(describing: UIApplication.shared.connectedScenes.first?.activationState))")
+		logger.debug("Activation state is: \(String(describing: UIApplication.shared.connectedScenes.first?.activationState))")
 		#endif
 		pipController?.startPictureInPicture()
 	}
@@ -119,12 +119,14 @@ import OSLog
 }
 
 private class PiPDelegate: NSObject, AVPictureInPictureControllerDelegate {
+	private let logger = Logger(category: "PiPDelegate")
+	
 	func pictureInPictureControllerDidStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
-		print("PiP Delegate: didStart")
+		logger.debug("PiP didStart")
 	}
 	
 	func pictureInPictureControllerDidStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
-		print("PiP Delegate: didStop")
+		logger.debug("PiP didStop")
 	}
 	
 	func pictureInPictureControllerShouldProhibitBackgroundAudioPlayback(_ pictureInPictureController: AVPictureInPictureController) -> Bool {
@@ -134,14 +136,14 @@ private class PiPDelegate: NSObject, AVPictureInPictureControllerDelegate {
 	}
 	
 	func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController, failedToStartPictureInPictureWithError error: Error) {
-		print("PiP Delegate: failed to start: \(error)")
+		logger.debug("PiP failed to start: \(error)")
 	}
 	
 	func pictureInPictureController(
 		_ pictureInPictureController: AVPictureInPictureController,
 		restoreUserInterfaceForPictureInPictureStopWithCompletionHandler completionHandler: @escaping (Bool) -> Void
 	) {
-		print("PiP Delegate: restore UI")
+		logger.debug("PiP restore UI")
 	}
 }
 
