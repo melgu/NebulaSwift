@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import OSLog
+
+private let logger = Logger(category: "VideoPage")
 
 struct VideoPage: View {
 	let video: Video
@@ -81,7 +84,7 @@ struct VideoPage: View {
 			.aspectRatio(16/9, contentMode: .fit)
 			.overlay(CustomVideoPlayer())
 			.task {
-				print("Load Video Stream Info")
+				logger.debug("Load Video Stream Info")
 				try await player.replaceVideo(with: video)
 				player.play()
 			}

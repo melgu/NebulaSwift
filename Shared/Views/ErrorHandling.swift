@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import OSLog
 
 // MARK: Action
 
@@ -45,6 +46,8 @@ extension View {
 
 // MARK: - Error Alert
 
+private let logger = Logger(category: "AlertErrorHandlerModifier")
+
 fileprivate struct AlertErrorHandlerModifier: ViewModifier {
 	@State private var error: Error?
 	@State private var isPresented = false
@@ -52,7 +55,7 @@ fileprivate struct AlertErrorHandlerModifier: ViewModifier {
 	func body(content: Content) -> some View {
 		content
 			.handleError { error in
-				print(error)
+				logger.debug("Handling error: \(error)")
 				if let error = error as? URLError, error.code == .cancelled { return }
 				Task { @MainActor in
 					self.error = error

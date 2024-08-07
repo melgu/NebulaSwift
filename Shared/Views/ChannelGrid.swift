@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import OSLog
 
 struct ChannelGrid: View {
 	let channels: [Channel]
@@ -21,6 +22,8 @@ struct ChannelGrid: View {
 		}
 	}
 }
+
+private let logger = Logger(category: "AutoChannelGrid")
 
 /// Auto-loading ChannelGrid
 struct AutoChannelGrid: View {
@@ -42,12 +45,12 @@ struct AutoChannelGrid: View {
 					ChannelPreview(channel: channel)
 						.task {
 							if channel == channels.last {
-								print("Last channel did appear, loading next page")
+								logger.debug("Last channel did appear, loading next page")
 								do {
 									channels += try await fetch(page + 1)
 									page += 1
 								} catch APIError.invalidServerResponse(errorCode: 404) {
-									print("Last page")
+									logger.debug("Last page")
 								}
 							}
 						}
@@ -74,7 +77,7 @@ struct AutoChannelGrid: View {
 		}
 		#endif
 		.task {
-			print("Load Channels")
+			logger.debug("Load Channels")
 			try await refreshChannels()
 		}
 	}
@@ -92,7 +95,7 @@ struct AutoChannelGrid: View {
 	private func refreshChannels() async throws {
 		let newChannels = try await fetch(1)
 		if newChannels != channels {
-			print("Video list changed")
+			logger.debug("Video list changed")
 			page = 1
 			withAnimation {
 				channels = newChannels

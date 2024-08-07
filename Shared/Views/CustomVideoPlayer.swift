@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AVKit
+import OSLog
 
 #if canImport(UIKit)
 struct CustomVideoPlayer: UIViewControllerRepresentable {
@@ -28,6 +29,8 @@ struct CustomVideoPlayer: UIViewControllerRepresentable {
 	func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {}
 }
 
+private let logger = Logger(category: "AVPlayerViewController")
+
 extension AVPlayerViewController {
 	// TODO: Does this prevent me from getting into the app store?
 	func goFullScreen() {
@@ -37,7 +40,7 @@ extension AVPlayerViewController {
 		if responds(to: selectorToForceFullScreenMode) {
 			perform(selectorToForceFullScreenMode, with: true, with: nil)
 		} else {
-			print("Go to fullscreen selector doesn't work")
+			logger.error("Go to fullscreen selector doesn't work")
 		}
 	}
 }
