@@ -42,21 +42,39 @@ extension Category {
 }
 
 extension API {
-	func allCategories(page: Int, pageSize: Int = 24) async throws -> [Category] {
-		let url = URL(string: "https://content.watchnebula.com/video/categories/?page=\(page)&page_size=\(pageSize)")!
+	func allCategories(offset: Int, pageSize: Int = 24) async throws -> [Category] {
+		let url = URL(string: "https://content.watchnebula.com/video/categories/?offset=\(offset)&page_size=\(pageSize)")!
 		let response: ListContainer<Category> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}
 	
-	func videos(for category: Category, page: Int, pageSize: Int = 24) async throws -> [Video] {
-		let url = URL(string: "https://content.watchnebula.com/video/?category=\(category.slug)&page=\(page)&page_size=\(pageSize)")!
+	@available(*, deprecated, message: "Use `allCategories(offset:pageSize:)` instead")
+	@_disfavoredOverload
+	func allCategories(page: Int, pageSize: Int = 24) async throws -> [Category] {
+		try await allCategories(offset: (page - 1) * pageSize, pageSize: pageSize)
+	}
+	
+	func videos(for category: Category, offset: Int, pageSize: Int = 24) async throws -> [Video] {
+		let url = URL(string: "https://content.watchnebula.com/video/?category=\(category.slug)&offset=\(offset)&page_size=\(pageSize)")!
 		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}
 	
-	func channels(for category: Category, page: Int, pageSize: Int = 24) async throws -> [Channel] {
-		let url = URL(string: "https://content.watchnebula.com/video/channels/?category=\(category.slug)&page=\(page)&page_size=\(pageSize)")!
+	@available(*, deprecated, message: "Use `videos(for:offset:pageSize:)` instead")
+	@_disfavoredOverload
+	func videos(for category: Category, page: Int, pageSize: Int = 24) async throws -> [Video] {
+		try await videos(for: category, offset: (page - 1) * pageSize, pageSize: pageSize)
+	}
+	
+	func channels(for category: Category, offset: Int, pageSize: Int = 24) async throws -> [Channel] {
+		let url = URL(string: "https://content.watchnebula.com/video/channels/?category=\(category.slug)&offset=\(offset)&page_size=\(pageSize)")!
 		let response: ListContainer<Channel> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
+	}
+	
+	@available(*, deprecated, message: "Use `channels(for:offset:pageSize:)` instead")
+	@_disfavoredOverload
+	func channels(for category: Category, page: Int, pageSize: Int = 24) async throws -> [Channel] {
+		try await channels(for: category, offset: (page - 1) * pageSize, pageSize: pageSize)
 	}
 }
