@@ -42,9 +42,15 @@ extension Podcast {
 }
 
 extension API {
-	func allPodcasts(page: Int, pageSize: Int = 24) async throws -> [Podcast] {
-		let url = URL(string: "https://content.api.nebula.app/podcast/channels/?page=\(page)&page_size=\(pageSize)")!
+	func allPodcasts(offset: Int, pageSize: Int = 24) async throws -> [Podcast] {
+		let url = URL(string: "https://content.api.nebula.app/podcast/channels/?offset=\(offset)&page_size=\(pageSize)")!
 		let response: ListContainer<Podcast> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
+	}
+	
+	@available(*, deprecated, message: "Use `allPodcasts(offset:pageSize:)` instead")
+	@_disfavoredOverload
+	func allPodcasts(page: Int, pageSize: Int = 24) async throws -> [Podcast] {
+		try await allPodcasts(offset: (page - 1) * pageSize, pageSize: pageSize)
 	}
 }

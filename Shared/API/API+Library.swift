@@ -8,15 +8,27 @@
 import Foundation
 
 extension API {
-	func libraryVideos(page: Int, pageSize: Int = 24) async throws -> [Video] {
-		let url = URL(string: "https://content.watchnebula.com/library/video/?page=\(page)&page_size=\(pageSize)")!
+	func libraryVideos(offset: Int, pageSize: Int = 24) async throws -> [Video] {
+		let url = URL(string: "https://content.watchnebula.com/library/video/?offset=\(offset)&page_size=\(pageSize)")!
 		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}
 	
-	func libraryChannels(page: Int, pageSize: Int = 24) async throws -> [Channel] {
-		let url = URL(string: "https://content.watchnebula.com/library/video/channels/?page=\(page)&page_size=\(pageSize)")!
+	@available(*, deprecated, message: "Use `libraryVideos(offset:pageSize:)` instead")
+	@_disfavoredOverload
+	func libraryVideos(page: Int, pageSize: Int = 24) async throws -> [Video] {
+		try await libraryVideos(offset: (page - 1) * pageSize, pageSize: pageSize)
+	}
+	
+	func libraryChannels(offset: Int, pageSize: Int = 24) async throws -> [Channel] {
+		let url = URL(string: "https://content.watchnebula.com/library/video/channels/?offset=\(offset)&page_size=\(pageSize)")!
 		let response: ListContainer<Channel> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
+	}
+	
+	@available(*, deprecated, message: "Use `libraryChannels(offset:pageSize:)` instead")
+	@_disfavoredOverload
+	func libraryChannels(page: Int, pageSize: Int = 24) async throws -> [Channel] {
+		try await libraryChannels(offset: (page - 1) * pageSize, pageSize: pageSize)
 	}
 }

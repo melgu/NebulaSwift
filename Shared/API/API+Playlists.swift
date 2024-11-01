@@ -8,10 +8,16 @@
 import Foundation
 
 extension API {
-	private func videoContainer(for playlist: String, page: Int, pageSize: Int) async throws -> ListContainer<Video> {
+	private func videoContainer(for playlist: String, offset: Int, pageSize: Int) async throws -> ListContainer<Video> {
 		assert(pageSize <= 100, "The Nebula API only supports page sizes up to 100")
-		let url = URL(string: "https://content.watchnebula.com/engagement/playlist/list/\(playlist)/?page=\(page)&page_size=\(pageSize)")!
+		let url = URL(string: "https://content.watchnebula.com/engagement/playlist/list/\(playlist)/?offset=\(offset)&page_size=\(pageSize)")!
 		return try await request(.get, url: url, authorization: .bearer)
+	}
+	
+	@available(*, deprecated, message: "Use `videoContainer(for:offset:pageSize:)` instead")
+	@_disfavoredOverload
+	private func videoContainer(for playlist: String, page: Int, pageSize: Int) async throws -> ListContainer<Video> {
+		try await videoContainer(for: playlist, offset: (page - 1) * pageSize, pageSize: pageSize)
 	}
 	
 	private func videos(for playlist: String, page: Int, pageSize: Int = 24) async throws -> [Video] {

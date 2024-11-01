@@ -91,10 +91,16 @@ struct Subtitle: Decodable {
 }
 
 extension API {
-	func allVideos(page: Int, pageSize: Int = 24) async throws -> [Video] {
-		let url = URL(string: "https://content.watchnebula.com/video/?page=\(page)&page_size=\(pageSize)")!
+	func allVideos(offset: Int, pageSize: Int = 24) async throws -> [Video] {
+		let url = URL(string: "https://content.watchnebula.com/video/?offset=\(offset)&page_size=\(pageSize)")!
 		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
+	}
+	
+	@available(*, deprecated, message: "Use `allVideos(offset:pageSize:)` instead")
+	@_disfavoredOverload
+	func allVideos(page: Int, pageSize: Int = 24) async throws -> [Video] {
+		try await allVideos(offset: (page - 1) * pageSize, pageSize: pageSize)
 	}
 	
 	func video(for slug: String) async throws -> Video {
