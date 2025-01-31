@@ -1,4 +1,4 @@
-<img src="Shared/Assets.xcassets/AppIcon.appiconset/mac256.png" alt="Icon" width="128">
+<img src="NebulaSwift/Assets.xcassets/AppIcon.appiconset/mac256.png" alt="Icon" width="128">
 
 # NebulaSwift
 
