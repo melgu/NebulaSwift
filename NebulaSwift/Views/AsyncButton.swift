@@ -117,15 +117,8 @@ extension AsyncButton where Label == Text {
 
 // MARK: AsyncButtonStyle
 
-private struct AsyncButtonStyleKey: EnvironmentKey {
-	static let defaultValue: AsyncButtonStyle = .disabled
-}
-
 extension EnvironmentValues {
-	fileprivate var asyncButtonStyle: AsyncButtonStyle {
-		get { self[AsyncButtonStyleKey.self] }
-		set { self[AsyncButtonStyleKey.self] = newValue }
-	}
+    @Entry fileprivate var asyncButtonStyle: AsyncButtonStyle = .disabled
 }
 
 extension View {

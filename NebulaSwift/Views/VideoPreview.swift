@@ -11,15 +11,8 @@ import AVKit
 
 // MARK: - Environment
 
-private struct GoToChannelEnabledKey: EnvironmentKey {
-	static let defaultValue = true
-}
-
 extension EnvironmentValues {
-	var goToChannelEnabled: Bool {
-		get { self[GoToChannelEnabledKey.self] }
-		set { self[GoToChannelEnabledKey.self] = newValue }
-	}
+	@Entry var goToChannelEnabled: Bool = true
 }
 
 extension View {
@@ -28,15 +21,8 @@ extension View {
 	}
 }
 
-private struct AssumeWatchLaterKey: EnvironmentKey {
-	static let defaultValue = false
-}
-
 extension EnvironmentValues {
-	var assumeWatchLater: Bool {
-		get { self[AssumeWatchLaterKey.self] }
-		set { self[AssumeWatchLaterKey.self] = newValue }
-	}
+	@Entry var assumeWatchLater: Bool = false
 }
 
 extension View {

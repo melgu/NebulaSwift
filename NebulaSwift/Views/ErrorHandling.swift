@@ -24,18 +24,11 @@ struct ErrorAction : Sendable{
 
 // MARK: - Environment
 
-private struct ErrorKey: EnvironmentKey {
-	static let defaultValue: ErrorAction = ErrorAction({ print($0) })
-}
-
 extension EnvironmentValues {
 	/// Set a handler for errors.
 	///
 	/// The default error handler prints errors that occur.
-	var handleError: ErrorAction {
-		get { self[ErrorKey.self] }
-		set { self[ErrorKey.self] = newValue }
-	}
+    @Entry var handleError: ErrorAction = ErrorAction({ print($0) })
 }
 
 extension View {

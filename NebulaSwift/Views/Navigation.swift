@@ -25,18 +25,11 @@ struct OpenItemAction: Sendable {
 
 // MARK: - Environment
 
-private struct OpenItemKey: EnvironmentKey {
-	static let defaultValue: OpenItemAction = OpenItemAction({ print("openItem environment has not been set. \($0)") })
-}
-
 extension EnvironmentValues {
 	/// Set a handler for errors.
 	///
 	/// The default error handler prints errors that occur.
-	var openItem: OpenItemAction {
-		get { self[OpenItemKey.self] }
-		set { self[OpenItemKey.self] = newValue }
-	}
+	@Entry var openItem: OpenItemAction = OpenItemAction({ print("openItem environment has not been set. \($0)") })
 }
 
 extension View {
