@@ -87,6 +87,10 @@ struct VideoContextMenu: ViewModifier {
 				}
 				
 				Divider()
+                
+                Button("Copy URL") {
+                    Pasteboard.copy(string: video.shareUrl.absoluteString)
+                }
 				
 				ShareLink(item: video.shareUrl)
 			} preview: {
@@ -141,6 +145,10 @@ struct ChannelContextMenu: ViewModifier {
 					}
 					Divider()
 				}
+                
+                Button("Copy URL") {
+                    Pasteboard.copy(string: channel.shareUrl.absoluteString)
+                }
 				
 				ShareLink(item: channel.shareUrl)
 			} preview: {
@@ -183,8 +191,6 @@ struct PodcastContextMenu: ViewModifier {
 					Pasteboard.copy(string: podcast.rssUrl.absoluteString)
 				}
 				
-				Divider()
-				
 				ShareLink(item: podcast.shareUrl)
 			} preview: {
 				AsyncImage(url: podcast.assets["square-888"]) { image in
@@ -223,6 +229,10 @@ struct HeroContextMenu: ViewModifier {
 				Text(hero.title)
 				
 				Divider()
+                
+                Button("Copy URL") {
+                    Pasteboard.copy(string: hero.url.absoluteString)
+                }
 				
 				ShareLink(item: hero.url)
 			} preview: {
