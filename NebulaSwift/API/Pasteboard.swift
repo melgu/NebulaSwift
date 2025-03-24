@@ -13,6 +13,7 @@ enum Pasteboard {
 		#if canImport(UIKit)
 		UIPasteboard.general.string = string
 		#else
+        NSPasteboard.general.clearContents()
 		NSPasteboard.general.setString(string, forType: .string)
 		#endif
 	}
