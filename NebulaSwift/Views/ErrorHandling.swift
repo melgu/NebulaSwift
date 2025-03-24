@@ -10,7 +10,7 @@ import OSLog
 
 // MARK: Action
 
-struct ErrorAction : Sendable{
+struct ErrorAction: Sendable {
 	let action: @Sendable (Error) -> Void
 	
 	init(_ action: @escaping @Sendable (Error) -> Void) {
