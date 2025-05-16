@@ -25,6 +25,7 @@ struct NebulaSwiftApp: App {
 				.environmentObject(api)
 				.environmentObject(api.storage)
 				.environmentObject(player)
+				.task { try await api.refreshConfiguration() }
 		}
 		.commands {
 			CommandMenu("Account") {

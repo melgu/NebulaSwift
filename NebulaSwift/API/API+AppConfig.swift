@@ -8,10 +8,10 @@
 import Foundation
 
 struct AppConfig: Codable {
-	/// Does **not** contain trailing "/" from my experience
+	/// Does **not** contain trailing "/" from my experience.
 	let authBaseURL: String
 	
-	/// Does contain trailing "/" from my experience/
+	/// Does contain trailing "/" from my experience.
 	let contentBaseURL: String
 	
 //	let features: [Any?]

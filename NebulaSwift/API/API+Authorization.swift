@@ -14,7 +14,7 @@ struct AuthorizationResponse: Decodable {
 extension API {
 	var authorization: AuthorizationResponse {
 		get async throws {
-			let url = URL(string: "https://api.watchnebula.com/api/v1/authorization/")!
+			let url = URL(string: "\(storage.authBaseURL)/api/v1/authorization/")!
 			return try await request(.post, url: url, authorization: .token)
 		}
 	}

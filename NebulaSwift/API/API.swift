@@ -35,4 +35,10 @@ import OSLog
 		
 		isLoggedIn = storage.token != nil && storage.bearer != nil
 	}
+	
+	func refreshConfiguration() async throws {
+		let appConfig = try await self.appConfig
+		self.storage.authBaseURL = appConfig.authBaseURL
+		self.storage.contentBaseURL = appConfig.contentBaseURL
+	}
 }
