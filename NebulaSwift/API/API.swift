@@ -33,9 +33,6 @@ import OSLog
 		logger.debug("Token: \(self.storage.token ?? "nil")")
 		logger.debug("Authorization: \(self.storage.bearer ?? "nil")")
 		
-		storage.$token
-			.combineLatest(storage.$bearer)
-			.map { $0 != nil && $1 != nil }
-			.assign(to: &$isLoggedIn)
+		isLoggedIn = storage.token != nil && storage.bearer != nil
 	}
 }

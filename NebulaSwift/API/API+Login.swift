@@ -35,10 +35,13 @@ extension API {
 		
 		try await refreshAuthorization()
 		NebulaSwiftAppShortcutsProvider.updateAppShortcutParameters()
+		isLoggedIn = true
 	}
 	
 	@MainActor
 	func logout() {
+		isLoggedIn = false
+		
 		Task.detached {
 			URLSession.shared.configuration.httpCookieStorage?.removeCookies(since: .distantPast)
 		}
