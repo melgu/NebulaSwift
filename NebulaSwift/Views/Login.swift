@@ -12,11 +12,13 @@ struct Login: View {
 	
 	@State private var email = ""
 	@State private var password = ""
+	@State private var isInProgress = false
 	
 	var body: some View {
 		VStack {
 			Text("Login")
 				.font(.title)
+			
 			TextField("email", text: $email)
 				.textContentType(.username)
 				.autocorrectionDisabled()
@@ -24,19 +26,24 @@ struct Login: View {
 				.keyboardType(.emailAddress)
 				.textInputAutocapitalization(.never)
 				#endif
+			
 			SecureField("password", text: $password)
-				.onSubmit {
-					try await api.login(email: email, password: password)
-				}
-			AsyncButton("Login") {
-				try await api.login(email: email, password: password)
-			}
-			.buttonStyle(.bordered)
-			.tint(.accentColor)
+				.onSubmit(login)
+			
+			AsyncButton("Login", action: login)
+				.buttonStyle(.bordered)
+				.tint(.accentColor)
 		}
+		.disabled(isInProgress)
 		.textFieldStyle(.roundedBorder)
 		.padding()
 		.frame(width: 300)
+	}
+	
+	private func login() async throws {
+		isInProgress = true
+		defer { isInProgress = false }
+		try await api.login(email: email, password: password)
 	}
 }
 
