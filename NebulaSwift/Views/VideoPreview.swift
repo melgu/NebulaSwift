@@ -43,7 +43,7 @@ struct VideoPreview: View {
 			openItem(video)
 		} label: {
 			VideoPreviewView(video: video)
-				.draggable(video.shareUrl) {
+				.draggable(video.shareURL) {
 					VideoPreviewView(video: video)
 						.background(Color.systemBackground)
 						.cornerRadius(8)
@@ -68,7 +68,7 @@ struct VideoPreviewView: View {
 			Color.black
 				.aspectRatio(16/9, contentMode: .fit)
 				.overlay {
-					AsyncImage(url: video.assets.thumbnail["480"]?.original) { image in
+					AsyncImage(url: video.images.thumbnail[width: 480]) { image in
 						image
 							.resizable()
 							.scaledToFill()
@@ -80,7 +80,7 @@ struct VideoPreviewView: View {
 				.cornerRadius(8)
 			
 			HStack(alignment: .top) {
-				AsyncImage(url: video.assets.channelAvatar["64"]?.original) { image in
+				AsyncImage(url: video.images.channelAvatar.src) { image in
 					image
 						.resizable()
 						.scaledToFit()
@@ -136,12 +136,12 @@ struct VideoPreviewImage: View {
 	let video: Video
 	
 	var body: some View {
-		AsyncImage(url: video.assets.thumbnail["960"]?.original) { image in
+		AsyncImage(url: video.images.thumbnail[width: 960]) { image in
 			image
 				.resizable()
 		} placeholder: {
 			// This image is most likely already cached
-			AsyncImage(url: video.assets.thumbnail["480"]?.original) { image in
+			AsyncImage(url: video.images.thumbnail[width: 480]) { image in
 				image
 					.resizable()
 			} placeholder: {

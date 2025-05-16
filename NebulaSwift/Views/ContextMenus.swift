@@ -89,10 +89,10 @@ struct VideoContextMenu: ViewModifier {
 				Divider()
                 
                 Button("Copy URL") {
-                    Pasteboard.copy(string: video.shareUrl.absoluteString)
+                    Pasteboard.copy(string: video.shareURL.absoluteString)
                 }
 				
-				ShareLink(item: video.shareUrl)
+				ShareLink(item: video.shareURL)
 			} preview: {
 				if storage.videoPreview {
 					LiveVideoPreviewView(video: video)

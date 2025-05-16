@@ -75,7 +75,7 @@ struct VideoPage: View {
 		.userActivity("de.melgu.NebulaSwift.video") { activity in
 			activity.title = video.title
 			try! activity.setTypedPayload(video)
-			activity.webpageURL = video.shareUrl
+			activity.webpageURL = video.shareURL
 		}
 	}
 	
@@ -97,7 +97,7 @@ struct VideoPage: View {
 				Text(video.title)
 					.font(.title)
 				Spacer()
-				ShareLink(item: video.shareUrl)
+				ShareLink(item: video.shareURL)
 			}
 			#endif
 			
@@ -136,7 +136,7 @@ struct VideoPage: View {
 			openItem(channel)
 		} label: {
 			HStack(spacing: 16) {
-				AsyncImage(url: video.assets.channelAvatar["128"]?.original) { image in
+				AsyncImage(url: video.images.channelAvatar.src) { image in
 					image
 						.resizable()
 						.scaledToFit()

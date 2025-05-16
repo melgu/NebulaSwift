@@ -118,6 +118,7 @@ extension API {
 	
 	private func _request<Result: Decodable>(_ method: HTTPMethod, url: URL, headerFields: [String: String], body: Data?, authorization: AuthorizationType?) async throws -> Result {
 		let data = try await _request(method, url: url, headerFields: headerFields, body: body, authorization: authorization)
+		logger.debug("\(method.rawValue) \(url) Body:\n\(String(data: data, encoding: .utf8) ?? "Format error")")
 		let result = try decoder.decode(Result.self, from: data)
 		return result
 	}

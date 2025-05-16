@@ -9,7 +9,7 @@ import Foundation
 
 extension API {
 	func libraryVideos(offset: Int, pageSize: Int = 24) async throws -> [Video] {
-		let url = URL(string: "https://content.watchnebula.com/library/video/?offset=\(offset)&page_size=\(pageSize)")!
+		let url = URL(string: "\(contentBaseURL)video_episodes/?following=true&offset=\(offset)&page_size=\(pageSize)")!
 		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}
@@ -21,7 +21,7 @@ extension API {
 	}
 	
 	func libraryChannels(offset: Int, pageSize: Int = 24) async throws -> [Channel] {
-		let url = URL(string: "https://content.watchnebula.com/library/video/channels/?offset=\(offset)&page_size=\(pageSize)")!
+		let url = URL(string: "\(contentBaseURL)library/video/channels/?offset=\(offset)&page_size=\(pageSize)")!
 		let response: ListContainer<Channel> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}

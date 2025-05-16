@@ -10,24 +10,32 @@ import Foundation
 // MARK: Info
 
 struct Video: Codable, Equatable {
+	let id: String
+	let type: String
 	let slug: String
 	let title: String
 	let description: String
 	let shortDescription: String
 	let duration: Int
+	let durationToComplete: Int
 	let publishedAt: Date
+	let channelID: String
 	let channelSlug: String
 	let channelSlugs: [String]
 	let channelTitle: String
+	let channelType: String
 	let categorySlugs: [String]
-	let assets: Assets
-	let attributes: [Attribute]
-	let shareUrl: URL
-//	let channel: NSNull
+	let images: Images
 	let engagement: Engagement?
+	let attributes: [Attribute]
+	let shareURL: URL
+//	let primaryChannel: NSNull
+//	let zypeID: NSNull
+	let unauthenticated: Bool
+	let appPath: String
 }
 extension Video: Identifiable {
-	var id: String { slug + "\(engagement?.progress ?? 0)" }
+//	var id: String { slug + "\(engagement?.progress ?? 0)" }
 }
 extension Video: Hashable {
 	func hash(into hasher: inout Hasher) {
@@ -37,9 +45,21 @@ extension Video: Hashable {
 }
 
 extension Video {
-	struct Assets: Codable, Equatable {
-		let channelAvatar: [String: NebulaImageResource]
-		let thumbnail: [String: NebulaImageResource]
+	struct Images: Codable, Equatable {
+		let channelAvatar: NebulaImage
+		let thumbnail: NebulaImage
+	}
+	
+	struct NebulaImage: Codable, Equatable {
+		let src: URL
+		let formats: [String]
+		let width: Int
+		let height: Int
+		let altText: String
+		
+		subscript(width width: Int) -> URL {
+			src.appending(queryItems: [.init(name: "width", value: "\(width)")])
+		}
 	}
 	
 	enum Attribute: String, Codable, Equatable {
