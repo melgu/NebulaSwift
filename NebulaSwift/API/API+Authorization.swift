@@ -14,13 +14,13 @@ struct AuthorizationResponse: Decodable {
 extension API {
 	var authorization: AuthorizationResponse {
 		get async throws {
-			let url = URL(string: "\(storage.authBaseURL)/api/v1/authorization/")!
+			let url = URL(string: "\(authBaseURL)/api/v1/authorization/")!
 			return try await request(.post, url: url, authorization: .token)
 		}
 	}
 	
 	func refreshAuthorization() async throws {
 		let authResponse = try await self.authorization
-		storage.bearer = authResponse.token
+		bearer = authResponse.token
 	}
 }

@@ -18,7 +18,7 @@ struct LoginResponse: Decodable {
 
 extension API {
 	private func _login(email: String, password: String) async throws -> LoginResponse {
-		let url = URL(string: "\(storage.authBaseURL)/api/v1/auth/login/")!
+		let url = URL(string: "\(authBaseURL)/api/v1/auth/login/")!
 		let body = LoginRequestBody(email: email, password: password)
 		
 		Task.detached {
@@ -31,7 +31,7 @@ extension API {
 	func login(email: String, password: String) async throws {
 		// Actual login (get token)
 		let loginResponse = try await self._login(email: email, password: password)
-		storage.token = loginResponse.key
+		token = loginResponse.key
 		
 		try await refreshAuthorization()
 		NebulaSwiftAppShortcutsProvider.updateAppShortcutParameters()
@@ -46,7 +46,7 @@ extension API {
 			URLSession.shared.configuration.httpCookieStorage?.removeCookies(since: .distantPast)
 		}
 		
-		storage.token = nil
-		storage.bearer = nil
+		token = nil
+		bearer = nil
 	}
 }

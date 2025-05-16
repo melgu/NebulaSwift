@@ -5,7 +5,7 @@
 //  Created by Melvin Gundlach on 25.06.21.
 //
 
-import Foundation
+import SwiftUI
 import OSLog
 
 @MainActor class API: ObservableObject {
@@ -25,20 +25,29 @@ import OSLog
 		return encoder
 	}()
 	
+	@AppStorage(Defaults.token) var token: String?
+	@AppStorage(Defaults.bearer) var bearer: String?
+	
+	/// Does **not** contain trailing "/" from my experience.
+	@AppStorage(Defaults.authBaseURL) var authBaseURL: String = "https://users.api.nebula.app"
+	
+	/// Does contain trailing "/" from my experience.
+	@AppStorage(Defaults.contentBaseURL) var contentBaseURL: String = "https://content.api.nebula.app/"
+	
 	@Published var isLoggedIn = false
 	
 	let logger = Logger(category: "API")
 	
 	init() {
-		logger.debug("Token: \(self.storage.token ?? "nil")")
-		logger.debug("Authorization: \(self.storage.bearer ?? "nil")")
+		logger.debug("Token: \(self.token ?? "nil")")
+		logger.debug("Authorization: \(self.bearer ?? "nil")")
 		
-		isLoggedIn = storage.token != nil && storage.bearer != nil
+		isLoggedIn = token != nil && bearer != nil
 	}
 	
 	func refreshConfiguration() async throws {
 		let appConfig = try await self.appConfig
-		self.storage.authBaseURL = appConfig.authBaseURL
-		self.storage.contentBaseURL = appConfig.contentBaseURL
+		self.authBaseURL = appConfig.authBaseURL
+		self.contentBaseURL = appConfig.contentBaseURL
 	}
 }

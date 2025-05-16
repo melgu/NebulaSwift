@@ -28,7 +28,7 @@ struct AppConfig: Codable {
 extension API {
 	var appConfig: AppConfig {
 		get async throws {
-			let url = URL(string: "\(storage.contentBaseURL)app_configs/ios/")!
+			let url = URL(string: "\(contentBaseURL)app_configs/ios/")!
 			return try await request(.get, url: url, authorization: .none)
 		}
 	}

@@ -9,15 +9,6 @@ import SwiftUI
 import Combine
 
 @MainActor class Storage: ObservableObject {
-	@AppStorage(Defaults.token) var token: String?
-	@AppStorage(Defaults.bearer) var bearer: String?
-	
-	/// Does **not** contain trailing "/" from my experience.
-	@AppStorage(Defaults.authBaseURL) var authBaseURL: String = "https://users.api.nebula.app"
-	
-	/// Does contain trailing "/" from my experience.
-	@AppStorage(Defaults.contentBaseURL) var contentBaseURL: String = "https://content.api.nebula.app/"
-	
 	@Published var automaticFullscreen: Bool
 	@Published var videoPreview: Bool
 	@Published var videoPreviewWithSound: Bool

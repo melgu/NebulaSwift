@@ -58,10 +58,10 @@ extension API {
 	private func setAuthorization(type authorizationType: AuthorizationType?, for request: inout URLRequest) throws {
 		switch authorizationType {
 		case .token:
-			guard let token = storage.token else { throw APIError.missingToken }
+			guard let token else { throw APIError.missingToken }
 			request.setValue("Token \(token)", forHTTPHeaderField: "Authorization")
 		case .bearer:
-			guard let bearer = storage.bearer else { throw APIError.missingBearer }
+			guard let bearer else { throw APIError.missingBearer }
 			request.setValue("Bearer \(bearer)", forHTTPHeaderField: "Authorization")
 		case .none:
 			break
