@@ -8,9 +8,8 @@
 import SwiftUI
 import OSLog
 
-@MainActor class API: ObservableObject {
-	let storage = Storage()
-	
+@MainActor
+class API: ObservableObject {
 	let decoder: JSONDecoder = {
 		let decoder = JSONDecoder()
 		decoder.keyDecodingStrategy = .convertFromSnakeCase

@@ -80,13 +80,13 @@ fileprivate struct SettingsSheet: ViewModifier {
 	}
 }
 
-struct SettingsView_Previews: PreviewProvider {
-	private static let api = API()
+#Preview {
+	@Previewable @State var api = API()
+	@Previewable @State var player = Player(api: API())
+	@Previewable @State var storage = Storage()
 	
-	static var previews: some View {
-		SettingsView()
-			.environmentObject(api)
-			.environmentObject(Player(api: api))
-			.environmentObject(api.storage)
-	}
+	SettingsView()
+		.environmentObject(api)
+		.environmentObject(player)
+		.environmentObject(storage)
 }
