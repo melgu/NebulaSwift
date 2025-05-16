@@ -21,7 +21,9 @@ extension API {
 		let url = URL(string: "https://api.watchnebula.com/api/v1/auth/login/")!
 		let body = LoginRequestBody(email: email, password: password)
 		
-		URLSession.shared.configuration.httpCookieStorage?.removeCookies(since: Date.distantPast)
+		Task.detached {
+			URLSession.shared.configuration.httpCookieStorage?.removeCookies(since: .distantPast)
+		}
 		
 		return try await request(.post, url: url, body: body, authorization: .none)
 	}
@@ -37,7 +39,9 @@ extension API {
 	
 	@MainActor
 	func logout() {
-		URLSession.shared.configuration.httpCookieStorage?.removeCookies(since: Date.distantPast)
+		Task.detached {
+			URLSession.shared.configuration.httpCookieStorage?.removeCookies(since: .distantPast)
+		}
 		
 		storage.token = nil
 		storage.bearer = nil
