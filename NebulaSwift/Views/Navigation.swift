@@ -9,10 +9,10 @@ import SwiftUI
 
 // MARK: Action
 
-struct OpenItemAction: Sendable {
-	let action: @Sendable (any Item) -> Void
+struct OpenItemAction {
+	let action: (any Item) -> Void
 	
-	init(_ action: @escaping @Sendable (any Item) -> Void) {
+	init(_ action: @escaping (any Item) -> Void) {
 		self.action = action
 	}
 	
@@ -33,7 +33,7 @@ extension EnvironmentValues {
 }
 
 extension View {
-	func onOpenItem(perform action: @escaping @Sendable (any Hashable & Sendable) -> Void) -> some View {
+	func onOpenItem(perform action: @escaping (any Hashable & Sendable) -> Void) -> some View {
 		environment(\.openItem, OpenItemAction(action))
 	}
 }
