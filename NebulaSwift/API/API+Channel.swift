@@ -79,7 +79,7 @@ extension API {
 	}
 	
 	func channel(for slug: Channel.ID) async throws -> Channel {
-		let url = URL(string: "https://content.watchnebula.com/slug/\(slug)/")!
+		let url = URL(string: "https://content.api.nebula.app/content/\(slug)/")!
 		return try await request(.get, url: url, authorization: .bearer)
 	}
 	
