@@ -8,7 +8,7 @@
 import SwiftUI
 import OSLog
 
-private let logger = Logger(category: "AutoVideoGrid")
+private let logger = Logger(category: "AutoGrid")
 
 /// Auto-loading Grid.
 struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>: View {
