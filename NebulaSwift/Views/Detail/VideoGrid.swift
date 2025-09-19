@@ -23,86 +23,22 @@ struct VideoGrid: View {
 	}
 }
 
-private let logger = Logger(category: "AutoVideoGrid")
-
 /// Auto-loading VideoGrid.
 struct AutoVideoGrid<Value: Equatable>: View {
 	let value: Value
 	let fetch: (Int) async throws -> [Video]
 	
-	@State private var videos: [Video] = []
-	@State private var page = 1
-	
 	/// Auto-loading VideoGrid that reloads when a specified value changes.
-	/// - Parameter id: The value to observe for changes. When the value changes, videos are refreshed. The value must conform to the `Equatable` protocol.
-	/// - Parameter fetch: Closure which loads the videos for a given page (1-indexed)
+	/// - Parameter id: The value to observe for changes. When the value changes, videos are refreshed.
+	/// - Parameter fetch: Closure which loads the videos for a given page (1-indexed).
 	init(id value: Value, fetch: @escaping (Int) async throws -> [Video]) {
 		self.value = value
 		self.fetch = fetch
 	}
 	
 	var body: some View {
-		ScrollView {
-			LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
-				ForEach(videos) { video in
-					VideoPreview(video: video)
-						.task {
-							if video == videos.last {
-								logger.debug("Last video did appear, loading next page")
-								do {
-									videos += try await fetch(page + 1)
-									page += 1
-								} catch APIError.invalidServerResponse(errorCode: 404) {
-									logger.debug("Last page")
-								}
-							}
-						}
-				}
-			}
-			.padding()
-			.refreshable {
-				try await refreshVideos()
-			}
-		}
-		.refreshable {
-			try await refreshVideos()
-		}
-		#if os(macOS)
-		.toolbar {
-			ToolbarItem(placement: .primaryAction) {
-				refreshButton
-			}
-		}
-		#else
-		.background {
-			refreshButton
-				.hidden()
-		}
-		#endif
-		.task(id: value) {
-			logger.debug("Load Videos")
-			try await refreshVideos()
-		}
-	}
-	
-	private var refreshButton: some View {
-		AsyncButton {
-			try await refreshVideos()
-		} label: {
-			Image(systemName: "arrow.clockwise")
-		}
-		.asyncButtonStyle(.progress(replacesLabel: true))
-		.keyboardShortcut("r", modifiers: .command)
-	}
-	
-	private func refreshVideos() async throws {
-		let newVideos = try await fetch(1)
-		if newVideos != videos {
-			logger.debug("Video list changed")
-			page = 1
-			withAnimation {
-				videos = newVideos
-			}
+		AutoGrid(id: value, fetch: fetch) { video in
+			VideoPreview(video: video)
 		}
 	}
 }
