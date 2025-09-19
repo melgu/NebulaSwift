@@ -12,14 +12,21 @@ private let logger = Logger(category: "AutoVideoGrid")
 
 /// Auto-loading Grid.
 struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>: View {
-	let value: Value
-	let fetch: (Int) async throws -> [Item]
-	let preview: (Item) -> Preview
+	private let value: Value
+	private let fetch: (Int) async throws -> [Item]
+	private let preview: (Item) -> Preview
+	
+	/// Index offset indicating when the next page is loaded.
+	///
+	/// The next page is loaded when the X-th last item is shown, with X being the `loadingOffset`.
+	private let loadingOffset = 4
 	
 	@State private var isInitialLoad = false
 	@State private var items: [Item] = []
+	@State private var itemsCount = 0
 	@State private var page = 1
 	@State private var onLastPage = false
+	@State private var itemIndex = -1
 	
 	/// Auto-loading Grid that reloads when a specified value changes.
 	/// - Parameter id: The value to observe for changes. When the value changes, the items are refreshed.
@@ -41,16 +48,8 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 						LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
 							ForEach(items) { item in
 								preview(item)
-									.task {
-										if item == items.last {
-											logger.debug("Last item did appear, loading next page")
-											do {
-												items += try await fetch(page + 1)
-												page += 1
-											} catch APIError.invalidServerResponse(errorCode: 404) {
-												logger.debug("Last page")
-											}
-										}
+									.onAppear {
+										itemIndex += 1
 									}
 							}
 							if !onLastPage {
@@ -84,9 +83,21 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 		.task(id: value) {
 			logger.debug("Load items")
 			isInitialLoad = true
-			onLastPage = false
 			defer { isInitialLoad = false }
 			try await refreshItems()
+		}
+		.task(id: itemIndex) {
+			logger.debug("Index: \(itemIndex), itemsCount: \(itemsCount)")
+			if itemIndex >= itemsCount - 1 - loadingOffset {
+				logger.debug("Last item did appear, loading next page")
+				do {
+					items += try await fetch(page + 1)
+					itemsCount = items.count
+					page += 1
+				} catch APIError.invalidServerResponse(errorCode: 404) {
+					logger.debug("Last page")
+				}
+			}
 		}
 	}
 	
@@ -106,6 +117,9 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 		if newItems != items {
 			logger.debug("Video list changed")
 			page = 1
+			onLastPage = false
+			itemIndex = -1
+			itemsCount = newItems.count
 			withAnimation {
 				items = newItems
 			}
