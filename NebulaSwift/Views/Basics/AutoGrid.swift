@@ -42,6 +42,8 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 		Group {
 			if isInitialLoad {
 				ProgressView()
+					.controlSize(.large)
+					.frame(maxWidth: .infinity, maxHeight: .infinity)
 			} else {
 				ScrollView {
 					VStack {
@@ -54,6 +56,7 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 							}
 							if !onLastPage {
 								ProgressView()
+									.controlSize(.large)
 									.frame(maxWidth: .infinity, maxHeight: .infinity)
 							}
 						}
