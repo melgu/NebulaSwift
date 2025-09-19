@@ -19,6 +19,7 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 	@State private var isInitialLoad = false
 	@State private var items: [Item] = []
 	@State private var page = 1
+	@State private var onLastPage = false
 	
 	/// Auto-loading Grid that reloads when a specified value changes.
 	/// - Parameter id: The value to observe for changes. When the value changes, the items are refreshed.
@@ -36,20 +37,26 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 				ProgressView()
 			} else {
 				ScrollView {
-					LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
-						ForEach(items) { item in
-							preview(item)
-								.task {
-									if item == items.last {
-										logger.debug("Last item did appear, loading next page")
-										do {
-											items += try await fetch(page + 1)
-											page += 1
-										} catch APIError.invalidServerResponse(errorCode: 404) {
-											logger.debug("Last page")
+					VStack {
+						LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
+							ForEach(items) { item in
+								preview(item)
+									.task {
+										if item == items.last {
+											logger.debug("Last item did appear, loading next page")
+											do {
+												items += try await fetch(page + 1)
+												page += 1
+											} catch APIError.invalidServerResponse(errorCode: 404) {
+												logger.debug("Last page")
+											}
 										}
 									}
-								}
+							}
+							if !onLastPage {
+								ProgressView()
+									.frame(maxWidth: .infinity, maxHeight: .infinity)
+							}
 						}
 					}
 					.padding()
@@ -77,6 +84,7 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 		.task(id: value) {
 			logger.debug("Load items")
 			isInitialLoad = true
+			onLastPage = false
 			defer { isInitialLoad = false }
 			try await refreshItems()
 		}
