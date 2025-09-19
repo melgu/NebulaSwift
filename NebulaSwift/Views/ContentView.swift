@@ -31,6 +31,9 @@ struct ContentView: View {
 			if api.isLoggedIn {
 				NavigationSplitView {
 					sidebar
+						#if os(macOS)
+						.frame(minWidth: 200)
+						#endif
 				} detail: {
 					detail
 				}
