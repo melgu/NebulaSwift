@@ -16,6 +16,7 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 	let fetch: (Int) async throws -> [Item]
 	let preview: (Item) -> Preview
 	
+	@State private var isInitialLoad = false
 	@State private var items: [Item] = []
 	@State private var page = 1
 	
@@ -30,26 +31,32 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 	}
 	
 	var body: some View {
-		ScrollView {
-			LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
-				ForEach(items) { item in
-					preview(item)
-						.task {
-							if item == items.last {
-								logger.debug("Last item did appear, loading next page")
-								do {
-									items += try await fetch(page + 1)
-									page += 1
-								} catch APIError.invalidServerResponse(errorCode: 404) {
-									logger.debug("Last page")
+		Group {
+			if isInitialLoad {
+				ProgressView()
+			} else {
+				ScrollView {
+					LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
+						ForEach(items) { item in
+							preview(item)
+								.task {
+									if item == items.last {
+										logger.debug("Last item did appear, loading next page")
+										do {
+											items += try await fetch(page + 1)
+											page += 1
+										} catch APIError.invalidServerResponse(errorCode: 404) {
+											logger.debug("Last page")
+										}
+									}
 								}
-							}
 						}
+					}
+					.padding()
+					.refreshable {
+						try await refreshItems()
+					}
 				}
-			}
-			.padding()
-			.refreshable {
-				try await refreshItems()
 			}
 		}
 		.refreshable {
@@ -69,6 +76,8 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 		#endif
 		.task(id: value) {
 			logger.debug("Load items")
+			isInitialLoad = true
+			defer { isInitialLoad = false }
 			try await refreshItems()
 		}
 	}
