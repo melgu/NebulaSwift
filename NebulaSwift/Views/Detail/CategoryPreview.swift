@@ -12,7 +12,6 @@ struct CategoryPreview: View {
 	let category: Category?
 	
 	@EnvironmentObject private var api: API
-	@EnvironmentObject private var player: Player
 	
 	init(slug: String) {
 		self.slug = slug
@@ -68,6 +67,5 @@ struct CategoryPreview_Previews: PreviewProvider {
 	static var previews: some View {
 		CategoryPreview(slug: "animation")
 			.environmentObject(api)
-			.environmentObject(Player(api: api))
 	}
 }
