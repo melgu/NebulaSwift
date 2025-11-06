@@ -92,7 +92,7 @@ extension Hero {
 
 extension API {
 	func featured() async throws -> [Feature] {
-		let url = URL(string: "https://content.api.nebula.app/featured/")!
+		let url = try URL(string: "https://content.api.nebula.app/featured/").require()
 		return try await request(.get, url: url, authorization: .bearer)
 	}
 }

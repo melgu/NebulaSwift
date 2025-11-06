@@ -14,7 +14,7 @@ struct AuthorizationResponse: Decodable {
 extension API {
 	var authorization: AuthorizationResponse {
 		get async throws {
-			let url = URL(string: "\(authBaseURL)/api/v1/authorization/")!
+			let url = try URL(string: "\(authBaseURL)/api/v1/authorization/").require()
 			return try await request(.post, url: url, authorization: .token)
 		}
 	}

@@ -43,7 +43,7 @@ extension Podcast {
 
 extension API {
 	func allPodcasts(offset: Int, pageSize: Int = 24) async throws -> [Podcast] {
-		let url = URL(string: "https://content.api.nebula.app/podcast/channels/?offset=\(offset)&page_size=\(pageSize)")!
+		let url = try URL(string: "https://content.api.nebula.app/podcast/channels/?offset=\(offset)&page_size=\(pageSize)").require()
 		let response: ListContainer<Podcast> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}

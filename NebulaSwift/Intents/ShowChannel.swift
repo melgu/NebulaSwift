@@ -23,7 +23,7 @@ struct ShowChannel: AppIntent {
 			throw $channel.needsValueError("Which channel do you want to show?")
 		}
 		
-		let url = URL(string: "NebulaSwift://channel/\(channel.slug)")!
+		let url = try URL(string: "NebulaSwift://channel/\(channel.slug)").require()
 		#if os(iOS)
 		_ = await UIApplication.shared.open(url)
 		#else

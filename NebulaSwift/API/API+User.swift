@@ -36,7 +36,7 @@ struct UserResponse: Decodable {
 extension API {
 	var user: UserResponse {
 		get async throws {
-			let url = URL(string: "\(authBaseURL)/api/v1/auth/user/")!
+			let url = try URL(string: "\(authBaseURL)/api/v1/auth/user/").require()
 			return try await request(.get, url: url, authorization: .token)
 		}
 	}

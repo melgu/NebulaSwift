@@ -43,7 +43,7 @@ extension Category {
 
 extension API {
 	func allCategories(offset: Int, pageSize: Int = 24) async throws -> [Category] {
-		let url = URL(string: "https://content.watchnebula.com/video/categories/?offset=\(offset)&page_size=\(pageSize)")!
+		let url = try URL(string: "https://content.watchnebula.com/video/categories/?offset=\(offset)&page_size=\(pageSize)").require()
 		let response: ListContainer<Category> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}
@@ -55,7 +55,7 @@ extension API {
 	}
 	
 	func videos(for category: Category, offset: Int, pageSize: Int = 24) async throws -> [Video] {
-		let url = URL(string: "https://content.watchnebula.com/video/?category=\(category.slug)&offset=\(offset)&page_size=\(pageSize)")!
+		let url = try URL(string: "https://content.watchnebula.com/video/?category=\(category.slug)&offset=\(offset)&page_size=\(pageSize)").require()
 		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}
@@ -67,7 +67,7 @@ extension API {
 	}
 	
 	func channels(for category: Category, offset: Int, pageSize: Int = 24) async throws -> [Channel] {
-		let url = URL(string: "https://content.watchnebula.com/video/channels/?category=\(category.slug)&offset=\(offset)&page_size=\(pageSize)")!
+		let url = try URL(string: "https://content.watchnebula.com/video/channels/?category=\(category.slug)&offset=\(offset)&page_size=\(pageSize)").require()
 		let response: ListContainer<Channel> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}

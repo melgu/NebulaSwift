@@ -10,7 +10,7 @@ import Foundation
 extension API {
 	private func videoContainer(for playlist: String, offset: Int, pageSize: Int) async throws -> ListContainer<Video> {
 		assert(pageSize <= 100, "The Nebula API only supports page sizes up to 100")
-		let url = URL(string: "https://content.watchnebula.com/engagement/playlist/list/\(playlist)/?offset=\(offset)&page_size=\(pageSize)")!
+		let url = try URL(string: "https://content.watchnebula.com/engagement/playlist/list/\(playlist)/?offset=\(offset)&page_size=\(pageSize)").require()
 		return try await request(.get, url: url, authorization: .bearer)
 	}
 	
@@ -53,13 +53,13 @@ extension API {
 	}
 	
 	private func addVideo(_ video: Video, toPlaylist playlist: String) async throws {
-		let url = URL(string: "https://content.watchnebula.com/engagement/playlist/add/")!
+		let url = try URL(string: "https://content.watchnebula.com/engagement/playlist/add/").require()
 		let body = PlaylistManagementBody(contentSlug: video.slug, playlistSlug: playlist)
 		try await request(.post, url: url, body: body, authorization: .bearer)
 	}
 	
 	private func removeVideo(_ video: Video, fromPlaylist playlist: String) async throws {
-		let url = URL(string: "https://content.watchnebula.com/engagement/playlist/remove/")!
+		let url = try URL(string: "https://content.watchnebula.com/engagement/playlist/remove/").require()
 		let body = PlaylistManagementBody(contentSlug: video.slug, playlistSlug: playlist)
 		try await request(.post, url: url, body: body, authorization: .bearer)
 	}

@@ -18,7 +18,7 @@ struct LoginResponse: Decodable {
 
 extension API {
 	private func _login(email: String, password: String) async throws -> LoginResponse {
-		let url = URL(string: "\(authBaseURL)/api/v1/auth/login/")!
+		let url = try URL(string: "\(authBaseURL)/api/v1/auth/login/").require()
 		let body = LoginRequestBody(email: email, password: password)
 		
 		Task.detached {

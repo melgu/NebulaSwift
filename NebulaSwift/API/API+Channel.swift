@@ -67,7 +67,7 @@ extension Channel: AppEntity {
 
 extension API {
 	func allChannels(offset: Int, pageSize: Int = 24) async throws -> [Channel] {
-		let url = URL(string: "https://content.watchnebula.com/video/channels/?offset=\(offset)&page_size=\(pageSize)")!
+		let url = try URL(string: "https://content.watchnebula.com/video/channels/?offset=\(offset)&page_size=\(pageSize)").require()
 		let response: ListContainer<Channel> = try await request(.get, url: url, authorization: .bearer)
 		return response.results
 	}
@@ -79,12 +79,12 @@ extension API {
 	}
 	
 	func channel(for slug: Channel.ID) async throws -> Channel {
-		let url = URL(string: "https://content.api.nebula.app/content/\(slug)/")!
+		let url = try URL(string: "https://content.api.nebula.app/content/\(slug)/").require()
 		return try await request(.get, url: url, authorization: .bearer)
 	}
 	
 	func channelAndVideos(for slug: Channel.ID, offset: Int, pageSize: Int = 24) async throws -> (Channel, [Video]) {
-		let url = URL(string: "https://content.watchnebula.com/video/channels/\(slug)/?offset=\(offset)&page_size=\(pageSize)")!
+		let url = try URL(string: "https://content.watchnebula.com/video/channels/\(slug)/?offset=\(offset)&page_size=\(pageSize)").require()
 		let response: ChannelEpisodesContainer = try await request(.get, url: url, authorization: .bearer)
 		return (response.details, response.episodes.results)
 	}
@@ -97,7 +97,7 @@ extension API {
 	
 	private func videoContainer(for channel: Channel, offset: Int, pageSize: Int) async throws -> ListContainer<Video> {
 		assert(pageSize <= 100, "The Nebula API only supports page sizes up to 100")
-		let url = URL(string: "https://content.watchnebula.com/video/?channel=\(channel.slug)&offset=\(offset)&page_size=\(pageSize)")!
+		let url = try URL(string: "https://content.watchnebula.com/video/?channel=\(channel.slug)&offset=\(offset)&page_size=\(pageSize)").require()
 		return try await request(.get, url: url, authorization: .bearer)
 	}
 	
@@ -140,14 +140,14 @@ extension API {
 	}
 	
 	func follow(_ channel: Channel) async throws {
-		let url = URL(string: "https://content.watchnebula.com/engagement/video/follow/")!
+		let url = try URL(string: "https://content.watchnebula.com/engagement/video/follow/").require()
 		let body = FollowBody(channelSlug: channel.slug)
 		NebulaSwiftAppShortcutsProvider.updateAppShortcutParameters()
 		try await request(.post, url: url, body: body, authorization: .bearer)
 	}
 	
 	func unfollow(_ channel: Channel) async throws {
-		let url = URL(string: "https://content.watchnebula.com/engagement/video/unfollow/")!
+		let url = try URL(string: "https://content.watchnebula.com/engagement/video/unfollow/").require()
 		let body = FollowBody(channelSlug: channel.slug)
 		NebulaSwiftAppShortcutsProvider.updateAppShortcutParameters()
 		try await request(.post, url: url, body: body, authorization: .bearer)
