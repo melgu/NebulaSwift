@@ -19,7 +19,7 @@ struct VideoContextMenu: ViewModifier {
 	let video: Video
 	
 	@EnvironmentObject private var api: API
-	@EnvironmentObject private var storage: Storage
+	@Environment(Storage.self) private var storage
 	
 	@Environment(\.goToChannelEnabled) private var goToChannelEnabled
 	@Environment(\.assumeWatchLater) private var assumeWatchLater
@@ -97,7 +97,7 @@ struct VideoContextMenu: ViewModifier {
 				if storage.videoPreview {
 					LiveVideoPreviewView(video: video)
 						.environmentObject(api)
-						.environmentObject(storage)
+						.environment(storage)
 				} else {
 					VideoPreviewImage(video: video)
 				}

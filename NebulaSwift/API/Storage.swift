@@ -6,14 +6,18 @@
 //
 
 import SwiftUI
-import Combine
 
-@MainActor class Storage: ObservableObject {
-	@Published var automaticFullscreen: Bool
-	@Published var videoPreview: Bool
-	@Published var videoPreviewWithSound: Bool
-	
-	private var cancellables = Set<AnyCancellable>()
+@MainActor @Observable
+class Storage {
+	var automaticFullscreen: Bool {
+		didSet { UserDefaults.standard.set(automaticFullscreen, forKey: Defaults.automaticFullscreen) }
+	}
+	var videoPreview: Bool {
+		didSet { UserDefaults.standard.set(videoPreview, forKey: Defaults.videoPreview) }
+	}
+	var videoPreviewWithSound: Bool {
+		didSet { UserDefaults.standard.set(videoPreviewWithSound, forKey: Defaults.videoPreviewWithSound) }
+	}
 	
 	init() {
 		let defaults = UserDefaults.standard
@@ -21,21 +25,6 @@ import Combine
 		automaticFullscreen = defaults.bool(forKey: Defaults.automaticFullscreen)
 		videoPreview = defaults.optionalBool(forKey: Defaults.videoPreview) ?? true
 		videoPreviewWithSound = defaults.optionalBool(forKey: Defaults.videoPreviewWithSound) ?? true
-		
-		$automaticFullscreen
-			.dropFirst()
-			.sink { defaults.set($0, forKey: Defaults.automaticFullscreen) }
-			.store(in: &cancellables)
-		
-		$videoPreview
-			.dropFirst()
-			.sink { defaults.set($0, forKey: Defaults.videoPreview) }
-			.store(in: &cancellables)
-		
-		$videoPreviewWithSound
-			.dropFirst()
-			.sink { defaults.set($0, forKey: Defaults.videoPreviewWithSound) }
-			.store(in: &cancellables)
 	}
 }
 

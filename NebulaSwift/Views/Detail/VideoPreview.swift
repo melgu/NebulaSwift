@@ -156,7 +156,7 @@ struct LiveVideoPreviewView: View {
 	let video: Video
 	
 	@EnvironmentObject private var api: API
-	@EnvironmentObject private var storage: Storage
+	@Environment(Storage.self) private var storage
 	
 	@State private var player = AVPlayer()
 	@State private var loadingTask: Task<Void, Error>?

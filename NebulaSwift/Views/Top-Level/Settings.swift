@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
 	@EnvironmentObject private var api: API
-	@EnvironmentObject private var storage: Storage
+	@Environment(Storage.self) private var storage
 	@EnvironmentObject private var player: Player
 	
 	@Environment(\.dismiss) private var dismiss
@@ -27,7 +27,8 @@ struct SettingsView: View {
 	}
 	
 	private var content: some View {
-		List {
+		@Bindable var storage = storage
+		return List {
 			#if os(iOS) // No way to automatically enter fullscreen on macOS (without crashing the OS)
 			Section("Playback") {
 				Toggle("Automatic Fullscreen", isOn: $storage.automaticFullscreen)
@@ -88,5 +89,5 @@ fileprivate struct SettingsSheet: ViewModifier {
 	SettingsView()
 		.environmentObject(api)
 		.environmentObject(player)
-		.environmentObject(storage)
+		.environment(storage)
 }

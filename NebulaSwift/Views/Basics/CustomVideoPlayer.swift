@@ -12,7 +12,7 @@ import OSLog
 #if canImport(UIKit)
 struct CustomVideoPlayer: UIViewControllerRepresentable {
 	@EnvironmentObject private var player: Player
-	@EnvironmentObject private var storage: Storage
+	@Environment(Storage.self) private var storage
 	
 	func makeUIViewController(context: Context) -> AVPlayerViewController {
 		let playerViewController = AVPlayerViewController()
