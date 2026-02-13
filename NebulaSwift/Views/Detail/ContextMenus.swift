@@ -18,7 +18,7 @@ extension View {
 struct VideoContextMenu: ViewModifier {
 	let video: Video
 	
-	@EnvironmentObject private var api: API
+	@Environment(API.self) private var api
 	@Environment(Storage.self) private var storage
 	
 	@Environment(\.goToChannelEnabled) private var goToChannelEnabled
@@ -96,7 +96,7 @@ struct VideoContextMenu: ViewModifier {
 			} preview: {
 				if storage.videoPreview {
 					LiveVideoPreviewView(video: video)
-						.environmentObject(api)
+						.environment(api)
 						.environment(storage)
 				} else {
 					VideoPreviewImage(video: video)
@@ -116,7 +116,7 @@ extension View {
 struct ChannelContextMenu: ViewModifier {
 	let channel: Channel
 	
-	@EnvironmentObject private var api: API
+	@Environment(API.self) private var api
 	
 	@Environment(\.refresh) private var refresh
 	

@@ -8,8 +8,8 @@
 import SwiftUI
 import OSLog
 
-@MainActor
-class API: ObservableObject {
+@MainActor @Observable
+class API {
 	let decoder: JSONDecoder = {
 		let decoder = JSONDecoder()
 		decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -24,16 +24,16 @@ class API: ObservableObject {
 		return encoder
 	}()
 	
-	@AppStorage(Defaults.token) var token: String?
-	@AppStorage(Defaults.bearer) var bearer: String?
+	@ObservationIgnored @AppStorage(Defaults.token) var token: String?
+	@ObservationIgnored @AppStorage(Defaults.bearer) var bearer: String?
 	
 	/// Does **not** contain trailing "/" from my experience.
-	@AppStorage(Defaults.authBaseURL) var authBaseURL: String = "https://users.api.nebula.app"
+	@ObservationIgnored @AppStorage(Defaults.authBaseURL) var authBaseURL: String = "https://users.api.nebula.app"
 	
 	/// Does contain trailing "/" from my experience.
-	@AppStorage(Defaults.contentBaseURL) var contentBaseURL: String = "https://content.api.nebula.app/"
+	@ObservationIgnored @AppStorage(Defaults.contentBaseURL) var contentBaseURL: String = "https://content.api.nebula.app/"
 	
-	@Published var isLoggedIn = false
+	var isLoggedIn = false
 	
 	let logger = Logger(category: "API")
 	

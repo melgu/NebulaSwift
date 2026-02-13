@@ -11,7 +11,7 @@ import OSLog
 private let logger = Logger(category: "Search")
 
 struct Search: View {
-	@EnvironmentObject private var api: API
+	@Environment(API.self) private var api
 	@Environment(Player.self) private var player
 	
 	@State private var searchTerm = ""
@@ -68,7 +68,7 @@ struct Search_Previews: PreviewProvider {
 	
 	static var previews: some View {
 		Search()
-			.environmentObject(api)
+			.environment(api)
 			.environment(Player(api: api))
 	}
 }

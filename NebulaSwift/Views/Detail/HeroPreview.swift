@@ -10,7 +10,7 @@ import SwiftUI
 struct HeroPreview: View {
 	let hero: Hero
 	
-	@EnvironmentObject private var api: API
+	@Environment(API.self) private var api
 	
 	var body: some View {
 		AsyncNavigationLink {

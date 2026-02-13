@@ -9,13 +9,13 @@ import SwiftUI
 
 @main
 struct NebulaSwiftApp: App {
-	@StateObject private var api: API
+	@State private var api: API
 	@State private var player: Player
 	@State private var storage = Storage()
 	
 	init() {
 		let api = API()
-		_api = StateObject(wrappedValue: api)
+		_api = State(initialValue: api)
 		let player = Player(api: api)
 		_player = State(initialValue: player)
 	}
@@ -23,7 +23,7 @@ struct NebulaSwiftApp: App {
 	var body: some Scene {
 		WindowGroup {
 			ContentView()
-				.environmentObject(api)
+				.environment(api)
 				.environment(player)
 				.environment(storage)
 				.task { try await api.refreshConfiguration() }
@@ -39,7 +39,7 @@ struct NebulaSwiftApp: App {
 		#if os(macOS)
 		Settings {
 			SettingsView()
-				.environmentObject(api)
+				.environment(api)
 				.environment(player)
 				.environment(storage)
 		}

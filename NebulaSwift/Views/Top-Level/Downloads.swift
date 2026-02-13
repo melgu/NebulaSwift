@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Downloads: View {
-	@EnvironmentObject private var api: API
+	@Environment(API.self) private var api
 	@Environment(Player.self) private var player
 	
 	var body: some View {

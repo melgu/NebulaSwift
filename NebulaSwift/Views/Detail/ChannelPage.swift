@@ -10,7 +10,7 @@ import SwiftUI
 struct ChannelPage: View {
 	let channel: Channel
 	
-	@EnvironmentObject private var api: API
+	@Environment(API.self) private var api
 	@Environment(Player.self) private var player
 	
 	@Environment(\.refresh) private var refresh

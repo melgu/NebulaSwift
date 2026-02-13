@@ -155,7 +155,7 @@ struct VideoPreviewImage: View {
 struct LiveVideoPreviewView: View {
 	let video: Video
 	
-	@EnvironmentObject private var api: API
+	@Environment(API.self) private var api
 	@Environment(Storage.self) private var storage
 	
 	@State private var player = AVPlayer()

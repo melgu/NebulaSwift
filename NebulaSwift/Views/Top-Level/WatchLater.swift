@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WatchLater: View {
-	@EnvironmentObject private var api: API
+	@Environment(API.self) private var api
 	@Environment(Player.self) private var player
 	
 	var body: some View {
@@ -26,7 +26,7 @@ struct WatchLater_Previews: PreviewProvider {
 	
 	static var previews: some View {
 		WatchLater()
-			.environmentObject(api)
+			.environment(api)
 			.environment(Player(api: api))
 	}
 }

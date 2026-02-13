@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Login: View {
-	@EnvironmentObject private var api: API
+	@Environment(API.self) private var api
 	
 	@State private var email = ""
 	@State private var password = ""
@@ -50,7 +50,7 @@ struct Login: View {
 struct Login_Previews: PreviewProvider {
 	static var previews: some View {
 		Login()
-			.environmentObject(API())
+			.environment(API())
 			.alertErrorHandling()
 	}
 }

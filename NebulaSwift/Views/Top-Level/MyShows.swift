@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MyShows: View {
-	@EnvironmentObject private var api: API
+	@Environment(API.self) private var api
 	@Environment(Player.self) private var player
 	
 	@State private var viewType: ContentType = .videos
@@ -45,6 +45,6 @@ struct MyShows: View {
 struct MyShows_Previews: PreviewProvider {
 	static var previews: some View {
 		MyShows()
-			.environmentObject(API())
+			.environment(API())
 	}
 }

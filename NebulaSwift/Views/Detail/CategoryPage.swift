@@ -10,7 +10,7 @@ import SwiftUI
 struct CategoryPage: View {
 	let category: Category
 	
-	@EnvironmentObject private var api: API
+	@Environment(API.self) private var api
 	@Environment(Player.self) private var player
 	
 	@State private var viewType: ContentType
