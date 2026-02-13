@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Featured: View {
 	@EnvironmentObject private var api: API
-	@EnvironmentObject private var player: Player
+	@Environment(Player.self) private var player
 	
 	@State private var featured: [Feature] = []
 	
@@ -125,6 +125,6 @@ struct Featured_Previews: PreviewProvider {
 	static var previews: some View {
 		Featured()
 			.environmentObject(api)
-			.environmentObject(Player(api: api))
+			.environment(Player(api: api))
 	}
 }

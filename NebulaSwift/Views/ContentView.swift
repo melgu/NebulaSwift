@@ -230,6 +230,6 @@ struct ContentView_Previews: PreviewProvider {
 	static var previews: some View {
 		ContentView()
 			.environmentObject(api)
-			.environmentObject(Player(api: api))
+			.environment(Player(api: api))
 	}
 }

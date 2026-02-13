@@ -12,7 +12,7 @@ private let logger = Logger(category: "Search")
 
 struct Search: View {
 	@EnvironmentObject private var api: API
-	@EnvironmentObject private var player: Player
+	@Environment(Player.self) private var player
 	
 	@State private var searchTerm = ""
 	@State private var channelResults: [Channel] = []
@@ -69,6 +69,6 @@ struct Search_Previews: PreviewProvider {
 	static var previews: some View {
 		Search()
 			.environmentObject(api)
-			.environmentObject(Player(api: api))
+			.environment(Player(api: api))
 	}
 }

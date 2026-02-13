@@ -11,7 +11,7 @@ struct ChannelPage: View {
 	let channel: Channel
 	
 	@EnvironmentObject private var api: API
-	@EnvironmentObject private var player: Player
+	@Environment(Player.self) private var player
 	
 	@Environment(\.refresh) private var refresh
 	

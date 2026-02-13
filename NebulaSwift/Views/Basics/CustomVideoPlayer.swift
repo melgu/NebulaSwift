@@ -11,7 +11,7 @@ import OSLog
 
 #if canImport(UIKit)
 struct CustomVideoPlayer: UIViewControllerRepresentable {
-	@EnvironmentObject private var player: Player
+	@Environment(Player.self) private var player
 	@Environment(Storage.self) private var storage
 	
 	func makeUIViewController(context: Context) -> AVPlayerViewController {
@@ -46,7 +46,7 @@ extension AVPlayerViewController {
 }
 #else
 struct CustomVideoPlayer: NSViewRepresentable {
-	@EnvironmentObject private var player: Player
+	@Environment(Player.self) private var player
 	
 	func makeNSView(context: Context) -> AVPlayerView {
 		let playerView = AVPlayerView()
@@ -63,6 +63,6 @@ struct CustomVideoPlayer: NSViewRepresentable {
 struct CustomVideoPlayer_Previews: PreviewProvider {
 	static var previews: some View {
 		CustomVideoPlayer()
-			.environmentObject(Player(api: API()))
+			.environment(Player(api: API()))
 	}
 }

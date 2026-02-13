@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
-import Combine
 import AVKit
 import OSLog
 
-@MainActor class Player: ObservableObject {
+@MainActor @Observable
+class Player {
 	let player = AVPlayer()
 	
 	private let api: API
@@ -19,7 +19,7 @@ import OSLog
 	
 	private var video: Video?
 	private var task: Task<(), Error>?
-	private var cancellables = Set<AnyCancellable>()
+	private var rateObservationTask: Task<(), Never>?
 	
 	private let logger = Logger(category: "Player")
 	
@@ -39,13 +39,19 @@ import OSLog
 		
 		player.preventsDisplaySleepDuringVideoPlayback = true
 		
-		player.publisher(for: \.rate)
-			.sink { [unowned self] rate in
+		rateObservationTask = Task { [weak self, player] in
+			for await rate in player.publisher(for: \.rate).values {
+				guard let self else { return }
 				if rate.isZero {
 					sendProgress()
 				}
 			}
-			.store(in: &cancellables)
+		}
+	}
+	
+	@MainActor
+	deinit {
+		rateObservationTask?.cancel()
 	}
 	
 	func play() {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Downloads: View {
 	@EnvironmentObject private var api: API
-	@EnvironmentObject private var player: Player
+	@Environment(Player.self) private var player
 	
 	var body: some View {
 		Text("Coming soon…")

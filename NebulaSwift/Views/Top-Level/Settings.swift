@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingsView: View {
 	@EnvironmentObject private var api: API
 	@Environment(Storage.self) private var storage
-	@EnvironmentObject private var player: Player
+	@Environment(Player.self) private var player
 	
 	@Environment(\.dismiss) private var dismiss
 	
@@ -88,6 +88,6 @@ fileprivate struct SettingsSheet: ViewModifier {
 	
 	SettingsView()
 		.environmentObject(api)
-		.environmentObject(player)
+		.environment(player)
 		.environment(storage)
 }

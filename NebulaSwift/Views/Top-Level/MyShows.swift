@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MyShows: View {
 	@EnvironmentObject private var api: API
-	@EnvironmentObject private var player: Player
+	@Environment(Player.self) private var player
 	
 	@State private var viewType: ContentType = .videos
 	

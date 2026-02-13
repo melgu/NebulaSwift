@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WatchLater: View {
 	@EnvironmentObject private var api: API
-	@EnvironmentObject private var player: Player
+	@Environment(Player.self) private var player
 	
 	var body: some View {
 		AutoVideoGrid(fetch: { page in
@@ -27,6 +27,6 @@ struct WatchLater_Previews: PreviewProvider {
 	static var previews: some View {
 		WatchLater()
 			.environmentObject(api)
-			.environmentObject(Player(api: api))
+			.environment(Player(api: api))
 	}
 }

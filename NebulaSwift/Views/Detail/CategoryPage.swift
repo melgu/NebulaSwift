@@ -11,7 +11,7 @@ struct CategoryPage: View {
 	let category: Category
 	
 	@EnvironmentObject private var api: API
-	@EnvironmentObject private var player: Player
+	@Environment(Player.self) private var player
 	
 	@State private var viewType: ContentType
 	
