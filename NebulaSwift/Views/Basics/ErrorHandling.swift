@@ -112,10 +112,12 @@ fileprivate struct OnTapGestureWithCoordinateModifier: ViewModifier {
 }
 
 extension View {
+	@_disfavoredOverload
 	func onTapGesture(count: Int = 1, perform action: @escaping @MainActor @Sendable () async throws -> Void) -> some View {
 		modifier(OnTapGestureModifier(count: count, action: action))
 	}
 	
+	@_disfavoredOverload
 	func onTapGesture(count: Int = 1, coordinateSpace: CoordinateSpace = .local, perform action: @escaping @MainActor @Sendable (CGPoint) async throws -> Void) -> some View {
 		modifier(OnTapGestureWithCoordinateModifier(count: count, coordinateSpace: coordinateSpace, action: action))
 	}
@@ -159,10 +161,12 @@ fileprivate struct TaskModifierWithID<V: Equatable>: ViewModifier {
 }
 
 extension View {
+	@_disfavoredOverload
 	func task(priority: TaskPriority = .userInitiated, _ action: @escaping @MainActor @Sendable () async throws -> Void) -> some View {
 		modifier(TaskModifier(priority: priority, action: action))
 	}
 	
+	@_disfavoredOverload
 	func task<V>(id value: V, priority: TaskPriority = .userInitiated, _ action: @escaping @MainActor @Sendable () async throws -> Void) -> some View where V : Equatable {
 		modifier(TaskModifierWithID(value: value, priority: priority, action: action))
 	}
@@ -214,6 +218,7 @@ fileprivate struct RefreshableModifier: ViewModifier {
 }
 
 extension View {
+	@_disfavoredOverload
 	func refreshable(action: @MainActor @escaping @Sendable () async throws -> Void) -> some View {
 		modifier(RefreshableModifier(action: action))
 	}
@@ -241,6 +246,7 @@ fileprivate struct OnSubmitModifier: ViewModifier {
 }
 
 extension View {
+	@_disfavoredOverload
 	func onSubmit(of triggers: SubmitTriggers = .text, _ action: @escaping @MainActor @Sendable () async throws -> Void) -> some View {
 		modifier(OnSubmitModifier(triggers: triggers, action: action))
 	}
