@@ -15,9 +15,8 @@ struct NebulaSwiftApp: App {
 	
 	init() {
 		let api = API()
-		_api = State(initialValue: api)
-		let player = Player(api: api)
-		_player = State(initialValue: player)
+		self.api = api
+		self.player = Player(api: api)
 	}
 	
 	var body: some Scene {
