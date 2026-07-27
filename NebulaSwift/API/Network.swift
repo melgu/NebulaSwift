@@ -102,14 +102,32 @@ extension API {
 			if case .invalidServerResponse(let code) = error, code == 403 {
 				switch authorization {
 				case .token:
+					logout()
 					throw error
 				case .bearer:
-					try await refreshAuthorization()
+					do {
+						try await refreshAuthorization()
+					} catch let refreshError as APIError {
+						// A refresh rejected with 403 already logs out via the
+						// `.token` case above. Only a completely missing token
+						// needs handling here; network issues must not log out.
+						if case .missingToken = refreshError {
+							logout()
+						}
+						throw refreshError
+					}
 				case .none:
 					throw error
 				}
 				try setAuthorization(type: authorization, for: &request)
-				return try await execute(request: request)
+				do {
+					return try await execute(request: request)
+				} catch let retryError as APIError {
+					if case .invalidServerResponse(let retryCode) = retryError, retryCode == 403 {
+						logout()
+					}
+					throw retryError
+				}
 			} else {
 				throw error
 			}
