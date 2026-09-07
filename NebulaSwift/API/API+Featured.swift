@@ -106,6 +106,21 @@ extension API {
 		
 		// The rails are loaded at once, and a rail the app can't show, or that failed to load, is
 		// left out instead of taking the whole page down with it.
+		//
+		// A task group would be the natural fit, but every variant of it fails to compile with
+		// "pattern that the region-based isolation checker does not understand how to check.
+		// Please file a bug" (Xcode 27.0 Beta 6). Worth another try on a later toolchain:
+		//
+		//	let loaded = try await withThrowingTaskGroup(of: (String, Feature?).self) { group in
+		//		for rail in page.rails {
+		//			group.addTask { @MainActor in
+		//				guard let items = try? await self.items(for: rail) else { return (rail.id, nil) }
+		//				return (rail.id, Feature(id: rail.id, title: rail.title, viewAllURL: rail.viewAll, items: items))
+		//			}
+		//		}
+		//		return try await group.reduce(into: [:]) { $0[$1.0] = $1.1 }
+		//	}
+		//	let rails = page.rails.compactMap { loaded[$0.id] }
 		let loading = page.rails.map { rail in
 			Task {
 				guard let items = try? await self.items(for: rail) else { return nil as Feature? }
