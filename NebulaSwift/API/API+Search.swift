@@ -10,9 +10,9 @@ import Foundation
 extension API {
 	func searchChannels(for searchTerm: String, offset: Int = 1, pageSize: Int = 24) async throws -> [Channel] {
 		let percentEncoded = try searchTerm.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed).require()
-		let url = try URL(string: "https://content.watchnebula.com/search/channel/video/?text=\(percentEncoded)&offset=\(offset)&page_size=\(pageSize)").require()
+		let url = try URL(string: "https://content.api.nebula.app/video_channels/search/?q=\(percentEncoded)&offset=\(offset)&page_size=\(pageSize)").require()
 		let response: ListContainer<Channel> = try await request(.get, url: url, authorization: .bearer)
-		return response.results
+		return try await withEngagement(response.results)
 	}
 	
 	@available(*, deprecated, message: "Use `searchChannels(for:offset:pageSize:)` instead")
@@ -23,9 +23,9 @@ extension API {
 	
 	func searchVideos(for searchTerm: String, offset: Int = 1, pageSize: Int = 24) async throws -> [Video] {
 		let percentEncoded = try searchTerm.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed).require()
-		let url = try URL(string: "https://content.watchnebula.com/search/video/?text=\(percentEncoded)&offset=\(offset)&page_size=\(pageSize)").require()
+		let url = try URL(string: "https://content.api.nebula.app/video_episodes/search/?q=\(percentEncoded)&offset=\(offset)&page_size=\(pageSize)").require()
 		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
-		return response.results
+		return try await withEngagement(response.results)
 	}
 	
 	@available(*, deprecated, message: "Use `searchVideos(for:offset:pageSize:)` instead")
