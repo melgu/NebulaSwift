@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: Info
 
-struct Video: Codable, Equatable {
+struct Video: Codable, Equatable, Sendable {
 	/// The API's own identifier, e.g. `video_episode:<uuid>`. Engagement is keyed by it.
 	let episodeId: String
 	let slug: String
@@ -19,9 +19,11 @@ struct Video: Codable, Equatable {
 	let duration: Int
 	let publishedAt: Date
 	let channelSlug: String
-	let channelSlugs: [String]
+	let channelSlugs: [String]?
 	let channelTitle: String
-	let categorySlugs: [String]
+	/// Full episodes come with `category_slugs`, the trimmed ones in featured rails with `categories`.
+	private let ownCategorySlugs: [String]?
+	private let categories: [String]?
 	let images: Images
 	let attributes: [Attribute]
 	let shareUrl: URL
@@ -39,12 +41,16 @@ struct Video: Codable, Equatable {
 		case channelSlug
 		case channelSlugs
 		case channelTitle
-		case categorySlugs
+		case ownCategorySlugs = "categorySlugs"
+		case categories
 		case images
 		case attributes
 		case shareUrl
 		case engagement
 	}
+}
+extension Video {
+	var categorySlugs: [String] { ownCategorySlugs ?? categories ?? [] }
 }
 extension Video: Identifiable {
 	var id: String { slug + "\(engagement?.progress ?? 0)" }

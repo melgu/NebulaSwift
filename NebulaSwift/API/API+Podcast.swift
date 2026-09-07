@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Podcast: Decodable {
+struct Podcast: Decodable, Sendable {
 	let id: String
 	let type: String
 	let slug: String
@@ -26,17 +26,17 @@ struct Podcast: Decodable {
 	let spotify: URL?
 	let genreCategorySlug: String
 	let genreCategoryTitle: String
-	let genre: String
+	let genre: String?
 	let creator: String
-	let rssUrl: URL
+	let rssUrl: URL?
 	let shareUrl: URL
-	let engagement: Engagement
+	let engagement: Engagement?
 }
 extension Podcast: Identifiable {}
 extension Podcast: Equatable {}
 
 extension Podcast {
-	struct Engagement: Decodable, Equatable {
+	struct Engagement: Decodable, Equatable, Sendable {
 		let following: Bool
 	}
 }

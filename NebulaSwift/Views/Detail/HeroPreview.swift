@@ -13,10 +13,23 @@ struct HeroPreview: View {
 	@Environment(API.self) private var api
 	
 	var body: some View {
-		AsyncNavigationLink {
-			try await api.channel(for: hero.slug)
-		} label: { _ in
-			HeroPreviewView(hero: hero)
+		Group {
+			switch hero.destination {
+			case .video(let slug):
+				AsyncNavigationLink {
+					try await api.video(for: slug)
+				} label: { _ in
+					HeroPreviewView(hero: hero)
+				}
+			case .channel(let slug):
+				AsyncNavigationLink {
+					try await api.channel(for: slug)
+				} label: { _ in
+					HeroPreviewView(hero: hero)
+				}
+			case nil:
+				HeroPreviewView(hero: hero)
+			}
 		}
 		.buttonStyle(.plain)
 		.controlSize(.large)
@@ -30,7 +43,7 @@ struct HeroPreviewView: View {
 	
 	var body: some View {
 		VStack(alignment: .leading) {
-			AsyncImage(url: hero.assets.mobileHero.original) { image in
+			AsyncImage(url: hero.images.backgroundWide[960]) { image in
 				image
 					.resizable()
 					.scaledToFit()

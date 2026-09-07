@@ -63,22 +63,17 @@ struct Featured: View {
 							HeroPreview(hero: item)
 								.frame(width: 480)
 						}
-					case .latestVideos(let array):
+					case .videos(let array):
 						ForEach(array) { item in
 							VideoPreview(video: item)
 								.frame(width: 240)
 						}
-					case .videoChannels(let array):
+					case .channels(let array):
 						ForEach(array) { item in
 							ChannelPreview(channel: item)
 								.frame(width: 240)
 						}
-					case .featuredCreators(let array):
-						ForEach(array) { item in
-							ChannelPreview(channel: item)
-								.frame(width: 240)
-						}
-					case .podcastChannels(let array):
+					case .podcasts(let array):
 						ForEach(array) { item in
 							PodcastPreview(podcast: item)
 								.frame(width: 200)

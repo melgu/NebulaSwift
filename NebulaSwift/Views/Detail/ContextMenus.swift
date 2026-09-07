@@ -152,12 +152,12 @@ struct ChannelContextMenu: ViewModifier {
 				
 				ShareLink(item: channel.shareUrl)
 			} preview: {
-				AsyncImage(url: channel.images.banner[960]) { image in
+				AsyncImage(url: channel.images.wide[960]) { image in
 					image
 						.resizable()
 				} placeholder: {
 					// This image is most likely already cached
-					AsyncImage(url: channel.images.banner[480]) { image in
+					AsyncImage(url: channel.images.wide[480]) { image in
 						image
 							.resizable()
 					} placeholder: {
@@ -187,8 +187,10 @@ struct PodcastContextMenu: ViewModifier {
 				
 				Divider()
 				
-				Button("Copy RSS URL") {
-					Pasteboard.copy(string: podcast.rssUrl.absoluteString)
+				if let rssUrl = podcast.rssUrl {
+					Button("Copy RSS URL") {
+						Pasteboard.copy(string: rssUrl.absoluteString)
+					}
 				}
 				
 				ShareLink(item: podcast.shareUrl)
@@ -237,7 +239,7 @@ struct HeroContextMenu: ViewModifier {
 				ShareLink(item: hero.url)
 			} preview: {
 				// This image is most likely already cached
-				AsyncImage(url: hero.assets.mobileHero.original) { image in
+				AsyncImage(url: hero.images.backgroundWide[960]) { image in
 					image
 						.resizable()
 				} placeholder: {

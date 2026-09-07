@@ -61,9 +61,12 @@ extension Channel: Hashable {
 extension Channel {
 	struct Images: Codable, Equatable {
 		let avatar: NebulaImage
-		let banner: NebulaImage
+		let banner: NebulaImage?
 		let hero: NebulaImage?
 		let featured: NebulaImage
+		
+		/// The widest image available. The trimmed channels in featured rails have no banner.
+		var wide: NebulaImage { banner ?? featured }
 	}
 	
 	struct Engagement: Codable, Equatable, Hashable {

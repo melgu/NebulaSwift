@@ -7,92 +7,142 @@
 
 import Foundation
 
-struct Feature: Decodable {
-	let id: String
-	let title: String
-	let viewAllURL: URL?
-	let items: Content
-	
-	enum CodingKeys: CodingKey {
-		case type
-		case id
-		case title
-		case viewAllURL
-		case items
-	}
-	
-	init(from decoder: Decoder) throws {
-		let container = try decoder.container(keyedBy: CodingKeys.self)
-		self.id = try container.decode(String.self, forKey: .id)
-		self.title = try container.decode(String.self, forKey: .title)
-		self.viewAllURL = try container.decodeIfPresent(URL.self, forKey: .viewAllURL)
-		
-		let type = try container.decode(Feature.FeatureType.self, forKey: .type)
-		switch type {
-		case .heroes:
-			let items = try container.decode([Hero].self, forKey: .items)
-			self.items = .heroes(items)
-		case .latestVideos:
-			let items = try container.decode([Video].self, forKey: .items)
-			self.items = .latestVideos(items)
-		case .videoChannels:
-			let items = try container.decode([Channel].self, forKey: .items)
-			self.items = .videoChannels(items)
-		case .featuredCreators:
-			let items = try container.decode([Channel].self, forKey: .items)
-			self.items = .featuredCreators(items)
-		case .podcastChannels:
-			let items = try container.decode([Podcast].self, forKey: .items)
-			self.items = .podcastChannels(items)
-		case .classes:
-			self.items = .classes
-		}
-	}
-}
-extension Feature: Identifiable {}
-extension Feature: Equatable {}
+// MARK: - API types
 
-extension Feature {
-	private enum FeatureType: String, Decodable {
-		case heroes
-		case latestVideos = "latest_videos"
-		case videoChannels = "video_channels"
-		case featuredCreators = "featured_creators"
-		case podcastChannels = "podcast_channels"
-		case classes
-	}
-	
-	enum Content: Equatable {
-		case heroes([Hero])
-		case latestVideos([Video])
-		case videoChannels([Channel])
-		case featuredCreators([Channel])
-		case podcastChannels([Podcast])
-		case classes
-	}
-}
-
-struct Hero: Decodable, Equatable {
+/// A page of the Featured tab, e.g. "Featured" or "News".
+///
+/// The rails only describe themselves, their contents are loaded from `collection`.
+struct FeaturedPage: Decodable, Sendable {
 	let id: String
-	let type: String
 	let slug: String
 	let title: String
-	let assets: Assets
+	let heroes: [Hero]
+	let rails: [Rail]
+}
+
+struct Hero: Decodable, Equatable, Sendable {
+	let id: String
+	let title: String
+	let shortDescription: String?
+	let altText: String?
+	let images: Images
 	let url: URL
-	let altText: String
 }
 extension Hero: Identifiable {}
 
 extension Hero {
-	struct Assets: Decodable, Equatable {
-		let hero: [String: NebulaImageResource]
-		let mobileHero: NebulaImageResource
+	struct Images: Decodable, Equatable, Sendable {
+		let backgroundWide: NebulaImage
+		let backgroundNarrow: NebulaImage?
+		let titleLogo: NebulaImage?
+	}
+	
+	enum Destination: Hashable, Sendable {
+		case video(slug: String)
+		case channel(slug: String)
+	}
+	
+	/// Heroes only link to the website, so the target has to be derived from the link.
+	///
+	/// `https://nebula.tv/videos/<slug>` is an episode, every other link starts with a channel's
+	/// slug, optionally followed by a season or playlist the app doesn't have a screen for.
+	var destination: Destination? {
+		let components = url.pathComponents.filter { $0 != "/" }
+		guard let first = components.first else { return nil }
+		guard first == "videos" else { return .channel(slug: first) }
+		guard let slug = components.dropFirst().first else { return nil }
+		return .video(slug: slug)
+	}
+}
+
+struct Rail: Decodable, Sendable {
+	let id: String
+	let title: String
+	let contentType: ContentType
+	let collection: URL?
+	let viewAll: URL?
+}
+
+extension Rail {
+	enum ContentType: String, Decodable, Sendable {
+		case videoEpisodes = "video_episodes"
+		case videoChannels = "video_channels"
+		case podcastChannels = "podcast_channels"
+		case classes
+		case unsupported
+		
+		init(from decoder: Decoder) throws {
+			let rawValue = try decoder.singleValueContainer().decode(String.self)
+			self = ContentType(rawValue: rawValue) ?? .unsupported
+		}
+	}
+}
+
+// MARK: - View model
+
+/// A row of the Featured tab, with its contents already loaded.
+struct Feature: Equatable, Sendable {
+	let id: String
+	let title: String
+	let viewAllURL: URL?
+	let items: Content
+}
+extension Feature: Identifiable {}
+
+extension Feature {
+	enum Content: Equatable, Sendable {
+		case heroes([Hero])
+		case videos([Video])
+		case channels([Channel])
+		case podcasts([Podcast])
+		case classes
 	}
 }
 
 extension API {
-	func featured() async throws -> [Feature] {
-		let url = try URL(string: "https://content.api.nebula.app/featured/").require()
-		return try await request(.get, url: url, authorization: .bearer)
+	func featured(page slug: String = "featured") async throws -> [Feature] {
+		let url = try URL(string: "https://content.api.nebula.app/featured_pages/\(slug)/").require()
+		let page: FeaturedPage = try await request(.get, url: url, authorization: .bearer)
+		
+		// The rails are loaded at once, and a rail the app can't show, or that failed to load, is
+		// left out instead of taking the whole page down with it.
+		let loading = page.rails.map { rail in
+			Task {
+				guard let items = try? await self.items(for: rail) else { return nil as Feature? }
+				return Feature(id: rail.id, title: rail.title, viewAllURL: rail.viewAll, items: items)
+			}
+		}
+		var rails: [Feature] = []
+		for task in loading {
+			guard let feature = await task.value else { continue }
+			rails.append(feature)
+		}
+		
+		guard !page.heroes.isEmpty else { return rails }
+		return [Feature(id: page.id, title: page.title, viewAllURL: nil, items: .heroes(page.heroes))] + rails
+	}
+	
+	/// The contents of a rail, or `nil` if there are none to show.
+	private func items(for rail: Rail) async throws -> Feature.Content? {
+		guard rail.contentType != .classes else { return .classes }
+		guard let collection = rail.collection else { return nil }
+		
+		switch rail.contentType {
+		case .videoEpisodes:
+			// Collections answer with a bare list, and without engagement.
+			let videos: [Video] = try await request(.get, url: collection, authorization: .bearer)
+			guard !videos.isEmpty else { return nil }
+			return .videos(try await withEngagement(videos))
+		case .videoChannels:
+			let channels: [Channel] = try await request(.get, url: collection, authorization: .bearer)
+			guard !channels.isEmpty else { return nil }
+			return .channels(try await withEngagement(channels))
+		case .podcastChannels:
+			let podcasts: [Podcast] = try await request(.get, url: collection, authorization: .bearer)
+			guard !podcasts.isEmpty else { return nil }
+			return .podcasts(podcasts)
+		case .classes, .unsupported:
+			return nil
+		}
 	}
 }
