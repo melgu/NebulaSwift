@@ -152,12 +152,12 @@ struct ChannelContextMenu: ViewModifier {
 				
 				ShareLink(item: channel.shareUrl)
 			} preview: {
-				AsyncImage(url: channel.assets.banner["960"]?.original) { image in
+				AsyncImage(url: channel.images.banner[960]) { image in
 					image
 						.resizable()
 				} placeholder: {
 					// This image is most likely already cached
-					AsyncImage(url: channel.assets.banner["480"]?.original) { image in
+					AsyncImage(url: channel.images.banner[480]) { image in
 						image
 							.resizable()
 					} placeholder: {

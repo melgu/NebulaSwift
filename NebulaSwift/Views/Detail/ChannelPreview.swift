@@ -32,7 +32,7 @@ struct ChannelPreviewView: View {
 			Color.black
 				.aspectRatio(16/9, contentMode: .fit)
 				.overlay {
-					AsyncImage(url: channel.assets.banner["480"]?.original) { image in
+					AsyncImage(url: channel.images.banner[480]) { image in
 						image
 							.resizable()
 							.scaledToFit()

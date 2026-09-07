@@ -28,6 +28,10 @@ struct ChannelPage: View {
 		})
 		.disableGoToChannel()
 		.navigationTitle(channel.title)
+		.task {
+			// The channel endpoints no longer embed engagement.
+			following = try? await api.isFollowing(channel)
+		}
 		.statisticsAlert { try await api.statistics(for: channel) }
 		#if canImport(UIKit)
 		.toolbar {

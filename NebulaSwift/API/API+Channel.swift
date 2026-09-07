@@ -8,16 +8,13 @@
 import Foundation
 import AppIntents
 
-struct ChannelEpisodesContainer: Decodable {
-	let details: Channel
-	let episodes: ListContainer<Video>
-}
-
 struct Channel: Codable, Equatable, Sendable {
+	/// The API's own identifier, e.g. `video_channel:<uuid>`. Engagement is keyed by it.
+	let channelId: String
 	let slug: String
 	let title: String
-	let resultDescription: String?
-	let assets: Assets
+	let description: String?
+	let images: Images
 	let genreCategoryTitle: String
 	let genreCategorySlug: String
 //	let categories: [Category]
@@ -29,8 +26,27 @@ struct Channel: Codable, Equatable, Sendable {
 	let merch: URL?
 	let merchCollection: String?
 	let shareUrl: URL
-	let engagement: Engagement?
+	var engagement: Engagement?
 //	let playlists: [Category]
+	
+	enum CodingKeys: String, CodingKey {
+		case channelId = "id"
+		case slug
+		case title
+		case description
+		case images
+		case genreCategoryTitle
+		case genreCategorySlug
+		case website
+		case patreon
+		case twitter
+		case instagram
+		case facebook
+		case merch
+		case merchCollection
+		case shareUrl
+		case engagement
+	}
 }
 extension Channel: Identifiable {
 	var id: String { slug }
@@ -43,11 +59,11 @@ extension Channel: Hashable {
 }
 
 extension Channel {
-	struct Assets: Codable, Equatable {
-		let avatar: [String: NebulaImageResource]
-		let banner: [String: NebulaImageResource]
-		let hero: [String: NebulaImageResource]?
-		let featured: [String: NebulaImageResource]
+	struct Images: Codable, Equatable {
+		let avatar: NebulaImage
+		let banner: NebulaImage
+		let hero: NebulaImage?
+		let featured: NebulaImage
 	}
 	
 	struct Engagement: Codable, Equatable, Hashable {
@@ -65,11 +81,17 @@ extension Channel: AppEntity {
 	}
 }
 
+/// The engagement endpoints only return the content's identifier, not its slug.
+private struct ChannelEngagement: Decodable {
+	let id: String
+	let following: Bool
+}
+
 extension API {
 	func allChannels(offset: Int, pageSize: Int = 24) async throws -> [Channel] {
-		let url = try URL(string: "https://content.watchnebula.com/video/channels/?offset=\(offset)&page_size=\(pageSize)").require()
+		let url = try URL(string: "https://content.api.nebula.app/video_channels/?ordering=title&offset=\(offset)&page_size=\(pageSize)").require()
 		let response: ListContainer<Channel> = try await request(.get, url: url, authorization: .bearer)
-		return response.results
+		return try await withEngagement(response.results)
 	}
 	
 	@available(*, deprecated, message: "Use `allChannels(offset:pageSize:)` instead")
@@ -79,25 +101,35 @@ extension API {
 	}
 	
 	func channel(for slug: Channel.ID) async throws -> Channel {
-		let url = try URL(string: "https://content.api.nebula.app/content/\(slug)/").require()
+		let url = try URL(string: "https://content.api.nebula.app/video_channels/\(slug)/").require()
 		return try await request(.get, url: url, authorization: .bearer)
 	}
 	
-	func channelAndVideos(for slug: Channel.ID, offset: Int, pageSize: Int = 24) async throws -> (Channel, [Video]) {
-		let url = try URL(string: "https://content.watchnebula.com/video/channels/\(slug)/?offset=\(offset)&page_size=\(pageSize)").require()
-		let response: ChannelEpisodesContainer = try await request(.get, url: url, authorization: .bearer)
-		return (response.details, response.episodes.results)
+	/// The channel endpoints no longer embed engagement, so it has to be fetched separately.
+	func withEngagement(_ channels: [Channel]) async throws -> [Channel] {
+		var engagements: [String: Channel.Engagement] = [:]
+		for chunk in channels.chunked(into: 100) {
+			let ids = chunk.map(\.channelId).joined(separator: ",")
+			let url = try URL(string: "https://content.api.nebula.app/video_channels/engagement/?ids=\(ids)&page_size=\(chunk.count)").require()
+			let response: ListContainer<ChannelEngagement> = try await request(.get, url: url, authorization: .bearer)
+			for engagement in response.results {
+				engagements[engagement.id] = .init(following: engagement.following)
+			}
+		}
+		return channels.map { channel in
+			var channel = channel
+			channel.engagement = engagements[channel.channelId] ?? channel.engagement
+			return channel
+		}
 	}
 	
-	@available(*, deprecated, message: "Use `channelAndVideos(for:offset:pageSize:)` instead")
-	@_disfavoredOverload
-	func channelAndVideos(for slug: Channel.ID, page: Int, pageSize: Int = 24) async throws -> (Channel, [Video]) {
-		try await channelAndVideos(for: slug, offset: (page - 1) * pageSize, pageSize: pageSize)
+	func isFollowing(_ channel: Channel) async throws -> Bool {
+		try await withEngagement([channel]).first?.engagement?.following ?? false
 	}
 	
 	private func videoContainer(for channel: Channel, offset: Int, pageSize: Int) async throws -> ListContainer<Video> {
 		assert(pageSize <= 100, "The Nebula API only supports page sizes up to 100")
-		let url = try URL(string: "https://content.watchnebula.com/video/?channel=\(channel.slug)&offset=\(offset)&page_size=\(pageSize)").require()
+		let url = try URL(string: "https://content.api.nebula.app/video_channels/\(channel.slug)/video_episodes/?offset=\(offset)&page_size=\(pageSize)").require()
 		return try await request(.get, url: url, authorization: .bearer)
 	}
 	
@@ -109,7 +141,7 @@ extension API {
 	
 	func videos(for channel: Channel, page: Int, pageSize: Int = 24) async throws -> [Video] {
 		let container = try await videoContainer(for: channel, page: page, pageSize: pageSize)
-		return container.results
+		return try await withEngagement(container.results)
 	}
 	
 	func videos(for channel: Channel, count: Int) async throws -> [Video] {
@@ -119,10 +151,10 @@ extension API {
 			let pageSize = min(count - result.count, 100)
 			let container = try await videoContainer(for: channel, page: page, pageSize: pageSize)
 			result += container.results
-			guard container.next != nil else { return result }
+			guard container.next != nil else { return try await withEngagement(result) }
 			page += 1
 		} while result.count <= count
-		return result
+		return try await withEngagement(result)
 	}
 	
 	func statistics(for channel: Channel) async throws -> VideoListStatistics {
@@ -140,14 +172,14 @@ extension API {
 	}
 	
 	func follow(_ channel: Channel) async throws {
-		let url = try URL(string: "https://content.watchnebula.com/engagement/video/follow/").require()
+		let url = try URL(string: "https://content.api.nebula.app/engagement/video/follow/").require()
 		let body = FollowBody(channelSlug: channel.slug)
 		NebulaSwiftAppShortcutsProvider.updateAppShortcutParameters()
 		try await request(.post, url: url, body: body, authorization: .bearer)
 	}
 	
 	func unfollow(_ channel: Channel) async throws {
-		let url = try URL(string: "https://content.watchnebula.com/engagement/video/unfollow/").require()
+		let url = try URL(string: "https://content.api.nebula.app/engagement/video/unfollow/").require()
 		let body = FollowBody(channelSlug: channel.slug)
 		NebulaSwiftAppShortcutsProvider.updateAppShortcutParameters()
 		try await request(.post, url: url, body: body, authorization: .bearer)

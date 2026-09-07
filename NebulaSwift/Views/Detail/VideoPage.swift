@@ -136,7 +136,7 @@ struct VideoPage: View {
 			openItem(channel)
 		} label: {
 			HStack(spacing: 16) {
-				AsyncImage(url: video.assets.channelAvatar["128"]?.original) { image in
+				AsyncImage(url: video.images.channelAvatar[128]) { image in
 					image
 						.resizable()
 						.scaledToFit()

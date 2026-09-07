@@ -208,7 +208,7 @@ struct ContentView: View {
 	
 	private func label(for channel: Channel) -> some View {
 		HStack {
-			AsyncImage(url: channel.assets.avatar["64"]?.original) { image in
+			AsyncImage(url: channel.images.avatar[64]) { image in
 				image
 					.resizable()
 					.scaledToFit()

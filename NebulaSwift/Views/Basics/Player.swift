@@ -91,8 +91,7 @@ class Player {
 		self.video = video
 		
 		task = Task {
-			let stream = try await api.stream(for: video)
-			let item = AVPlayerItem(url: stream.manifest)
+						let item = AVPlayerItem(url: try api.manifestURL(for: video))
 			try Task.checkCancellation()
 			player.replaceCurrentItem(with: item)
 			if let progress = video.engagement?.progress {

@@ -19,3 +19,15 @@ struct NebulaImageResource: Codable, Equatable {
 		}
 	}
 }
+
+/// An image on Nebula's image host, which resizes on the fly.
+struct NebulaImage: Codable, Equatable {
+	let src: URL
+	let width: Int
+	let height: Int
+	
+	/// The image scaled to the given width.
+	subscript(width: Int) -> URL {
+		src.appending(queryItems: [URLQueryItem(name: "width", value: String(width))])
+	}
+}
