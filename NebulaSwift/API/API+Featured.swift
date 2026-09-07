@@ -32,7 +32,9 @@ extension Hero: Identifiable {}
 
 extension Hero {
 	struct Images: Decodable, Equatable, Sendable {
+		/// Landscape artwork, mostly 3:1 but also 2:1 and 16:9, so it needs cropping to a fixed shape.
 		let backgroundWide: NebulaImage
+		/// Roughly square artwork for portrait layouts. Not every hero has it.
 		let backgroundNarrow: NebulaImage?
 		let titleLogo: NebulaImage?
 	}

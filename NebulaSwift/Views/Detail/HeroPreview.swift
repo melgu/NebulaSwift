@@ -39,19 +39,25 @@ struct HeroPreview: View {
 }
 
 struct HeroPreviewView: View {
+	/// The artwork comes in 3:1, 2:1 and 16:9, so the card settles on one shape and crops to it.
+	static let aspectRatio: CGFloat = 2/1
+	
 	let hero: Hero
 	
 	var body: some View {
 		VStack(alignment: .leading) {
-			AsyncImage(url: hero.images.backgroundWide[960]) { image in
-				image
-					.resizable()
-					.scaledToFit()
-			} placeholder: {
-				Color.black
-					.aspectRatio(16/9, contentMode: .fit)
-			}
-			.cornerRadius(8)
+			Color.black
+				.aspectRatio(HeroPreviewView.aspectRatio, contentMode: .fit)
+				.overlay {
+					AsyncImage(url: hero.images.backgroundWide[960]) { image in
+						image
+							.resizable()
+							.scaledToFill()
+					} placeholder: {
+						EmptyView()
+					}
+				}
+				.cornerRadius(8)
 			
 			Text(hero.title)
 		}

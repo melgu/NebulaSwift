@@ -74,7 +74,9 @@ struct Featured: View {
 					case .heroes(let array):
 						ForEach(array) { item in
 							HeroPreview(hero: item)
-								.frame(width: 480)
+								.containerRelativeFrame(.horizontal) { width, _ in
+									min(480, width - 32)
+								}
 						}
 					case .videos(let array):
 						ForEach(array) { item in
