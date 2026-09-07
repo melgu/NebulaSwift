@@ -12,6 +12,9 @@ struct Featured: View {
 	@Environment(Player.self) private var player
 	
 	@State private var featured: [Feature] = []
+	@State private var loading: Task<Void, Never>?
+	
+	@Environment(\.handleError) private var handleError
 	
 	var body: some View {
 		ScrollView(.vertical) {
@@ -37,8 +40,18 @@ struct Featured: View {
 				.hidden()
 		}
 		#endif
-		.task {
-			try await refreshFeatured(animated: false)
+		.onAppear {
+			// Pushing this view cancels a `.task` mid-flight without ever starting it again, which
+			// leaves the page empty on iPhone, so the load outlives the view's appearance instead.
+			guard featured.isEmpty, loading == nil else { return }
+			loading = Task {
+				defer { loading = nil }
+				do {
+					try await refreshFeatured(animated: false)
+				} catch {
+					handleError(error)
+				}
+			}
 		}
 	}
 	
