@@ -26,7 +26,7 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 	@State private var itemsCount = 0
 	@State private var page = 1
 	@State private var onLastPage = false
-	@State private var itemIndex = -1
+	@State private var deepestIndex = -1
 	
 	/// Auto-loading Grid that reloads when a specified value changes.
 	/// - Parameter id: The value to observe for changes. When the value changes, the items are refreshed.
@@ -48,10 +48,10 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 				ScrollView {
 					VStack {
 						LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
-							ForEach(items) { item in
+							ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
 								preview(item)
 									.onAppear {
-										itemIndex += 1
+										deepestIndex = max(deepestIndex, index)
 									}
 							}
 							if !onLastPage {
@@ -89,9 +89,9 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 			defer { isInitialLoad = false }
 			try await refreshItems()
 		}
-		.task(id: itemIndex) {
-			logger.debug("Index: \(itemIndex), itemsCount: \(itemsCount)")
-			if !onLastPage, itemIndex >= itemsCount - 1 - loadingOffset {
+		.task(id: deepestIndex) {
+			logger.debug("Index: \(deepestIndex), itemsCount: \(itemsCount)")
+			if !onLastPage, deepestIndex >= itemsCount - 1 - loadingOffset {
 				logger.debug("Last item did appear, loading next page")
 				do {
 					let newItems = try await fetch(page + 1)
@@ -128,7 +128,7 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 			logger.debug("Video list changed")
 			page = 1
 			onLastPage = false
-			itemIndex = -1
+			deepestIndex = -1
 			itemsCount = newItems.count
 			withAnimation {
 				items = newItems
