@@ -91,14 +91,21 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 		}
 		.task(id: itemIndex) {
 			logger.debug("Index: \(itemIndex), itemsCount: \(itemsCount)")
-			if itemIndex >= itemsCount - 1 - loadingOffset {
+			if !onLastPage, itemIndex >= itemsCount - 1 - loadingOffset {
 				logger.debug("Last item did appear, loading next page")
 				do {
-					items += try await fetch(page + 1)
-					itemsCount = items.count
-					page += 1
+					let newItems = try await fetch(page + 1)
+					if newItems.isEmpty {
+						logger.debug("Last page")
+						onLastPage = true
+					} else {
+						items += newItems
+						itemsCount = items.count
+						page += 1
+					}
 				} catch APIError.invalidServerResponse(errorCode: 404) {
 					logger.debug("Last page")
+					onLastPage = true
 				}
 			}
 		}
