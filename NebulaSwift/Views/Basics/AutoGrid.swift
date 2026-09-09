@@ -89,9 +89,9 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 			defer { isInitialLoad = false }
 			try await refreshItems()
 		}
-		.task(id: deepestIndex) {
+		.task(id: shouldLoadNextPage) {
 			logger.debug("Index: \(deepestIndex), itemsCount: \(itemsCount)")
-			if !onLastPage, deepestIndex >= itemsCount - 1 - loadingOffset {
+			while shouldLoadNextPage {
 				logger.debug("Last item did appear, loading next page")
 				do {
 					let newItems = try await fetch(page + 1)
@@ -109,6 +109,11 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 				}
 			}
 		}
+	}
+	
+	/// Whether the reader has come close enough to the end of the loaded items to load the next page.
+	private var shouldLoadNextPage: Bool {
+		!onLastPage && deepestIndex >= itemsCount - 1 - loadingOffset
 	}
 	
 	private var refreshButton: some View {
