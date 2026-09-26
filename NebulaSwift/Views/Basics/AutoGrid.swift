@@ -27,6 +27,10 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 	@State private var page = 1
 	@State private var onLastPage = false
 	@State private var deepestIndex = -1
+	@State private var loading: Task<Void, Never>?
+	@State private var paging: Task<Void, Never>?
+	
+	@Environment(\.handleError) private var handleError
 	
 	/// Auto-loading Grid that reloads when a specified value changes.
 	/// - Parameter id: The value to observe for changes. When the value changes, the items are refreshed.
@@ -83,18 +87,57 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 				.hidden()
 		}
 		#endif
-		.task(id: value) {
-			logger.debug("Load items")
-			isInitialLoad = true
-			defer { isInitialLoad = false }
-			try await refreshItems()
+		.onAppear {
+			// Pushing this view cancels a `.task` mid-flight without ever starting it again, which
+			// leaves the grid empty on iPhone, so the loads outlive the view's appearance instead.
+			guard items.isEmpty, loading == nil else { return }
+			loadItems()
 		}
-		.task(id: shouldLoadNextPage) {
-			logger.debug("Index: \(deepestIndex), itemsCount: \(itemsCount)")
+		.onChange(of: value) {
+			loadItems()
+		}
+		.onChange(of: shouldLoadNextPage) { _, shouldLoad in
+			if shouldLoad {
+				loadNextPages()
+			}
+		}
+	}
+	
+	/// Whether the reader has come close enough to the end of the loaded items to load the next page.
+	///
+	/// Stays false until the first page is in, so a page load can't race the initial one.
+	private var shouldLoadNextPage: Bool {
+		!items.isEmpty && !onLastPage && deepestIndex >= itemsCount - 1 - loadingOffset
+	}
+	
+	/// Replaces the items with the first page, showing a spinner in place of the grid meanwhile.
+	private func loadItems() {
+		logger.debug("Load items")
+		loading?.cancel()
+		isInitialLoad = true
+		loading = Task {
+			do {
+				try await refreshItems()
+			} catch {
+				// A newer load cancelled this one and owns the state from here on.
+				guard !Task.isCancelled else { return }
+				handleError(error)
+			}
+			isInitialLoad = false
+			loading = nil
+		}
+	}
+	
+	/// Loads pages until the reader is no longer close to the end of the loaded items.
+	private func loadNextPages() {
+		guard paging == nil else { return }
+		paging = Task {
 			while shouldLoadNextPage {
 				logger.debug("Last item did appear, loading next page")
 				do {
 					let newItems = try await fetch(page + 1)
+					// A refresh reset the list while this page was in flight.
+					guard !Task.isCancelled else { return }
 					if newItems.isEmpty {
 						logger.debug("Last page")
 						onLastPage = true
@@ -106,14 +149,14 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 				} catch APIError.invalidServerResponse(errorCode: 404) {
 					logger.debug("Last page")
 					onLastPage = true
+				} catch {
+					guard !Task.isCancelled else { return }
+					handleError(error)
+					break
 				}
 			}
+			paging = nil
 		}
-	}
-	
-	/// Whether the reader has come close enough to the end of the loaded items to load the next page.
-	private var shouldLoadNextPage: Bool {
-		!onLastPage && deepestIndex >= itemsCount - 1 - loadingOffset
 	}
 	
 	private var refreshButton: some View {
@@ -129,10 +172,16 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 	private func refreshItems() async throws {
 		logger.debug("Refresh items")
 		let newItems = try await fetch(1)
+		if newItems.isEmpty {
+			onLastPage = true
+		}
 		if newItems != items {
 			logger.debug("Video list changed")
+			// The next page is counted from the new first page, so a load in flight is stale.
+			paging?.cancel()
+			paging = nil
 			page = 1
-			onLastPage = false
+			onLastPage = newItems.isEmpty
 			deepestIndex = -1
 			itemsCount = newItems.count
 			withAnimation {
