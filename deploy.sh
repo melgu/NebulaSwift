@@ -42,7 +42,24 @@ if [[ -z "$DEVICE_IDS" ]]; then
     exit 1
 fi
 
+# Paired devices stay listed while they're away, and devicectl reports every tunnel as disconnected
+# until something opens one, so probe each device and skip the ones that don't answer.
+INSTALLED=0
 while IFS=$'\t' read -r device_id device_name; do
+    if ! devicectl device info details --device "$device_id" --timeout 15 </dev/null >/dev/null 2>&1; then
+        echo "Skipping $device_name (not reachable)."
+        continue
+    fi
     echo "Installing on $device_name…"
-    devicectl device install app --device "$device_id" "$APP_PATH"
+    # A device can answer the probe and still refuse the install (e.g. while locked); move on to the next one.
+    if devicectl device install app --device "$device_id" "$APP_PATH" </dev/null; then
+        INSTALLED=$((INSTALLED + 1))
+    else
+        echo "Install on $device_name failed, skipping it." >&2
+    fi
 done <<< "$DEVICE_IDS"
+
+if (( INSTALLED == 0 )); then
+    echo "Couldn't install on any of the paired devices." >&2
+    exit 1
+fi
