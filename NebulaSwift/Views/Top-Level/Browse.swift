@@ -18,18 +18,7 @@ struct Browse: View {
 	@Environment(\.handleError) private var handleError
 	
 	var body: some View {
-		VStack {
-			ScrollView(.horizontal) {
-				HStack {
-					ForEach(categories) { category in
-						CategoryPreview(category: category)
-					}
-				}
-				.padding()
-			}
-			.navigationDestination(for: Category.self) { category in
-				CategoryPage(category: category, initialViewType: viewType)
-			}
+		Group {
 			switch viewType {
 			case .videos:
 				AutoVideoGrid(fetch: { page in
@@ -40,6 +29,12 @@ struct Browse: View {
 					try await api.allChannels(page: page)
 				})
 			}
+		}
+		.topBar {
+			categoryRow
+		}
+		.navigationDestination(for: Category.self) { category in
+			CategoryPage(category: category, initialViewType: viewType)
 		}
 		.navigationTitle("Browse")
 		.toolbar {
@@ -65,6 +60,32 @@ struct Browse: View {
 				} catch {
 					handleError(error)
 				}
+			}
+		}
+	}
+	
+	private var categoryRow: some View {
+		ScrollView(.horizontal) {
+			HStack {
+				ForEach(categories) { category in
+					CategoryPreview(category: category)
+				}
+			}
+			.padding()
+		}
+	}
+}
+
+private extension View {
+	/// Pins `content` below the navigation bar, with the grid scrolling underneath it the way it does under the bar.
+	@ViewBuilder
+	func topBar(@ViewBuilder content: () -> some View) -> some View {
+		if #available(iOS 26, macOS 26, *) {
+			safeAreaBar(edge: .top, content: content)
+		} else {
+			safeAreaInset(edge: .top) {
+				content()
+					.background(.bar)
 			}
 		}
 	}
