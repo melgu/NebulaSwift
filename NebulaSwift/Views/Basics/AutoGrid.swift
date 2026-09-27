@@ -11,10 +11,11 @@ import OSLog
 private let logger = Logger(category: "AutoGrid")
 
 /// Auto-loading Grid.
-struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>: View {
+struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View, Header: View>: View {
 	private let value: Value
 	private let fetch: (Int) async throws -> [Item]
 	private let preview: (Item) -> Preview
+	private let header: Header
 	
 	/// Index offset indicating when the next page is loaded.
 	///
@@ -36,10 +37,12 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 	/// - Parameter id: The value to observe for changes. When the value changes, the items are refreshed.
 	/// - Parameter fetch: Closure which loads the items for a given page (1-indexed).
 	/// - Parameter preview: A closure that produces the preview for an individual item.
-	init(id value: Value, fetch: @escaping (Int) async throws -> [Item], preview: @escaping (Item) -> Preview) {
+	/// - Parameter header: Content above the items that scrolls with them.
+	init(id value: Value, fetch: @escaping (Int) async throws -> [Item], preview: @escaping (Item) -> Preview, @ViewBuilder header: () -> Header) {
 		self.value = value
 		self.fetch = fetch
 		self.preview = preview
+		self.header = header()
 	}
 	
 	var body: some View {
@@ -50,6 +53,7 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 					.frame(maxWidth: .infinity, maxHeight: .infinity)
 			} else {
 				ScrollView {
+					header
 					VStack {
 						LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
 							ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
@@ -191,13 +195,31 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View>
 	}
 }
 
-extension AutoGrid where Value == Bool {
+extension AutoGrid where Header == EmptyView {
 	/// Auto-loading Grid that reloads when a specified value changes.
+	/// - Parameter id: The value to observe for changes. When the value changes, the items are refreshed.
+	/// - Parameter fetch: Closure which loads the items for a given page (1-indexed).
+	/// - Parameter preview: A closure that produces the preview for an individual item.
+	init(id value: Value, fetch: @escaping (Int) async throws -> [Item], preview: @escaping (Item) -> Preview) {
+		self.init(id: value, fetch: fetch, preview: preview) { EmptyView() }
+	}
+}
+
+extension AutoGrid where Value == Bool {
+	/// Auto-loading Grid.
+	/// - Parameter fetch: Closure which loads the items for a given page (1-indexed).
+	/// - Parameter preview: A closure that produces the preview for an individual item.
+	/// - Parameter header: Content above the items that scrolls with them.
+	init(fetch: @escaping (Int) async throws -> [Item], preview: @escaping (Item) -> Preview, @ViewBuilder header: () -> Header) {
+		self.init(id: false, fetch: fetch, preview: preview, header: header)
+	}
+}
+
+extension AutoGrid where Value == Bool, Header == EmptyView {
+	/// Auto-loading Grid.
 	/// - Parameter fetch: Closure which loads the items for a given page (1-indexed).
 	/// - Parameter preview: A closure that produces the preview for an individual item.
 	init(fetch: @escaping (Int) async throws -> [Item], preview: @escaping (Item) -> Preview) {
-		self.value = false
-		self.fetch = fetch
-		self.preview = preview
+		self.init(id: false, fetch: fetch, preview: preview) { EmptyView() }
 	}
 }

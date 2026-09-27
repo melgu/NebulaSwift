@@ -24,19 +24,32 @@ struct ChannelGrid: View {
 }
 
 /// Auto-loading ChannelGrid
-struct AutoChannelGrid: View {
+struct AutoChannelGrid<Header: View>: View {
 	let fetch: (Int) async throws -> [Channel]
+	let header: Header
 	
 	/// Auto-loading ChannelGrid
 	/// - Parameter fetch: Closure which loads the channels for a given page (1-indexed).
-	init(fetch: @escaping (Int) async throws -> [Channel]) {
+	/// - Parameter header: Content above the channels that scrolls with them.
+	init(fetch: @escaping (Int) async throws -> [Channel], @ViewBuilder header: () -> Header) {
 		self.fetch = fetch
+		self.header = header()
 	}
 	
 	var body: some View {
 		AutoGrid(fetch: fetch) { channel in
 			ChannelPreview(channel: channel)
+		} header: {
+			header
 		}
+	}
+}
+
+extension AutoChannelGrid where Header == EmptyView {
+	/// Auto-loading ChannelGrid
+	/// - Parameter fetch: Closure which loads the channels for a given page (1-indexed).
+	init(fetch: @escaping (Int) async throws -> [Channel]) {
+		self.init(fetch: fetch) { EmptyView() }
 	}
 }
 

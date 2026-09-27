@@ -23,15 +23,16 @@ struct Browse: View {
 			case .videos:
 				AutoVideoGrid(fetch: { page in
 					try await api.allVideos(page: page)
-				})
+				}) {
+					categoryRow
+				}
 			case .channels:
 				AutoChannelGrid(fetch: { page in
 					try await api.allChannels(page: page)
-				})
+				}) {
+					categoryRow
+				}
 			}
-		}
-		.topBar {
-			categoryRow
 		}
 		.navigationDestination(for: Category.self) { category in
 			CategoryPage(category: category, initialViewType: viewType)
@@ -72,21 +73,6 @@ struct Browse: View {
 				}
 			}
 			.padding()
-		}
-	}
-}
-
-private extension View {
-	/// Pins `content` below the navigation bar, with the grid scrolling underneath it the way it does under the bar.
-	@ViewBuilder
-	func topBar(@ViewBuilder content: () -> some View) -> some View {
-		if #available(iOS 26, macOS 26, *) {
-			safeAreaBar(edge: .top, content: content)
-		} else {
-			safeAreaInset(edge: .top) {
-				content()
-					.background(.bar)
-			}
 		}
 	}
 }
