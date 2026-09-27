@@ -43,7 +43,8 @@ struct PodcastPreviewView: View {
 			
 			Text(podcast.title)
 		}
-		.lineLimit(2)
+		// Cells of uneven height leave the grid pulled down after a slow pull to refresh.
+		.lineLimit(2, reservesSpace: true)
 	}
 }
 

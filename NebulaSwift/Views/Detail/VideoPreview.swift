@@ -90,11 +90,14 @@ struct VideoPreviewView: View {
 						.aspectRatio(1, contentMode: .fit)
 				}
 				.frame(width: 32, height: 32)
+				// Cells of uneven height leave the grid pulled down after a slow pull to refresh.
 				VStack(alignment: .leading) {
 					Text(video.title)
+						.lineLimit(2, reservesSpace: true)
 					Text(video.channelTitle)
 						.font(.caption)
 						.foregroundColor(.secondary)
+						.lineLimit(1)
 				}
 			}
 		}
