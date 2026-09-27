@@ -11,9 +11,9 @@ import OSLog
 private let logger = Logger(category: "AutoGrid")
 
 /// Auto-loading Grid.
-struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View, Header: View>: View {
+struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable & Sendable, Preview: View, Header: View>: View {
 	private let value: Value
-	private let fetch: (Int) async throws -> [Item]
+	private let fetch: @MainActor @Sendable (Int) async throws -> [Item]
 	private let preview: (Item) -> Preview
 	private let header: Header
 	
@@ -38,7 +38,7 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View,
 	/// - Parameter fetch: Closure which loads the items for a given page (1-indexed).
 	/// - Parameter preview: A closure that produces the preview for an individual item.
 	/// - Parameter header: Content above the items that scrolls with them.
-	init(id value: Value, fetch: @escaping (Int) async throws -> [Item], preview: @escaping (Item) -> Preview, @ViewBuilder header: () -> Header) {
+	init(id value: Value, fetch: @escaping @MainActor @Sendable (Int) async throws -> [Item], preview: @escaping (Item) -> Preview, @ViewBuilder header: () -> Header) {
 		self.value = value
 		self.fetch = fetch
 		self.preview = preview
@@ -181,23 +181,37 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View,
 	}
 	
 	/// Reloads every page loaded so far in place, so the reader keeps their position in the grid.
+	///
+	/// The pages load concurrently, but are put together in order.
 	private func refreshItems() async throws {
 		logger.debug("Refresh items")
 		// Refreshed pages replace whatever a page load in flight would append to.
 		paging?.cancel()
 		paging = nil
 		let loadedPages = page
+		let fetch = fetch
+		let pages = try await withThrowingTaskGroup(of: (Int, [Item]).self) { group in
+			for pageNumber in 1...loadedPages {
+				group.addTask {
+					do {
+						return (pageNumber, try await fetch(pageNumber))
+					} catch APIError.invalidServerResponse(errorCode: 404) {
+						return (pageNumber, [])
+					}
+				}
+			}
+			var pages: [Int: [Item]] = [:]
+			for try await (pageNumber, pageItems) in group {
+				pages[pageNumber] = pageItems
+			}
+			return pages
+		}
 		var newItems: [Item] = []
 		var seenIDs = Set<Item.ID>()
 		var lastPage = loadedPages
 		var reachedEnd = false
 		for pageNumber in 1...loadedPages {
-			let pageItems: [Item]
-			do {
-				pageItems = try await fetch(pageNumber)
-			} catch APIError.invalidServerResponse(errorCode: 404) {
-				pageItems = []
-			}
+			let pageItems = pages[pageNumber] ?? []
 			if pageItems.isEmpty {
 				lastPage = max(pageNumber - 1, 1)
 				reachedEnd = true
@@ -265,7 +279,7 @@ extension AutoGrid where Header == EmptyView {
 	/// - Parameter id: The value to observe for changes. When the value changes, the items are refreshed.
 	/// - Parameter fetch: Closure which loads the items for a given page (1-indexed).
 	/// - Parameter preview: A closure that produces the preview for an individual item.
-	init(id value: Value, fetch: @escaping (Int) async throws -> [Item], preview: @escaping (Item) -> Preview) {
+	init(id value: Value, fetch: @escaping @MainActor @Sendable (Int) async throws -> [Item], preview: @escaping (Item) -> Preview) {
 		self.init(id: value, fetch: fetch, preview: preview) { EmptyView() }
 	}
 }
@@ -275,7 +289,7 @@ extension AutoGrid where Value == Bool {
 	/// - Parameter fetch: Closure which loads the items for a given page (1-indexed).
 	/// - Parameter preview: A closure that produces the preview for an individual item.
 	/// - Parameter header: Content above the items that scrolls with them.
-	init(fetch: @escaping (Int) async throws -> [Item], preview: @escaping (Item) -> Preview, @ViewBuilder header: () -> Header) {
+	init(fetch: @escaping @MainActor @Sendable (Int) async throws -> [Item], preview: @escaping (Item) -> Preview, @ViewBuilder header: () -> Header) {
 		self.init(id: false, fetch: fetch, preview: preview, header: header)
 	}
 }
@@ -284,7 +298,7 @@ extension AutoGrid where Value == Bool, Header == EmptyView {
 	/// Auto-loading Grid.
 	/// - Parameter fetch: Closure which loads the items for a given page (1-indexed).
 	/// - Parameter preview: A closure that produces the preview for an individual item.
-	init(fetch: @escaping (Int) async throws -> [Item], preview: @escaping (Item) -> Preview) {
+	init(fetch: @escaping @MainActor @Sendable (Int) async throws -> [Item], preview: @escaping (Item) -> Preview) {
 		self.init(id: false, fetch: fetch, preview: preview) { EmptyView() }
 	}
 }
