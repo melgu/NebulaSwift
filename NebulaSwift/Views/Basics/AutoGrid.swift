@@ -46,33 +46,34 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View,
 	}
 	
 	var body: some View {
-		Group {
+		// One scroll view for both states, so the header keeps its place and state while the items load,
+		// and the navigation bar never picks up a scroll view inside the header instead.
+		ScrollView {
+			header
 			if isInitialLoad {
 				ProgressView()
 					.controlSize(.large)
-					.frame(maxWidth: .infinity, maxHeight: .infinity)
+					.frame(maxWidth: .infinity)
+					.containerRelativeFrame(.vertical)
 			} else {
-				ScrollView {
-					header
-					VStack {
-						LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
-							ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
-								preview(item)
-									.onAppear {
-										deepestIndex = max(deepestIndex, index)
-									}
-							}
-							if !onLastPage {
-								ProgressView()
-									.controlSize(.large)
-									.frame(maxWidth: .infinity, maxHeight: .infinity)
-							}
+				VStack {
+					LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)]) {
+						ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+							preview(item)
+								.onAppear {
+									deepestIndex = max(deepestIndex, index)
+								}
+						}
+						if !onLastPage {
+							ProgressView()
+								.controlSize(.large)
+								.frame(maxWidth: .infinity, maxHeight: .infinity)
 						}
 					}
-					.padding()
-					.refreshable {
-						try await refreshItems()
-					}
+				}
+				.padding()
+				.refreshable {
+					try await refreshItems()
 				}
 			}
 		}
