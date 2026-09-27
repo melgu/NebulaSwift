@@ -106,5 +106,5 @@ An earlier stand-in screen with fake data (`AutoGrid` in the same split view, st
 ## Related
 
 - `35157ab` fixed a separate problem: the grid staying empty behind its spinner after being pushed on iPhone.
-- Browse's category row loads in a `.task` that also gets cancelled on push (`NSURLErrorDomain -999` on `/categories/`), the same SwiftUI behavior `35157ab` works around.
+- Browse's category row loaded in a `.task` that also got cancelled on push (`NSURLErrorDomain -999` on `/categories/`), the same SwiftUI behavior `35157ab` works around, which left the row empty. It now loads the way `Featured` does.
 - Browse's title doesn't collapse into the navigation bar. Its grid's `ScrollView` sits in a `VStack` under the category row, so the navigation bar doesn't track it.

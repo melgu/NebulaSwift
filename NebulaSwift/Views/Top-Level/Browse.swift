@@ -13,6 +13,9 @@ struct Browse: View {
 	
 	@State private var viewType: ContentType = .videos
 	@State private var categories: [Category] = []
+	@State private var loadingCategories: Task<Void, Never>?
+	
+	@Environment(\.handleError) private var handleError
 	
 	var body: some View {
 		VStack {
@@ -51,8 +54,18 @@ struct Browse: View {
 				}
 			}
 		}
-		.task {
-			categories = try await api.allCategories(page: 1, pageSize: 100)
+		.onAppear {
+			// Pushing this view cancels a `.task` mid-flight without ever starting it again, which
+			// leaves the category row empty on iPhone, so the load outlives the view's appearance instead.
+			guard categories.isEmpty, loadingCategories == nil else { return }
+			loadingCategories = Task {
+				defer { loadingCategories = nil }
+				do {
+					categories = try await api.allCategories(page: 1, pageSize: 100)
+				} catch {
+					handleError(error)
+				}
+			}
 		}
 	}
 }
