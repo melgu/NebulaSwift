@@ -24,6 +24,7 @@ struct VideoContextMenu: ViewModifier {
 	@Environment(\.goToChannelEnabled) private var goToChannelEnabled
 	@Environment(\.assumeWatchLater) private var assumeWatchLater
 	@Environment(\.refresh) private var refresh
+	@Environment(\.replaceGridItem) private var replaceGridItem
 	
 	func body(content: Content) -> some View {
 		content
@@ -44,14 +45,20 @@ struct VideoContextMenu: ViewModifier {
 					if engagement.watchLater || assumeWatchLater {
 						AsyncButton {
 							try await api.removeVideoFromWatchLater(video)
-							await refresh?()
+							if assumeWatchLater, let replaceGridItem {
+								replaceGridItem(video, with: nil)
+								// The removal shifts every later page by one, which only a refresh catches up with.
+								await refresh?()
+							} else {
+								try await showUpdatedEngagement()
+							}
 						} label: {
 							Label("Remove from Watch Later", systemImage: "bookmark.slash")
 						}
 					} else {
 						AsyncButton {
 							try await api.addVideoToWatchLater(video)
-							await refresh?()
+							try await showUpdatedEngagement()
 						} label: {
 							Label("Add to Watch Later", systemImage: "bookmark")
 						}
@@ -70,7 +77,7 @@ struct VideoContextMenu: ViewModifier {
 					if !engagement.completed {
 						AsyncButton {
 							try await api.markVideoAsWatched(video)
-							await refresh?()
+							try await showUpdatedEngagement()
 						} label: {
 							Label("Mark as watched", systemImage: "checkmark.circle")
 						}
@@ -79,7 +86,7 @@ struct VideoContextMenu: ViewModifier {
 					if engagement.progress != 0 {
 						AsyncButton {
 							try await api.clearProgress(for: video)
-							await refresh?()
+							try await showUpdatedEngagement()
 						} label: {
 							Label("Clear progress", systemImage: "clock.arrow.circlepath")
 						}
@@ -103,6 +110,16 @@ struct VideoContextMenu: ViewModifier {
 				}
 			}
 	}
+
+	/// Shows the video's new engagement in its grid without reloading the others, or refreshes the view outside of a grid.
+	private func showUpdatedEngagement() async throws {
+		guard let replaceGridItem else {
+			await refresh?()
+			return
+		}
+		let updated = try await api.withEngagement([video]).first ?? video
+		replaceGridItem(video, with: updated)
+	}
 }
 
 // MARK: - Channel
@@ -119,6 +136,7 @@ struct ChannelContextMenu: ViewModifier {
 	@Environment(API.self) private var api
 	
 	@Environment(\.refresh) private var refresh
+	@Environment(\.replaceGridItem) private var replaceGridItem
 	
 	func body(content: Content) -> some View {
 		content
@@ -131,14 +149,14 @@ struct ChannelContextMenu: ViewModifier {
 					if engagement.following {
 						AsyncButton {
 							try await api.unfollow(channel)
-							await refresh?()
+							try await showUpdatedEngagement()
 						} label: {
 							Label("Unfollow", systemImage: "person.fill.badge.minus")
 						}
 					} else {
 						AsyncButton {
 							try await api.follow(channel)
-							await refresh?()
+							try await showUpdatedEngagement()
 						} label: {
 							Label("Follow", systemImage: "person.fill.badge.plus")
 						}
@@ -166,6 +184,16 @@ struct ChannelContextMenu: ViewModifier {
 					}
 				}
 			}
+	}
+
+	/// Shows the channel's new engagement in its grid without reloading the others, or refreshes the view outside of a grid.
+	private func showUpdatedEngagement() async throws {
+		guard let replaceGridItem else {
+			await refresh?()
+			return
+		}
+		let updated = try await api.withEngagement([channel]).first ?? channel
+		replaceGridItem(channel, with: updated)
 	}
 }
 

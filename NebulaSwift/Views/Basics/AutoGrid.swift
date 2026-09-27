@@ -92,6 +92,9 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View,
 				.hidden()
 		}
 		#endif
+		.environment(\.replaceGridItem, ReplaceGridItemAction { old, new in
+			replace(old, with: new)
+		})
 		.onAppear {
 			// Pushing this view cancels a `.task` mid-flight without ever starting it again, which
 			// leaves the grid empty on iPhone, so the loads outlive the view's appearance instead.
@@ -120,6 +123,9 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View,
 		logger.debug("Load items")
 		loading?.cancel()
 		isInitialLoad = true
+		// A new list starts over from its first page.
+		page = 1
+		deepestIndex = -1
 		loading = Task {
 			do {
 				try await refreshItems()
@@ -174,26 +180,84 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable, Preview: View,
 		.keyboardShortcut("r", modifiers: .command)
 	}
 	
+	/// Reloads every page loaded so far in place, so the reader keeps their position in the grid.
 	private func refreshItems() async throws {
 		logger.debug("Refresh items")
-		let newItems = try await fetch(1)
-		if newItems.isEmpty {
-			onLastPage = true
+		// Refreshed pages replace whatever a page load in flight would append to.
+		paging?.cancel()
+		paging = nil
+		let loadedPages = page
+		var newItems: [Item] = []
+		var seenIDs = Set<Item.ID>()
+		var lastPage = loadedPages
+		var reachedEnd = false
+		for pageNumber in 1...loadedPages {
+			let pageItems: [Item]
+			do {
+				pageItems = try await fetch(pageNumber)
+			} catch APIError.invalidServerResponse(errorCode: 404) {
+				pageItems = []
+			}
+			if pageItems.isEmpty {
+				lastPage = max(pageNumber - 1, 1)
+				reachedEnd = true
+				break
+			}
+			// Items that moved across a page boundary between two fetches would show up twice.
+			newItems += pageItems.filter { seenIDs.insert($0.id).inserted }
 		}
+		// A newer load owns the state from here on.
+		try Task.checkCancellation()
+		page = lastPage
+		onLastPage = reachedEnd
+		itemsCount = newItems.count
+		deepestIndex = min(deepestIndex, newItems.count - 1)
 		if newItems != items {
-			logger.debug("Video list changed")
-			// The next page is counted from the new first page, so a load in flight is stale.
-			paging?.cancel()
-			paging = nil
-			page = 1
-			onLastPage = newItems.isEmpty
-			deepestIndex = -1
-			itemsCount = newItems.count
+			logger.debug("Item list changed")
 			withAnimation {
 				items = newItems
 			}
 		}
+		// The trigger doesn't fire again if the reader was already close to the end before the refresh.
+		if shouldLoadNextPage {
+			loadNextPages()
+		}
 	}
+	
+	/// Swaps a single item for a new version, or removes it, without reloading the others.
+	private func replace(_ old: Any, with new: Any?) {
+		guard let old = old as? Item, let index = items.firstIndex(where: { $0.id == old.id }) else { return }
+		withAnimation {
+			if let new = new as? Item {
+				items[index] = new
+			} else {
+				items.remove(at: index)
+				itemsCount = items.count
+			}
+		}
+	}
+}
+
+// MARK: - Replacing Items
+
+/// Swaps one of the enclosing ``AutoGrid``'s items for a new version without reloading the others.
+struct ReplaceGridItemAction: Sendable {
+	private let action: @MainActor @Sendable (Any, Any?) -> Void
+	
+	init(_ action: @escaping @MainActor @Sendable (Any, Any?) -> Void) {
+		self.action = action
+	}
+	
+	/// - Parameter old: The item as the grid currently shows it.
+	/// - Parameter new: The item to show in its place, or `nil` to remove it.
+	@MainActor func callAsFunction<Item>(_ old: Item, with new: Item?) {
+		action(old, new)
+	}
+}
+
+extension EnvironmentValues {
+	/// Replaces an item of the enclosing ``AutoGrid``, or `nil` outside of one.
+	@Entry var replaceGridItem: ReplaceGridItemAction?
 }
 
 extension AutoGrid where Header == EmptyView {
