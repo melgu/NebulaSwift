@@ -19,4 +19,5 @@ extension Defaults {
 	static let videoPreview = "videoPreview"
 	static let videoPreviewWithSound = "videoPreviewWithSound"
 	static let removeFromWatchLaterAfterPlayback = "removeFromWatchLaterAfterPlayback"
+	static let previewTitleLines = "previewTitleLines"
 }

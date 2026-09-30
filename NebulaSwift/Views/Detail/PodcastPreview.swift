@@ -29,6 +29,8 @@ struct PodcastPreview: View {
 struct PodcastPreviewView: View {
 	let podcast: Podcast
 	
+	@Environment(Storage.self) private var storage
+	
 	var body: some View {
 		VStack(alignment: .leading) {
 			AsyncImage(url: podcast.assets["square-400"]) { image in
@@ -44,7 +46,7 @@ struct PodcastPreviewView: View {
 			Text(podcast.title)
 		}
 		// Cells of uneven height leave the grid pulled down after a slow pull to refresh.
-		.lineLimit(2, reservesSpace: true)
+		.lineLimit(storage.previewTitleLines, reservesSpace: true)
 	}
 }
 

@@ -44,6 +44,8 @@ struct HeroPreviewView: View {
 	
 	let hero: Hero
 	
+	@Environment(Storage.self) private var storage
+	
 	var body: some View {
 		VStack(alignment: .leading) {
 			Color.black
@@ -62,7 +64,7 @@ struct HeroPreviewView: View {
 			Text(hero.title)
 		}
 		// Cells of uneven height leave the grid pulled down after a slow pull to refresh.
-		.lineLimit(2, reservesSpace: true)
+		.lineLimit(storage.previewTitleLines, reservesSpace: true)
 	}
 }
 

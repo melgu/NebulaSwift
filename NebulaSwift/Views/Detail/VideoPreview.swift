@@ -37,6 +37,7 @@ struct VideoPreview: View {
 	let video: Video
 	
 	@Environment(\.openItem) private var openItem
+	@Environment(Storage.self) private var storage
 
 	/// The drag preview is laid out without a size proposal, so it adopts the cell's width to match the grid.
 	@State private var width: CGFloat?
@@ -48,7 +49,9 @@ struct VideoPreview: View {
 			VideoPreviewView(video: video)
 				.onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width = $0 }
 				.draggable(video.shareUrl) {
+					// The drag preview doesn't inherit the environment.
 					VideoPreviewView(video: video)
+						.environment(storage)
 						.frame(width: width)
 						.background(Color.systemBackground)
 						.cornerRadius(8)
@@ -63,6 +66,7 @@ struct VideoPreviewView: View {
 	let video: Video
 	
 	@Environment(\.assumeWatchLater) private var assumeWatchLater
+	@Environment(Storage.self) private var storage
 	
 	init(video: Video) {
 		self.video = video
@@ -98,7 +102,7 @@ struct VideoPreviewView: View {
 				// Cells of uneven height leave the grid pulled down after a slow pull to refresh.
 				VStack(alignment: .leading) {
 					Text(video.title)
-						.lineLimit(2, reservesSpace: true)
+						.lineLimit(storage.previewTitleLines, reservesSpace: true)
 					Text(video.channelTitle)
 						.font(.caption)
 						.foregroundColor(.secondary)
@@ -106,7 +110,7 @@ struct VideoPreviewView: View {
 				}
 			}
 		}
-		.lineLimit(2)
+		.lineLimit(storage.previewTitleLines)
 	}
 	
 	private var informationOverlay: some View {

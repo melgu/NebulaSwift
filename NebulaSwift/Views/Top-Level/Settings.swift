@@ -39,6 +39,9 @@ struct SettingsView: View {
 				#endif
 				Toggle("Remove from Watch Later after playback", isOn: $storage.removeFromWatchLaterAfterPlayback)
 			}
+			Section("Appearance") {
+				Stepper("Preview title lines: \(storage.previewTitleLines)", value: $storage.previewTitleLines, in: 1...3)
+			}
 			Section("User") {
 				Button {
 					dismiss()
