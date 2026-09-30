@@ -26,6 +26,8 @@ struct ContentView: View {
 	
 	@State private var navigationPath = NavigationPath()
 	@State private var playerVideo: Video?
+	/// The video playing in Picture in Picture while its page is closed.
+	@State private var pictureInPictureVideo: Video?
 	@State private var playerDismissalCount = 0
 
 	var body: some View {
@@ -46,7 +48,7 @@ struct ContentView: View {
 		.onOpenItem { item in
 			logger.debug("Open Item: \(String(describing: item))")
 			if let video = item as? Video {
-				playerVideo = video
+				openVideo(video)
 			} else {
 				navigationPath.append(item)
 			}
@@ -59,7 +61,7 @@ struct ContentView: View {
 					// nebulaswift://video/slug
 					guard let slug = url.pathComponents.last else { return }
 					let video = try await api.video(for: slug)
-					playerVideo = video
+					openVideo(video)
 				case "channel":
 					// nebulaswift://channel/slug
 					guard let slug = url.pathComponents.last else { return }
@@ -73,7 +75,7 @@ struct ContentView: View {
 		.onContinueUserActivity("de.melgu.NebulaSwift.video") { activity in
 			if let video = try? activity.typedPayload(Video.self) {
 				logger.debug("Continue User Activity. Video: \(video.title)")
-				playerVideo = video
+				openVideo(video)
 			} else {
 				logger.debug("Continue User Activity. Video URL: \(activity.webpageURL?.absoluteString ?? "nil")")
 				Task {
@@ -81,7 +83,7 @@ struct ContentView: View {
 					let slug = url.lastPathComponent
 					guard !slug.isEmpty else { return }
 					let video = try await api.video(for: slug)
-					playerVideo = video
+					openVideo(video)
 				}
 			}
 		}
@@ -108,7 +110,42 @@ struct ContentView: View {
 				}
 			}
 		}
+		.onChange(of: player.isPictureInPictureActive) { _, isActive in
+			if isActive {
+				// Keep playing in Picture in Picture while browsing
+				guard let video = playerVideo else { return }
+				logger.debug("Close player for Picture in Picture")
+				pictureInPictureVideo = video
+				playerVideo = nil
+			} else if pictureInPictureVideo != nil {
+				// Picture in Picture was closed without going back to the video
+				logger.debug("Picture in Picture closed")
+				pictureInPictureVideo = nil
+				player.reset()
+				playerDidDismiss()
+			}
+		}
+		.onChange(of: player.pictureInPictureRestore) { _, restore in
+			guard let restore else { return }
+			if pictureInPictureVideo != nil {
+				logger.debug("Restore player from Picture in Picture")
+				pictureInPictureVideo = nil
+				playerVideo = restore.video
+			} else {
+				// The page is still open, or another video replaces it
+				player.completePictureInPictureRestore()
+			}
+		}
 		.alertErrorHandling()
+	}
+
+	private func openVideo(_ video: Video) {
+		if pictureInPictureVideo != nil {
+			logger.debug("Stop Picture in Picture for another video")
+			pictureInPictureVideo = nil
+			player.stopPiP()
+		}
+		playerVideo = video
 	}
 	
 	private var sidebar: some View {

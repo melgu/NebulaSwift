@@ -87,11 +87,15 @@ struct VideoPage: View {
 	private var videoPlayer: some View {
 		Color.black
 			.aspectRatio(16/9, contentMode: .fit)
+			#if canImport(UIKit)
+			.overlay(PictureInPictureSource())
+			#endif
 			.overlay(CustomVideoPlayer())
 			.task {
 				logger.debug("Load Video Stream Info")
 				try await player.replaceVideo(with: video)
 				player.play()
+				player.completePictureInPictureRestore()
 			}
 	}
 	

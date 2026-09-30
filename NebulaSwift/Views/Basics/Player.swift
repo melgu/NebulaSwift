@@ -16,6 +16,8 @@ class Player {
 	private let api: API
 	private let storage: Storage
 
+	/// Only the Picture in Picture controller renders into this layer, but it has to be in a window for Picture in Picture to start.
+	let pictureInPictureLayer: AVPlayerLayer
 	private let pipController: AVPictureInPictureController?
 
 	private var video: Video?
@@ -30,21 +32,34 @@ class Player {
 	private let logger = Logger(category: "Player")
 	
 	private let pipDelegate = PiPDelegate()
+
+	/// Whether the video plays in Picture in Picture, started with ``startPiP()``.
+	private(set) var isPictureInPictureActive = false
+	/// The latest request from Picture in Picture to show the video page again.
+	private(set) var pictureInPictureRestore: PictureInPictureRestore?
+	private var restoreCompletion: ((Bool) -> Void)?
+	/// Whether Picture in Picture waits for the video page to show again.
+	var isRestoringFromPictureInPicture: Bool {
+		restoreCompletion != nil
+	}
 	
 	init(api: API, storage: Storage) {
 		self.api = api
 		self.storage = storage
 
-		let layer = AVPlayerLayer(player: player)
-		pipController = AVPictureInPictureController(playerLayer: layer)
+		pictureInPictureLayer = AVPlayerLayer(player: player)
+		pipController = AVPictureInPictureController(playerLayer: pictureInPictureLayer)
 		pipController?.delegate = pipDelegate
 		
 		#if canImport(UIKit)
 		Self.configurePlaybackSession()
-		pipController?.canStartPictureInPictureAutomaticallyFromInline = true
+		// The player view controller starts Picture in Picture on its own when leaving the app
+		pipController?.canStartPictureInPictureAutomaticallyFromInline = false
 		#endif
 		
 		player.preventsDisplaySleepDuringVideoPlayback = true
+		
+		pipDelegate.player = self
 		
 		rateObservationTask = Task { [weak self, player] in
 			for await rate in player.publisher(for: \.rate).values {
@@ -119,6 +134,38 @@ class Player {
 		logger.debug("Activation state is: \(String(describing: UIApplication.shared.connectedScenes.first?.activationState))")
 		#endif
 		pipController?.startPictureInPicture()
+	}
+	
+	func stopPiP() {
+		pipController?.stopPictureInPicture()
+	}
+	
+	/// Lets Picture in Picture hand the video back, once its page is on screen again.
+	func completePictureInPictureRestore() {
+		guard let restoreCompletion else { return }
+		logger.debug("PiP restore completed")
+		self.restoreCompletion = nil
+		restoreCompletion(true)
+	}
+	
+	fileprivate func pictureInPictureDidStart() {
+		isPictureInPictureActive = true
+	}
+	
+	fileprivate func pictureInPictureDidStop() {
+		isPictureInPictureActive = false
+		// In case nothing showed the video page in time
+		completePictureInPictureRestore()
+	}
+	
+	fileprivate func restoreFromPictureInPicture(completion: @escaping (Bool) -> Void) {
+		guard let video else {
+			completion(false)
+			return
+		}
+		restoreCompletion?(false)
+		restoreCompletion = completion
+		pictureInPictureRestore = PictureInPictureRestore(video: video)
 	}
 	
 	func replaceVideo(with video: Video) async throws {
@@ -205,17 +252,37 @@ extension Player {
 			self.slug = slug
 		}
 	}
+	
+	/// A request from Picture in Picture to show the video page again.
+	struct PictureInPictureRestore: Equatable {
+		let video: Video
+		/// Tells apart requests for the same video.
+		private let id = UUID()
+		
+		init(video: Video) {
+			self.video = video
+		}
+		
+		static func == (lhs: Self, rhs: Self) -> Bool {
+			lhs.id == rhs.id
+		}
+	}
 }
 
-private class PiPDelegate: NSObject, AVPictureInPictureControllerDelegate {
+@MainActor
+private class PiPDelegate: NSObject, @preconcurrency AVPictureInPictureControllerDelegate {
 	private let logger = Logger(category: "PiPDelegate")
-	
+
+	weak var player: Player?
+
 	func pictureInPictureControllerDidStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
 		logger.debug("PiP didStart")
+		player?.pictureInPictureDidStart()
 	}
-	
+
 	func pictureInPictureControllerDidStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
 		logger.debug("PiP didStop")
+		player?.pictureInPictureDidStop()
 	}
 	
 	func pictureInPictureControllerShouldProhibitBackgroundAudioPlayback(_ pictureInPictureController: AVPictureInPictureController) -> Bool {
@@ -233,6 +300,11 @@ private class PiPDelegate: NSObject, AVPictureInPictureControllerDelegate {
 		restoreUserInterfaceForPictureInPictureStopWithCompletionHandler completionHandler: @escaping (Bool) -> Void
 	) {
 		logger.debug("PiP restore UI")
+		if let player {
+			player.restoreFromPictureInPicture(completion: completionHandler)
+		} else {
+			completionHandler(false)
+		}
 	}
 }
 
