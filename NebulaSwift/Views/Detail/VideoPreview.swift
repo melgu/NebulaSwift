@@ -188,6 +188,8 @@ struct LiveVideoPreviewView: View {
 			.task {
 				isMuted = !storage.videoPreviewWithSound
 				player.isMuted = isMuted
+				// The automatic selection turns subtitles off again unless the device itself is muted
+				player.appliesMediaSelectionCriteriaAutomatically = !isMuted
 				if isMuted {
 					mainPlayer.beginMutedPreview()
 				}
@@ -216,6 +218,9 @@ struct LiveVideoPreviewView: View {
 					if let progress = video.engagement?.progress {
 						await player.seek(to: CMTime(seconds: Double(progress), preferredTimescale: 1))
 					}
+					if isMuted {
+						await showSubtitles(for: item)
+					}
 				}
 				try await loadingTask?.value
 			}
@@ -228,6 +233,25 @@ struct LiveVideoPreviewView: View {
 					mainPlayer.endMutedPreview()
 				}
 			}
+	}
+
+	/// Picks subtitles in the video's original language, falling back to the first full subtitle track.
+	private func showSubtitles(for item: AVPlayerItem) async {
+		guard let group = try? await item.asset.loadMediaSelectionGroup(for: .legible) else { return }
+		let options = AVMediaSelectionGroup.mediaSelectionOptions(from: group.options, withoutMediaCharacteristics: [.containsOnlyForcedSubtitles])
+		var original: [AVMediaSelectionOption] = []
+		if let language = await originalLanguage(of: item) {
+			original = AVMediaSelectionGroup.mediaSelectionOptions(from: options, filteredAndSortedAccordingToPreferredLanguages: [language])
+		}
+		guard let option = original.first ?? options.first else { return }
+		item.select(option, in: group)
+	}
+
+	/// The language of the audio track marked as original, or else of the default audio track.
+	private func originalLanguage(of item: AVPlayerItem) async -> String? {
+		guard let group = try? await item.asset.loadMediaSelectionGroup(for: .audible) else { return nil }
+		let original = AVMediaSelectionGroup.mediaSelectionOptions(from: group.options, withMediaCharacteristics: [.isOriginalContent]).first
+		return (original ?? group.defaultOption ?? group.options.first)?.extendedLanguageTag
 	}
 }
 
