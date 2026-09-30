@@ -13,7 +13,8 @@ private let logger = Logger(category: "ContentView")
 
 struct ContentView: View {
 	@Environment(API.self) private var api
-	
+	@Environment(Player.self) private var player
+
 	@State private var myShows: [Channel]?
 	
 	@State private var selection: TopLevel? = .myShows
@@ -25,7 +26,8 @@ struct ContentView: View {
 	
 	@State private var navigationPath = NavigationPath()
 	@State private var playerVideo: Video?
-	
+	@State private var playerDismissalCount = 0
+
 	var body: some View {
 		Group {
 			if api.isLoggedIn {
@@ -190,18 +192,27 @@ struct ContentView: View {
 				ChannelPage(channel: channel)
 			}
 			#if os(iOS)
-			.fullScreenCover(item: $playerVideo) { video in
+			.fullScreenCover(item: $playerVideo, onDismiss: playerDidDismiss) { video in
 				VideoPage(video: video)
 			}
 			#else
-			.sheet(item: $playerVideo) { video in
+			.sheet(item: $playerVideo, onDismiss: playerDidDismiss) { video in
 				VideoPage(video: video)
 					.frame(idealWidth: 760, idealHeight: 640)
 			}
 			#endif
 		}
+		.environment(\.playerDismissalCount, playerDismissalCount)
 	}
-	
+
+	private func playerDidDismiss() {
+		Task {
+			// The refresh should already see the progress and Watch Later changes from playback.
+			await player.waitForPendingUpdates()
+			playerDismissalCount += 1
+		}
+	}
+
 	private func refreshMyShows() async throws {
 		myShows = try await api.libraryChannels(page: 1, pageSize: 200)
 	}

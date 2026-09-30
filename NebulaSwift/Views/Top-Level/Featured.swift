@@ -40,6 +40,10 @@ struct Featured: View {
 				.hidden()
 		}
 		#endif
+		.onPlayerDismiss {
+			guard loading == nil else { return }
+			try await refreshFeatured(animated: true)
+		}
 		.onAppear {
 			// Pushing this view cancels a `.task` mid-flight without ever starting it again, which
 			// leaves the page empty on iPhone, so the load outlives the view's appearance instead.

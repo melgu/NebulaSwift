@@ -104,6 +104,11 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable & Sendable, Pre
 		.onChange(of: value) {
 			loadItems()
 		}
+		.onPlayerDismiss {
+			// The initial load already brings the latest items.
+			guard loading == nil else { return }
+			try await refreshItems()
+		}
 		.onChange(of: shouldLoadNextPage) { _, shouldLoad in
 			if shouldLoad {
 				loadNextPages()
