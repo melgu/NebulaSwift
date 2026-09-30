@@ -33,7 +33,7 @@ class Player {
 		pipController?.delegate = pipDelegate
 		
 		#if canImport(UIKit)
-		try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback)
+		Self.configurePlaybackSession()
 		pipController?.canStartPictureInPictureAutomaticallyFromInline = true
 		#endif
 		
@@ -57,6 +57,8 @@ class Player {
 	func play() {
 		logger.debug("Play")
 		#if canImport(UIKit)
+		// A muted preview may have left the session mixable
+		Self.configurePlaybackSession()
 		try? AVAudioSession.sharedInstance().setActive(true)
 		#endif
 		player.play()
@@ -69,6 +71,30 @@ class Player {
 		try? AVAudioSession.sharedInstance().setActive(false)
 		#endif
 	}
+	
+	/// Lets a muted preview play without interrupting other apps' audio.
+	func beginMutedPreview() {
+		#if canImport(UIKit)
+		// Leave the session alone while the main player owns it
+		guard player.rate.isZero else { return }
+		try? AVAudioSession.sharedInstance().setCategory(.ambient)
+		#endif
+	}
+	
+	func endMutedPreview() {
+		#if canImport(UIKit)
+		guard player.rate.isZero else { return }
+		// Deactivate first, so switching back to a non-mixable category doesn't interrupt other audio
+		try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+		Self.configurePlaybackSession()
+		#endif
+	}
+	
+	#if canImport(UIKit)
+	private static func configurePlaybackSession() {
+		try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback)
+	}
+	#endif
 	
 	func startPiP() {
 		logger.debug("Possible: \(String(describing: self.pipController?.isPictureInPicturePossible)), active: \(String(describing: self.pipController?.isPictureInPictureActive)), suspended: \(String(describing: self.pipController?.isPictureInPictureSuspended))")

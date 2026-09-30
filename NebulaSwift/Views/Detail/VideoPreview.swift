@@ -164,9 +164,11 @@ struct LiveVideoPreviewView: View {
 	let video: Video
 	
 	@Environment(API.self) private var api
+	@Environment(Player.self) private var mainPlayer
 	@Environment(Storage.self) private var storage
 	
 	@State private var player = AVPlayer()
+	@State private var isMuted = false
 	@State private var loadingTask: Task<Void, Error>?
 	@State private var prerollTask: Task<Void, Error>?
 	@State private var readyToPlay = false
@@ -184,7 +186,11 @@ struct LiveVideoPreviewView: View {
 				}
 			}
 			.task {
-				player.volume = storage.videoPreviewWithSound ? 1 : 0
+				isMuted = !storage.videoPreviewWithSound
+				player.isMuted = isMuted
+				if isMuted {
+					mainPlayer.beginMutedPreview()
+				}
 				
 				cancellable = player.publisher(for: \.status)
 					.print("Video Preview")
@@ -217,6 +223,10 @@ struct LiveVideoPreviewView: View {
 				loadingTask?.cancel()
 				prerollTask?.cancel()
 				cancellable?.cancel()
+				player.pause()
+				if isMuted {
+					mainPlayer.endMutedPreview()
+				}
 			}
 	}
 }
