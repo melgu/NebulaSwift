@@ -1,0 +1,34 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Show ${applicationName} channel" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "de" : {
+          "stringSet" : {
+            "state" : "translated",
+            "values" : [
+              "${applicationName}-Kanal anzeigen",
+              "Zeige ${applicationName}-Kanal",
+              "Kanal in ${applicationName} anzeigen",
+              "Zeige Kanal in ${applicationName}",
+              "${channel} in ${applicationName} anzeigen",
+              "Zeige ${channel} in ${applicationName}"
+            ]
+          }
+        },
+        "en" : {
+          "stringSet" : {
+            "state" : "new",
+            "values" : [
+              "Show ${applicationName} channel",
+              "Show channel in ${applicationName}",
+              "Show ${channel} in ${applicationName}"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

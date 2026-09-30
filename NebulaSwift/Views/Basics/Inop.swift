@@ -13,7 +13,7 @@ enum Inop: LocalizedError {
 	var errorDescription: String? {
 		switch self {
 		case .comingSoon:
-			return "This functionality is not yet implemented, but will be coming soon."
+			return String(localized: "This functionality is not yet implemented, but will be coming soon.")
 		}
 	}
 }

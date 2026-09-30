@@ -20,15 +20,15 @@ extension APIError {
 	var errorDescription: String? {
 		switch self {
 		case .invalidServerResponse(let errorCode):
-			return "Invalid server response. Error code \(errorCode)"
+			return String(localized: "Invalid server response. Error code \(errorCode)")
 		case .networkIssues:
-			return "Network issues"
+			return String(localized: "Network issues")
 		case .requestTimedOut(let url):
-			return "Request time out. URL: \(url?.absoluteString ?? "nil")"
+			return String(localized: "Request timed out. URL: \(url?.absoluteString ?? "nil")")
 		case .missingToken, .missingBearer:
-			return "Missing authorization"
+			return String(localized: "Missing authorization")
 		case .missingEngagement:
-			return "Missing engagement information"
+			return String(localized: "Missing engagement information")
 		}
 	}
 }
