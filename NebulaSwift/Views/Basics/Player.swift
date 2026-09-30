@@ -22,7 +22,11 @@ class Player {
 	private var task: Task<(), Error>?
 	private var rateObservationTask: Task<(), Never>?
 	private var endObservationTask: Task<(), Never>?
-	
+	private var lastUpdate: Task<(), Never>?
+
+	/// The latest video removed from Watch Later because it played to the end.
+	private(set) var watchLaterRemoval: WatchLaterRemoval?
+
 	private let logger = Logger(category: "Player")
 	
 	private let pipDelegate = PiPDelegate()
@@ -152,14 +156,18 @@ class Player {
 		#endif
 	}
 	
+	/// Waits until the server has received every update the player sent so far, like progress or Watch Later changes.
+	func waitForPendingUpdates() async {
+		await lastUpdate?.value
+	}
+
 	private func didPlayToEnd() {
-		guard storage.removeFromWatchLaterAfterPlayback,
-			  let video = video,
-			  video.engagement?.watchLater != false
-		else { return }
+		// The video's engagement is from when it was opened, so it may not know about later Watch Later changes.
+		guard storage.removeFromWatchLaterAfterPlayback, let video = video else { return }
 		logger.log("Remove \(video.title) from Watch Later after playback")
-		Task {
+		enqueueUpdate { [api] in
 			try await api.removeVideoFromWatchLater(video)
+			self.watchLaterRemoval = WatchLaterRemoval(slug: video.slug)
 		}
 	}
 
@@ -167,8 +175,34 @@ class Player {
 		guard let video = video, player.currentItem != nil else { return }
 		let seconds = Int(player.currentTime().seconds)
 		logger.log("Send progress. \(video.title), progress: \(seconds) s")
-		Task {
+		enqueueUpdate { [api] in
 			try await api.sendProgress(for: video, seconds: seconds)
+		}
+	}
+
+	/// Sends updates one after the other, so ``waitForPendingUpdates()`` only has to wait for the last one.
+	private func enqueueUpdate(_ update: @escaping @MainActor () async throws -> Void) {
+		let previous = lastUpdate
+		lastUpdate = Task {
+			await previous?.value
+			do {
+				try await update()
+			} catch {
+				logger.error("Update failed: \(error)")
+			}
+		}
+	}
+}
+
+extension Player {
+	/// A video removed from Watch Later because it played to the end.
+	struct WatchLaterRemoval: Equatable {
+		let slug: String
+		/// Tells apart removals of the same video, in case it was added back and played again.
+		private let id = UUID()
+
+		init(slug: String) {
+			self.slug = slug
 		}
 	}
 }

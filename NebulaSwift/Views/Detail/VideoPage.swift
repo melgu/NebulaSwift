@@ -55,7 +55,7 @@ struct VideoPage: View {
 						} else {
 							AsyncButton {
 								try await api.addVideoToWatchLater(video)
-								self.watchLater = false
+								self.watchLater = true
 								await refresh?()
 							} label: {
 								Label("Add to Watch Later", systemImage: "bookmark")
@@ -71,6 +71,11 @@ struct VideoPage: View {
 				}
 			}
 			#endif
+		}
+		.onChange(of: player.watchLaterRemoval) { _, removal in
+			if removal?.slug == video.slug {
+				watchLater = false
+			}
 		}
 		.userActivity("de.melgu.NebulaSwift.video") { activity in
 			activity.title = video.title
