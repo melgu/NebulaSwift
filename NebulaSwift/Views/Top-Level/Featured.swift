@@ -135,6 +135,6 @@ struct Featured_Previews: PreviewProvider {
 	static var previews: some View {
 		Featured()
 			.environment(api)
-			.environment(Player(api: api))
+			.environment(Player(api: api, storage: Storage()))
 	}
 }

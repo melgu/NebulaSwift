@@ -11,12 +11,14 @@ import SwiftUI
 struct NebulaSwiftApp: App {
 	@State private var api: API
 	@State private var player: Player
-	@State private var storage = Storage()
-	
+	@State private var storage: Storage
+
 	init() {
 		let api = API()
+		let storage = Storage()
 		self.api = api
-		self.player = Player(api: api)
+		self.storage = storage
+		self.player = Player(api: api, storage: storage)
 	}
 	
 	var body: some Scene {

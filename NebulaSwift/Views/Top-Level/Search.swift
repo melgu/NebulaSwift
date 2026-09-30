@@ -69,6 +69,6 @@ struct Search_Previews: PreviewProvider {
 	static var previews: some View {
 		Search()
 			.environment(api)
-			.environment(Player(api: api))
+			.environment(Player(api: api, storage: Storage()))
 	}
 }

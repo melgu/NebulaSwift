@@ -29,15 +29,16 @@ struct SettingsView: View {
 	private var content: some View {
 		@Bindable var storage = storage
 		return List {
-			#if os(iOS) // No way to automatically enter fullscreen on macOS (without crashing the OS)
 			Section("Playback") {
+				#if os(iOS) // No way to automatically enter fullscreen on macOS (without crashing the OS)
 				Toggle("Automatic Fullscreen", isOn: $storage.automaticFullscreen)
 				Toggle("Video Preview", isOn: $storage.videoPreview)
 				if storage.videoPreview {
 					Toggle("Preview with sound", isOn: $storage.videoPreviewWithSound)
 				}
+				#endif
+				Toggle("Remove from Watch Later after playback", isOn: $storage.removeFromWatchLaterAfterPlayback)
 			}
-			#endif
 			Section("User") {
 				Button {
 					dismiss()
@@ -83,7 +84,7 @@ fileprivate struct SettingsSheet: ViewModifier {
 
 #Preview {
 	@Previewable @State var api = API()
-	@Previewable @State var player = Player(api: API())
+	@Previewable @State var player = Player(api: API(), storage: Storage())
 	@Previewable @State var storage = Storage()
 	
 	SettingsView()

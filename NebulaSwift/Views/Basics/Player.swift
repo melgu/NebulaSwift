@@ -14,20 +14,23 @@ class Player {
 	let player = AVPlayer()
 	
 	private let api: API
-	
+	private let storage: Storage
+
 	private let pipController: AVPictureInPictureController?
-	
+
 	private var video: Video?
 	private var task: Task<(), Error>?
 	private var rateObservationTask: Task<(), Never>?
+	private var endObservationTask: Task<(), Never>?
 	
 	private let logger = Logger(category: "Player")
 	
 	private let pipDelegate = PiPDelegate()
 	
-	init(api: API) {
+	init(api: API, storage: Storage) {
 		self.api = api
-		
+		self.storage = storage
+
 		let layer = AVPlayerLayer(player: player)
 		pipController = AVPictureInPictureController(playerLayer: layer)
 		pipController?.delegate = pipDelegate
@@ -47,11 +50,21 @@ class Player {
 				}
 			}
 		}
+
+		endObservationTask = Task { [weak self, player] in
+			for await item in NotificationCenter.default.publisher(for: AVPlayerItem.didPlayToEndTimeNotification).map({ $0.object as? AVPlayerItem }).values {
+				guard let self else { return }
+				if let item, item === player.currentItem {
+					didPlayToEnd()
+				}
+			}
+		}
 	}
-	
+
 	@MainActor
 	deinit {
 		rateObservationTask?.cancel()
+		endObservationTask?.cancel()
 	}
 	
 	func play() {
@@ -139,6 +152,17 @@ class Player {
 		#endif
 	}
 	
+	private func didPlayToEnd() {
+		guard storage.removeFromWatchLaterAfterPlayback,
+			  let video = video,
+			  video.engagement?.watchLater != false
+		else { return }
+		logger.log("Remove \(video.title) from Watch Later after playback")
+		Task {
+			try await api.removeVideoFromWatchLater(video)
+		}
+	}
+
 	private func sendProgress() {
 		guard let video = video, player.currentItem != nil else { return }
 		let seconds = Int(player.currentTime().seconds)

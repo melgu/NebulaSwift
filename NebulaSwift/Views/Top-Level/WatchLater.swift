@@ -27,6 +27,6 @@ struct WatchLater_Previews: PreviewProvider {
 	static var previews: some View {
 		WatchLater()
 			.environment(api)
-			.environment(Player(api: api))
+			.environment(Player(api: api, storage: Storage()))
 	}
 }

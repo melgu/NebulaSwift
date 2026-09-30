@@ -18,13 +18,17 @@ class Storage {
 	var videoPreviewWithSound: Bool {
 		didSet { UserDefaults.standard.set(videoPreviewWithSound, forKey: Defaults.videoPreviewWithSound) }
 	}
-	
+	var removeFromWatchLaterAfterPlayback: Bool {
+		didSet { UserDefaults.standard.set(removeFromWatchLaterAfterPlayback, forKey: Defaults.removeFromWatchLaterAfterPlayback) }
+	}
+
 	init() {
 		let defaults = UserDefaults.standard
 		
 		automaticFullscreen = defaults.bool(forKey: Defaults.automaticFullscreen)
 		videoPreview = defaults.optionalBool(forKey: Defaults.videoPreview) ?? true
 		videoPreviewWithSound = defaults.optionalBool(forKey: Defaults.videoPreviewWithSound) ?? true
+		removeFromWatchLaterAfterPlayback = defaults.bool(forKey: Defaults.removeFromWatchLaterAfterPlayback)
 	}
 }
 

@@ -63,6 +63,6 @@ struct CustomVideoPlayer: NSViewRepresentable {
 struct CustomVideoPlayer_Previews: PreviewProvider {
 	static var previews: some View {
 		CustomVideoPlayer()
-			.environment(Player(api: API()))
+			.environment(Player(api: API(), storage: Storage()))
 	}
 }
