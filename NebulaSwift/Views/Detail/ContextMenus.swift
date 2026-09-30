@@ -23,7 +23,7 @@ struct VideoContextMenu: ViewModifier {
 	@Environment(Storage.self) private var storage
 
 	@Environment(\.goToChannelEnabled) private var goToChannelEnabled
-	@Environment(\.assumeWatchLater) private var assumeWatchLater
+	@Environment(\.isWatchLaterList) private var isWatchLaterList
 	@Environment(\.refresh) private var refresh
 	@Environment(\.replaceGridItem) private var replaceGridItem
 	
@@ -43,10 +43,10 @@ struct VideoContextMenu: ViewModifier {
 				Divider()
 				
 				if let engagement = video.engagement {
-					if engagement.watchLater || assumeWatchLater {
+					if engagement.watchLater {
 						AsyncButton {
 							try await api.removeVideoFromWatchLater(video)
-							if assumeWatchLater, let replaceGridItem {
+							if isWatchLaterList, let replaceGridItem {
 								replaceGridItem(video, with: nil)
 								// The removal shifts every later page by one, which only a refresh catches up with.
 								await refresh?()

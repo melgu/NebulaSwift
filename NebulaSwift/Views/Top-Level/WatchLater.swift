@@ -15,7 +15,7 @@ struct WatchLater: View {
 		AutoVideoGrid(fetch: { page in
 			try await api.watchLaterVideos(page: page)
 		})
-		.assumeWatchLater()
+		.watchLaterList()
 		.navigationTitle("Watch Later")
 		.statisticsAlert { try await api.watchLaterStatistics() }
 	}

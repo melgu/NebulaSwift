@@ -22,12 +22,13 @@ extension View {
 }
 
 extension EnvironmentValues {
-	@Entry var assumeWatchLater: Bool = false
+	/// Whether the videos are shown as part of the Watch Later list, so removing one takes it out of the list.
+	@Entry var isWatchLaterList: Bool = false
 }
 
 extension View {
-	func assumeWatchLater() -> some View {
-		environment(\.assumeWatchLater, true)
+	func watchLaterList() -> some View {
+		environment(\.isWatchLaterList, true)
 	}
 }
 
@@ -65,7 +66,6 @@ struct VideoPreview: View {
 struct VideoPreviewView: View {
 	let video: Video
 	
-	@Environment(\.assumeWatchLater) private var assumeWatchLater
 	@Environment(Storage.self) private var storage
 	
 	init(video: Video) {
@@ -115,7 +115,7 @@ struct VideoPreviewView: View {
 	
 	private var informationOverlay: some View {
 		VStack(alignment: .trailing) {
-			if video.engagement?.watchLater == true || assumeWatchLater {
+			if video.engagement?.watchLater == true {
 				Image(systemName: "bookmark.fill")
 					.padding(2)
 					.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
