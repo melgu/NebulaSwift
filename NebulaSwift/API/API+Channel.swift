@@ -130,9 +130,13 @@ extension API {
 		try await withEngagement([channel]).first?.engagement?.following ?? false
 	}
 	
-	private func videoContainer(for channel: Channel, offset: Int, pageSize: Int) async throws -> ListContainer<Video> {
+	private func videoListURL(for channel: Channel, offset: Int, pageSize: Int) throws -> URL {
 		assert(pageSize <= 100, "The Nebula API only supports page sizes up to 100")
-		let url = try URL(string: "https://content.api.nebula.app/video_channels/\(channel.slug)/video_episodes/?offset=\(offset)&page_size=\(pageSize)").require()
+		return try URL(string: "https://content.api.nebula.app/video_channels/\(channel.slug)/video_episodes/?offset=\(offset)&page_size=\(pageSize)").require()
+	}
+
+	private func videoContainer(for channel: Channel, offset: Int, pageSize: Int) async throws -> ListContainer<Video> {
+		let url = try videoListURL(for: channel, offset: offset, pageSize: pageSize)
 		return try await request(.get, url: url, authorization: .bearer)
 	}
 	
@@ -161,17 +165,9 @@ extension API {
 	}
 	
 	func statistics(for channel: Channel) async throws -> VideoListStatistics {
-		var count = 0
-		var seconds = 0
-		var page = 1
-		while true {
-			let container = try await videoContainer(for: channel, page: page, pageSize: 100)
-			count += container.results.count
-			seconds += container.results.map(\.duration).reduce(0, +)
-			guard container.next != nil else { break }
-			page += 1
+		try await statistics { offset, pageSize in
+			try videoListURL(for: channel, offset: offset, pageSize: pageSize)
 		}
-		return .init(count: count, duration: .seconds(seconds))
 	}
 	
 	func follow(_ channel: Channel) async throws {
