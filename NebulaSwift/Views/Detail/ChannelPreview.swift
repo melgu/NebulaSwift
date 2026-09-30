@@ -9,12 +9,17 @@ import SwiftUI
 
 struct ChannelPreview: View {
 	let channel: Channel
-	
+
+	/// The drag preview is laid out without a size proposal, so it adopts the cell's width to match the grid.
+	@State private var width: CGFloat?
+
 	var body: some View {
 		NavigationLink(value: channel) {
 			ChannelPreviewView(channel: channel)
+				.onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width = $0 }
 				.draggable(channel.shareUrl) {
 					ChannelPreviewView(channel: channel)
+						.frame(width: width)
 						.background(Color.systemBackground)
 						.cornerRadius(8)
 				}

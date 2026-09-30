@@ -37,14 +37,19 @@ struct VideoPreview: View {
 	let video: Video
 	
 	@Environment(\.openItem) private var openItem
-	
+
+	/// The drag preview is laid out without a size proposal, so it adopts the cell's width to match the grid.
+	@State private var width: CGFloat?
+
 	var body: some View {
 		Button {
 			openItem(video)
 		} label: {
 			VideoPreviewView(video: video)
+				.onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width = $0 }
 				.draggable(video.shareUrl) {
 					VideoPreviewView(video: video)
+						.frame(width: width)
 						.background(Color.systemBackground)
 						.cornerRadius(8)
 				}
