@@ -13,7 +13,9 @@ struct SettingsView: View {
 	@Environment(Player.self) private var player
 	
 	@Environment(\.dismiss) private var dismiss
-	
+
+	@State private var showLogoutConfirmation = false
+
 	var body: some View {
 		#if os(iOS)
 		NavigationStack {
@@ -43,14 +45,19 @@ struct SettingsView: View {
 				Stepper("Preview title lines: \(storage.previewTitleLines)", value: $storage.previewTitleLines, in: 1...3)
 			}
 			Section("User") {
-				Button {
-					dismiss()
-					player.reset()
-					api.logout()
+				Button(role: .destructive) {
+					showLogoutConfirmation = true
 				} label: {
 					Text("Logout")
 				}
 				.disabled(!api.isLoggedIn)
+				.confirmationDialog("Do you really want to log out?", isPresented: $showLogoutConfirmation, titleVisibility: .visible) {
+					Button("Logout", role: .destructive) {
+						dismiss()
+						player.reset()
+						api.logout()
+					}
+				}
 			}
 		}
 	}

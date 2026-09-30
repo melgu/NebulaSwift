@@ -127,6 +127,16 @@
     "Destination" : {
       "shouldTranslate" : false
     },
+    "Do you really want to log out?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Möchtest du dich wirklich abmelden?"
+          }
+        }
+      }
+    },
     "Download" : {
       "localizations" : {
         "de" : {
