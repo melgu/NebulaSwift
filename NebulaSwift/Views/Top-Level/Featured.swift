@@ -18,9 +18,16 @@ struct Featured: View {
 	
 	var body: some View {
 		ScrollView(.vertical) {
-			VStack(alignment: .leading, spacing: 32) {
-				ForEach(featured) { feature in
-					row(for: feature)
+			if featured.isEmpty, loading != nil {
+				ProgressView()
+					.controlSize(.large)
+					.frame(maxWidth: .infinity)
+					.containerRelativeFrame(.vertical)
+			} else {
+				VStack(alignment: .leading, spacing: 32) {
+					ForEach(featured) { feature in
+						row(for: feature)
+					}
 				}
 			}
 		}
