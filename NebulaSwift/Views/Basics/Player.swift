@@ -25,6 +25,8 @@ class Player {
 	private var rateObservationTask: Task<(), Never>?
 	private var endObservationTask: Task<(), Never>?
 	private var lastUpdate: Task<(), Never>?
+	/// Whether the player has seeked to the video's saved progress, so its position is worth reporting.
+	private var isAtSavedProgress = false
 
 	/// The latest video removed from Watch Later because it played to the end.
 	private(set) var watchLaterRemoval: WatchLaterRemoval?
@@ -179,7 +181,8 @@ class Player {
 		sendProgress()
 		
 		self.video = video
-		
+		isAtSavedProgress = false
+
 		task = Task {
 						let item = AVPlayerItem(url: try api.manifestURL(for: video))
 			try Task.checkCancellation()
@@ -188,6 +191,8 @@ class Player {
 				logger.debug("Seeking to progress \(progress)")
 				await player.seek(to: CMTime(seconds: Double(progress), preferredTimescale: 1))
 			}
+			try Task.checkCancellation()
+			isAtSavedProgress = true
 		}
 		try await task?.value
 	}
@@ -197,6 +202,7 @@ class Player {
 		sendProgress()
 		task?.cancel()
 		video = nil
+		isAtSavedProgress = false
 		player.replaceCurrentItem(with: nil)
 		#if canImport(UIKit)
 		try? AVAudioSession.sharedInstance().setActive(false)
@@ -219,11 +225,25 @@ class Player {
 	}
 
 	private func sendProgress() {
-		guard let video = video, player.currentItem != nil else { return }
+		// Before the seek, the position is 0 and would clear the saved progress
+		guard let video = video, player.currentItem != nil, isAtSavedProgress else { return }
 		let seconds = Int(player.currentTime().seconds)
-		logger.log("Send progress. \(video.title), progress: \(seconds) s")
-		enqueueUpdate { [api] in
-			try await api.sendProgress(for: video, seconds: seconds)
+		switch WatchState(seconds: seconds, duration: video.duration) {
+		case .unwatched:
+			logger.log("Clear progress. \(video.title), progress: \(seconds) s")
+			enqueueUpdate { [api] in
+				try await api.clearProgress(for: video)
+			}
+		case .inProgress:
+			logger.log("Send progress. \(video.title), progress: \(seconds) s")
+			enqueueUpdate { [api] in
+				try await api.sendProgress(for: video, seconds: seconds)
+			}
+		case .watched:
+			logger.log("Mark as watched. \(video.title), progress: \(seconds) s")
+			enqueueUpdate { [api] in
+				try await api.markVideoAsWatched(video)
+			}
 		}
 	}
 
@@ -242,6 +262,29 @@ class Player {
 }
 
 extension Player {
+	/// What to report for a video stopped at a given position.
+	enum WatchState: Equatable {
+		case unwatched
+		case inProgress
+		case watched
+
+		/// How close to the start or end a position counts as unwatched or watched.
+		static let margin = 10
+
+		init(seconds: Int, duration: Int) {
+			if duration < 2 * Self.margin {
+				// The margins would overlap, so the closer end wins
+				self = seconds * 2 < duration ? .unwatched : .watched
+			} else if seconds < Self.margin {
+				self = .unwatched
+			} else if duration - seconds < Self.margin {
+				self = .watched
+			} else {
+				self = .inProgress
+			}
+		}
+	}
+
 	/// A video removed from Watch Later because it played to the end.
 	struct WatchLaterRemoval: Equatable {
 		let slug: String
