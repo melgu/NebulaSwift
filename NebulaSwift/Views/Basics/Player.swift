@@ -250,7 +250,7 @@ class Player {
 	/// Sends updates one after the other, so ``waitForPendingUpdates()`` only has to wait for the last one.
 	private func enqueueUpdate(_ update: @escaping @MainActor () async throws -> Void) {
 		let previous = lastUpdate
-		lastUpdate = Task {
+		lastUpdate = Task.finishingInBackground(named: "Player update") {
 			await previous?.value
 			do {
 				try await update()
