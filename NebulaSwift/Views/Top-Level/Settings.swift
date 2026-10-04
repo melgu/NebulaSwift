@@ -60,6 +60,8 @@ struct SettingsView: View {
 				}
 			}
 		}
+		// On a section, the modifier only reaches its rows, which can't animate their own insertion
+		.animation(.default, value: storage.videoPreview)
 	}
 }
 
