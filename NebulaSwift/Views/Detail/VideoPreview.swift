@@ -182,7 +182,7 @@ struct LiveVideoPreviewView: View {
 		VideoPreviewImage(video: video)
 			.overlay {
 				if readyToPlay {
-					VideoPlayer(player: player)
+					PreviewVideoPlayer(player: player)
 						.transition(.opacity)
 				} else {
 					ProgressView()
@@ -254,6 +254,24 @@ struct LiveVideoPreviewView: View {
 		return (original ?? group.defaultOption ?? group.options.first)?.extendedLanguageTag
 	}
 }
+
+#if canImport(UIKit)
+/// Plays a preview without taking over Now Playing, which confuses other apps resuming their audio afterwards.
+private struct PreviewVideoPlayer: UIViewControllerRepresentable {
+	let player: AVPlayer
+
+	func makeUIViewController(context: Context) -> AVPlayerViewController {
+		let playerViewController = AVPlayerViewController()
+		playerViewController.player = player
+		playerViewController.updatesNowPlayingInfoCenter = false
+		return playerViewController
+	}
+
+	func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {}
+}
+#else
+private typealias PreviewVideoPlayer = VideoPlayer<EmptyView>
+#endif
 
 struct VideoPreview_Previews: PreviewProvider {
 	static var previews: some View {

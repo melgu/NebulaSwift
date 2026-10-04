@@ -137,7 +137,12 @@ class Player {
 		}
 		guard player.rate.isZero else { return }
 		// Deactivate first, so switching back to a non-mixable category doesn't interrupt other audio
-		try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+		do {
+			try AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+			logger.debug("Deactivated session after preview")
+		} catch {
+			logger.error("Deactivating session after preview failed: \(error)")
+		}
 		if muted {
 			Self.configurePlaybackSession()
 		}
