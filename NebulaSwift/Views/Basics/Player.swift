@@ -27,6 +27,8 @@ class Player {
 	private var lastUpdate: Task<(), Never>?
 	/// Whether the player has seeked to the video's saved progress, so its position is worth reporting.
 	private var isAtSavedProgress = false
+	/// Whether a preview with sound paused the video, so it resumes once the preview ends.
+	private var isPausedForPreview = false
 
 	/// The latest video removed from Watch Later because it played to the end.
 	private(set) var watchLaterRemoval: WatchLaterRemoval?
@@ -68,6 +70,8 @@ class Player {
 				guard let self else { return }
 				if rate.isZero {
 					sendProgress()
+				} else {
+					didStartPlaying()
 				}
 			}
 		}
@@ -106,24 +110,52 @@ class Player {
 		#endif
 	}
 	
-	/// Lets a muted preview play without interrupting other apps' audio.
-	func beginMutedPreview() {
+	/// Lets a muted preview play without interrupting other apps' audio, and pauses the video for a preview with sound.
+	func beginPreview(muted: Bool) {
 		#if canImport(UIKit)
-		// Leave the session alone while the main player owns it
-		guard player.rate.isZero else { return }
-		try? AVAudioSession.sharedInstance().setCategory(.ambient)
+		if muted {
+			// Leave the session alone while the main player owns it
+			guard player.rate.isZero else { return }
+			try? AVAudioSession.sharedInstance().setCategory(.ambient)
+		} else if !player.rate.isZero {
+			logger.debug("Pause for preview with sound")
+			// The preview takes over the session, so it stays active
+			player.pause()
+			isPausedForPreview = true
+		}
 		#endif
 	}
-	
-	func endMutedPreview() {
+
+	/// Resumes the video a preview paused, or else hands the audio back to other apps.
+	func endPreview(muted: Bool) {
 		#if canImport(UIKit)
+		if isPausedForPreview {
+			isPausedForPreview = false
+			logger.debug("Resume after preview")
+			play()
+			return
+		}
 		guard player.rate.isZero else { return }
 		// Deactivate first, so switching back to a non-mixable category doesn't interrupt other audio
 		try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
-		Self.configurePlaybackSession()
+		if muted {
+			Self.configurePlaybackSession()
+		}
 		#endif
 	}
-	
+
+	/// Picture in Picture plays the video without ``play()``, so this also covers a session a muted preview left mixable.
+	private func didStartPlaying() {
+		isPausedForPreview = false
+		#if canImport(UIKit)
+		let session = AVAudioSession.sharedInstance()
+		guard session.category != .playback else { return }
+		logger.debug("Restore playback session")
+		Self.configurePlaybackSession()
+		try? session.setActive(true)
+		#endif
+	}
+
 	#if canImport(UIKit)
 	private static func configurePlaybackSession() {
 		try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback)
@@ -182,6 +214,7 @@ class Player {
 		
 		self.video = video
 		isAtSavedProgress = false
+		isPausedForPreview = false
 
 		task = Task {
 						let item = AVPlayerItem(url: try api.manifestURL(for: video))
@@ -203,6 +236,7 @@ class Player {
 		task?.cancel()
 		video = nil
 		isAtSavedProgress = false
+		isPausedForPreview = false
 		player.replaceCurrentItem(with: nil)
 		#if canImport(UIKit)
 		try? AVAudioSession.sharedInstance().setActive(false)

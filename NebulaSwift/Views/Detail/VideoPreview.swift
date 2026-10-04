@@ -194,9 +194,7 @@ struct LiveVideoPreviewView: View {
 				player.isMuted = isMuted
 				// The automatic selection turns subtitles off again unless the device itself is muted
 				player.appliesMediaSelectionCriteriaAutomatically = !isMuted
-				if isMuted {
-					mainPlayer.beginMutedPreview()
-				}
+				mainPlayer.beginPreview(muted: isMuted)
 				
 				cancellable = player.publisher(for: \.status)
 					.print("Video Preview")
@@ -233,9 +231,7 @@ struct LiveVideoPreviewView: View {
 				prerollTask?.cancel()
 				cancellable?.cancel()
 				player.pause()
-				if isMuted {
-					mainPlayer.endMutedPreview()
-				}
+				mainPlayer.endPreview(muted: isMuted)
 			}
 	}
 
