@@ -190,6 +190,13 @@ struct ContentView: View {
 						Task { await loadMyShows() }
 					}
 				}
+			} else {
+				Section("My Shows") {
+					ProgressView()
+						.controlSize(.large)
+						.frame(maxWidth: .infinity)
+						.listRowBackground(Color.clear)
+				}
 			}
 		}
 		.searchable(text: $searchTerm, placement: .sidebar, prompt: Text("Search My Shows"))
