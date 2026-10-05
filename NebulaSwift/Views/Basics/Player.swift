@@ -16,6 +16,8 @@ class Player {
 	private let api: API
 	private let storage: Storage
 	private let downloads: DownloadManager
+	/// Keeps the progress until the server has it, so playback can continue offline.
+	let progressSync: ProgressSync
 
 	/// Only the Picture in Picture controller renders into this layer, but it has to be in a window for Picture in Picture to start.
 	let pictureInPictureLayer: AVPlayerLayer
@@ -52,6 +54,7 @@ class Player {
 		self.api = api
 		self.storage = storage
 		self.downloads = downloads
+		self.progressSync = ProgressSync(api: api)
 
 		pictureInPictureLayer = AVPlayerLayer(player: player)
 		pipController = AVPictureInPictureController(playerLayer: pictureInPictureLayer)
@@ -228,7 +231,8 @@ class Player {
 			let item = AVPlayerItem(url: try downloads.fileURL(for: video) ?? api.manifestURL(for: video))
 			try Task.checkCancellation()
 			player.replaceCurrentItem(with: item)
-			if let progress = video.engagement?.progress {
+			// Progress made offline is newer than the video's
+			if let progress = progressSync.resumePosition(for: video) ?? video.engagement?.progress {
 				logger.debug("Seeking to progress \(progress)")
 				await player.seek(to: CMTime(seconds: Double(progress), preferredTimescale: 1))
 			}
@@ -270,22 +274,9 @@ class Player {
 		// Before the seek, the position is 0 and would clear the saved progress
 		guard let video = video, player.currentItem != nil, isAtSavedProgress else { return }
 		let seconds = Int(player.currentTime().seconds)
-		switch WatchState(seconds: seconds, duration: video.duration) {
-		case .unwatched:
-			logger.log("Clear progress. \(video.title), progress: \(seconds) s")
-			enqueueUpdate { [api] in
-				try await api.clearProgress(for: video)
-			}
-		case .inProgress:
-			logger.log("Send progress. \(video.title), progress: \(seconds) s")
-			enqueueUpdate { [api] in
-				try await api.sendProgress(for: video, seconds: seconds)
-			}
-		case .watched:
-			logger.log("Mark as watched. \(video.title), progress: \(seconds) s")
-			enqueueUpdate { [api] in
-				try await api.markVideoAsWatched(video)
-			}
+		let state = WatchState(seconds: seconds, duration: video.duration)
+		enqueueUpdate { [progressSync] in
+			await progressSync.submit(state, seconds: seconds, for: video)
 		}
 	}
 
@@ -305,7 +296,7 @@ class Player {
 
 extension Player {
 	/// What to report for a video stopped at a given position.
-	enum WatchState: Equatable {
+	enum WatchState: Equatable, Codable {
 		case unwatched
 		case inProgress
 		case watched

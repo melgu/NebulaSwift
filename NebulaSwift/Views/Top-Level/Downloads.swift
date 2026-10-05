@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Downloads: View {
 	@Environment(DownloadManager.self) private var downloads
+	@Environment(Player.self) private var player
 	
 	var body: some View {
 		content
@@ -27,10 +28,10 @@ struct Downloads: View {
 			#endif
 			.task {
 				downloads.refreshFiles()
-				await downloads.refreshEngagement()
+				await refreshEngagement()
 			}
 			.onPlayerDismiss {
-				await downloads.refreshEngagement()
+				await refreshEngagement()
 			}
 	}
 	
@@ -78,14 +79,20 @@ struct Downloads: View {
 		}
 	}
 	
-	/// In the order they download.
-	private var unfinished: [Video] {
-		downloads.downloads.filter { $0.state != .finished }.map(\.video)
+	/// Sends progress made offline first, so the server's engagement includes it.
+	private func refreshEngagement() async {
+		await player.progressSync.flush()
+		await downloads.refreshEngagement()
 	}
 	
-	/// The latest first.
+	/// In the order they download, with progress made offline.
+	private var unfinished: [Video] {
+		downloads.downloads.filter { $0.state != .finished }.map { player.progressSync.applying(to: $0.video) }
+	}
+	
+	/// The latest first, with progress made offline.
 	private var finished: [Video] {
-		downloads.downloads.filter { $0.state == .finished }.sorted { $0.addedAt > $1.addedAt }.map(\.video)
+		downloads.downloads.filter { $0.state == .finished }.sorted { $0.addedAt > $1.addedAt }.map { player.progressSync.applying(to: $0.video) }
 	}
 }
 
