@@ -50,6 +50,10 @@ final class DownloadManager {
 	private(set) var downloads: [Download] = []
 	private var activeID: String?
 	private var activeProgress: DownloadProgress?
+	/// How fast the running download downloads, in bytes per second, once that's known.
+	private(set) var bytesPerSecond: Double?
+	/// The running download's bytes over the last seconds, which the speed is averaged over.
+	private var speedSamples: [(date: Date, bytes: Int64)] = []
 	
 	/// Where the finished videos go.
 	let folder: URL
@@ -347,11 +351,13 @@ final class DownloadManager {
 		let video = download.video
 		logger.log("Download \(video.title)")
 		activeID = id
-		activeProgress = .downloading(0)
+		activeProgress = .downloading(0, bytes: 0)
 		background.update(subtitle: video.title, fraction: 0)
 		defer {
 			activeID = nil
 			activeProgress = nil
+			bytesPerSecond = nil
+			speedSamples = []
 			activeTask = nil
 			if pausedID == id {
 				pausedID = nil
@@ -429,6 +435,24 @@ final class DownloadManager {
 		guard activeID == id else { return }
 		activeProgress = progress
 		background.update(subtitle: downloads.first { $0.id == id }?.video.title ?? "", fraction: progress.overallFraction)
+		updateSpeed(with: progress)
+	}
+	
+	/// Averages over a few seconds, since segments arrive in bursts.
+	private func updateSpeed(with progress: DownloadProgress) {
+		guard case .downloading(_, let bytes) = progress else {
+			bytesPerSecond = nil
+			speedSamples = []
+			return
+		}
+		let now = Date.now
+		speedSamples.append((now, bytes))
+		// Keeps one sample from before the window, so the window is filled
+		while speedSamples.count > 2, now.timeIntervalSince(speedSamples[1].date) > 5 {
+			speedSamples.removeFirst()
+		}
+		guard let first = speedSamples.first, case let interval = now.timeIntervalSince(first.date), interval >= 1 else { return }
+		bytesPerSecond = Double(bytes - first.bytes) / interval
 	}
 	
 	private func finish(_ video: Video, from outputURL: URL, height: Int) throws {
@@ -530,7 +554,7 @@ private extension DownloadProgress {
 	/// How far the whole download got. Downloading takes most of the time, processing the rest.
 	var overallFraction: Double {
 		switch self {
-		case .downloading(let fraction): fraction * 0.9
+		case .downloading(let fraction, _): fraction * 0.9
 		case .processing(let fraction): 0.9 + fraction * 0.1
 		}
 	}

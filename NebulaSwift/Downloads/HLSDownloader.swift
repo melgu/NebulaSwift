@@ -8,7 +8,8 @@
 import Foundation
 
 enum DownloadProgress: Equatable, Sendable {
-	case downloading(Double)
+	/// With the bytes downloaded so far, without those of an earlier attempt.
+	case downloading(Double, bytes: Int64)
 	/// Putting the downloaded renditions into one file.
 	case processing(Double)
 }
@@ -143,6 +144,7 @@ struct HLSDownloader: VideoDownloader {
 			
 			fetchMore()
 			while let (index, data) = try await group.next() {
+				await counter.received(data.count)
 				fetched[index] = data
 				while let data = fetched.removeValue(forKey: state.segments) {
 					try file.append(data)
@@ -228,6 +230,7 @@ private extension HLSDownloader {
 	actor ProgressCounter {
 		private let total: Int
 		private var completed = 0
+		private var bytes: Int64 = 0
 		private let progress: @Sendable (DownloadProgress) -> Void
 		
 		init(total: Int, progress: @escaping @Sendable (DownloadProgress) -> Void) {
@@ -235,10 +238,22 @@ private extension HLSDownloader {
 			self.progress = progress
 		}
 		
+		/// Counts segments once they're saved, since only those are kept when the download continues later.
 		func add(_ count: Int) {
-			guard count > 0, total > 0 else { return }
+			guard count > 0 else { return }
 			completed += count
-			progress(.downloading(Double(completed) / Double(total)))
+			report()
+		}
+		
+		/// Counts bytes as soon as they arrive, so the speed is how fast they do, even while a slower segment holds up saving.
+		func received(_ bytes: Int) {
+			self.bytes += Int64(bytes)
+			report()
+		}
+		
+		private func report() {
+			guard total > 0 else { return }
+			progress(.downloading(Double(completed) / Double(total), bytes: bytes))
 		}
 	}
 }

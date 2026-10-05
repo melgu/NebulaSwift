@@ -74,7 +74,7 @@ struct Downloads: View {
 		} else {
 			ScrollView {
 				LazyVGrid(columns: [GridItem(.adaptive(minimum: 240), alignment: .top)], alignment: .leading) {
-					section("Downloading", videos: unfinished)
+					section("Downloading", videos: unfinished, detail: downloadStatus)
 					section("Downloaded", videos: finished)
 				}
 				.padding()
@@ -85,17 +85,25 @@ struct Downloads: View {
 	}
 	
 	@ViewBuilder
-	private func section(_ title: LocalizedStringKey, videos: [Video]) -> some View {
+	/// - Parameter detail: Shown at the header's end.
+	private func section(_ title: LocalizedStringKey, videos: [Video], detail: String? = nil) -> some View {
 		if !videos.isEmpty {
 			Section {
 				ForEach(videos, id: \.episodeId) { video in
 					VideoPreview(video: video)
 				}
 			} header: {
-				Text(title)
-					.font(.title2.bold())
-					.frame(maxWidth: .infinity, alignment: .leading)
-					.padding(.top)
+				HStack(alignment: .firstTextBaseline) {
+					Text(title)
+						.font(.title2.bold())
+					Spacer()
+					if let detail {
+						Text(detail)
+							.font(.subheadline.monospacedDigit())
+							.foregroundStyle(.secondary)
+					}
+				}
+				.padding(.top)
 			}
 		}
 	}
@@ -104,6 +112,16 @@ struct Downloads: View {
 	private func refreshEngagement() async {
 		await player.progressSync.flush()
 		await downloads.refreshEngagement()
+	}
+	
+	/// The speed like “42.5 Mbit/s”, the unit connections are measured in, or that the running download is being converted.
+	private var downloadStatus: String? {
+		if unfinished.contains(where: { if case .processing = downloads.status(of: $0) { true } else { false } }) {
+			return String(localized: "Converting…")
+		}
+		guard let bytesPerSecond = downloads.bytesPerSecond else { return nil }
+		let megabits = bytesPerSecond * 8 / 1_000_000
+		return "\(megabits.formatted(.number.precision(.fractionLength(1)))) Mbit/s"
 	}
 	
 	/// In the order they download, with progress made offline.

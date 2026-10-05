@@ -343,6 +343,16 @@
         }
       }
     },
+    "Converting…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird konvertiert …"
+          }
+        }
+      }
+    },
     "Processing Download" : {
       "localizations" : {
         "de" : {
