@@ -31,6 +31,21 @@ struct SettingsView: View {
 	private var content: some View {
 		@Bindable var storage = storage
 		return List {
+			Section("General") {
+				if #available(iOS 18, macOS 15, *) {
+					// The default squeezes the icon of the current value against its title,
+					// and the menu button drops icons from a custom label, so show only the title.
+					Picker("Start Page", selection: $storage.startPage) {
+						startPageOptions
+					} currentValueLabel: {
+						Text(storage.startPage.title)
+					}
+				} else {
+					Picker("Start Page", selection: $storage.startPage) {
+						startPageOptions
+					}
+				}
+			}
 			Section("Playback") {
 				#if os(iOS) // No way to automatically enter fullscreen on macOS (without crashing the OS)
 				Toggle("Automatic Fullscreen", isOn: $storage.automaticFullscreen)
@@ -62,6 +77,13 @@ struct SettingsView: View {
 		}
 		// On a section, the modifier only reaches its rows, which can't animate their own insertion
 		.animation(.default, value: storage.videoPreview)
+	}
+
+	private var startPageOptions: some View {
+		ForEach(StartPage.allCases) { page in
+			Label(page.title, systemImage: page.systemImage)
+				.tag(page)
+		}
 	}
 }
 

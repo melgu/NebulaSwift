@@ -177,6 +177,16 @@
         }
       }
     },
+    "General" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allgemein"
+          }
+        }
+      }
+    },
     "Home" : {
       "localizations" : {
         "de" : {
@@ -402,6 +412,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Etwas ist schiefgelaufen."
+          }
+        }
+      }
+    },
+    "Start Page" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Startseite"
           }
         }
       }

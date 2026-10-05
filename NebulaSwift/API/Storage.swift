@@ -24,6 +24,9 @@ class Storage {
 	var previewTitleLines: Int {
 		didSet { UserDefaults.standard.set(previewTitleLines, forKey: Defaults.previewTitleLines) }
 	}
+	var startPage: StartPage {
+		didSet { UserDefaults.standard.set(startPage.rawValue, forKey: Defaults.startPage) }
+	}
 
 	init() {
 		let defaults = UserDefaults.standard
@@ -33,6 +36,39 @@ class Storage {
 		videoPreviewWithSound = defaults.optionalBool(forKey: Defaults.videoPreviewWithSound) ?? true
 		removeFromWatchLaterAfterPlayback = defaults.bool(forKey: Defaults.removeFromWatchLaterAfterPlayback)
 		previewTitleLines = defaults.optionalInt(forKey: Defaults.previewTitleLines) ?? 2
+		startPage = .saved
+	}
+}
+
+/// The page the app opens on.
+enum StartPage: String, CaseIterable, Identifiable {
+	case featured, myShows, browse, watchLater, downloads
+
+	var id: Self { self }
+
+	/// Readable before `Storage` is in the environment, so the first frame already shows the page.
+	static var saved: StartPage {
+		UserDefaults.standard.string(forKey: Defaults.startPage).flatMap(StartPage.init(rawValue:)) ?? .myShows
+	}
+
+	var title: LocalizedStringKey {
+		switch self {
+		case .featured: "Featured"
+		case .myShows: "My Shows"
+		case .browse: "Browse"
+		case .watchLater: "Watch Later"
+		case .downloads: "Downloads"
+		}
+	}
+
+	var systemImage: String {
+		switch self {
+		case .featured: "star.circle"
+		case .myShows: "suit.heart"
+		case .browse: "list.dash"
+		case .watchLater: "bookmark"
+		case .downloads: "arrow.down.circle"
+		}
 	}
 }
 

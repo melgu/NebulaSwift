@@ -17,9 +17,19 @@ struct ContentView: View {
 
 	@State private var myShows: [Channel]?
 	
-	@State private var selection: TopLevel? = .myShows
+	@State private var selection: TopLevel? = TopLevel(StartPage.saved)
 	private enum TopLevel: Hashable {
 		case featured, myShows, browse, watchLater, downloads, search, channel(Channel)
+
+		init(_ page: StartPage) {
+			switch page {
+			case .featured: self = .featured
+			case .myShows: self = .myShows
+			case .browse: self = .browse
+			case .watchLater: self = .watchLater
+			case .downloads: self = .downloads
+			}
+		}
 	}
 	
 	@State private var searchTerm = ""
@@ -152,20 +162,10 @@ struct ContentView: View {
 		List(selection: $selection) {
 			if searchTerm.isEmpty {
 				Section("Home") {
-					NavigationLink(value: TopLevel.featured) {
-						Label("Featured", systemImage: "star.circle")
-					}
-					NavigationLink(value: TopLevel.myShows) {
-						Label("My Shows", systemImage: "suit.heart")
-					}
-					NavigationLink(value: TopLevel.browse) {
-						Label("Browse", systemImage: "list.dash")
-					}
-					NavigationLink(value: TopLevel.watchLater) {
-						Label("Watch Later", systemImage: "bookmark")
-					}
-					NavigationLink(value: TopLevel.downloads) {
-						Label("Downloads", systemImage: "arrow.down.circle")
+					ForEach(StartPage.allCases) { page in
+						NavigationLink(value: TopLevel(page)) {
+							Label(page.title, systemImage: page.systemImage)
+						}
 					}
 					NavigationLink(value: TopLevel.search) {
 						Label("Search", systemImage: "magnifyingglass")
