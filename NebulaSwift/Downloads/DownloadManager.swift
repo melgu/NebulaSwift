@@ -71,6 +71,8 @@ final class DownloadManager {
 	private var isPaused = false
 	/// Downloads cancelled while running, which shouldn't count as failed.
 	private var cancelledIDs: Set<String> = []
+	/// The download a pause stopped, which stays waiting even if the app is back before it noticed.
+	private var pausedID: String?
 	private var activationTask: Task<Void, Never>?
 	
 	init(api: API, storage: Storage) {
@@ -312,11 +314,17 @@ final class DownloadManager {
 	private func pause() {
 		logger.log("Pause downloads")
 		isPaused = true
+		pausedID = activeID
 		activeTask?.cancel()
 	}
 	
 	private func resume() {
 		isPaused = false
+		if queueTask != nil {
+			// The app was suspended before the queue noticed the pause, so the queue goes on without the background time it ended
+			let title = activeID.flatMap { id in downloads.first { $0.id == id }?.video.title } ?? ""
+			background.begin(title: String(localized: "Downloading Videos"), subtitle: title)
+		}
 		startQueue()
 	}
 	
@@ -331,6 +339,9 @@ final class DownloadManager {
 			activeID = nil
 			activeProgress = nil
 			activeTask = nil
+			if pausedID == id {
+				pausedID = nil
+			}
 		}
 		
 		do {
@@ -370,7 +381,7 @@ final class DownloadManager {
 				try? FileManager.default.removeItem(at: workFolder(for: video))
 				return
 			}
-			if isPaused {
+			if pausedID == id {
 				// It stays waiting and continues once the app is back
 				logger.log("Paused download of \(video.title)")
 				return
