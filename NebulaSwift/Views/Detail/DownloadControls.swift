@@ -144,6 +144,50 @@ struct DownloadStatusIcon: View {
 	}
 }
 
+/// How many videos are downloading, in blue, and how many are downloaded, in green, leaving out a count of zero.
+struct DownloadCounts: View {
+	@Environment(DownloadManager.self) private var downloads
+	
+	var body: some View {
+		let downloading = downloads.downloads.filter { $0.state == .waiting }.count
+		let downloaded = downloads.downloads.filter { $0.state == .finished }.count
+		HStack(spacing: 4) {
+			if downloading > 0 {
+				CountBadge(count: downloading, color: .blue)
+			}
+			if downloaded > 0 {
+				CountBadge(count: downloaded, color: .green)
+			}
+		}
+		.accessibilityElement(children: .ignore)
+		.accessibilityLabel(accessibilityLabel(downloading: downloading, downloaded: downloaded))
+	}
+	
+	private func accessibilityLabel(downloading: Int, downloaded: Int) -> Text {
+		switch (downloading > 0, downloaded > 0) {
+		case (true, true): Text("\(downloading) downloading, \(downloaded) downloaded")
+		case (true, false): Text("\(downloading) downloading")
+		case (false, true): Text("\(downloaded) downloaded")
+		case (false, false): Text(verbatim: "")
+		}
+	}
+}
+
+/// A number in a colored squircle that widens with more digits.
+private struct CountBadge: View {
+	let count: Int
+	let color: Color
+	
+	var body: some View {
+		Text(count, format: .number)
+			.font(.caption.bold().monospacedDigit())
+			.foregroundStyle(.white)
+			.padding(.horizontal, 5)
+			.frame(minWidth: 20, minHeight: 20)
+			.background(color, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
+	}
+}
+
 /// A pie filling up with the progress inside a circle, the size of a symbol and in the color of the text around it.
 private struct DownloadProgressPie: View {
 	let fraction: Double

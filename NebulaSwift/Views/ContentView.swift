@@ -189,7 +189,15 @@ struct ContentView: View {
 				Section("Home") {
 					ForEach(StartPage.allCases) { page in
 						NavigationLink(value: TopLevel(page)) {
-							Label(page.title, systemImage: page.systemImage)
+							if page == .downloads {
+								HStack {
+									Label(page.title, systemImage: page.systemImage)
+									Spacer()
+									DownloadCounts()
+								}
+							} else {
+								Label(page.title, systemImage: page.systemImage)
+							}
 						}
 					}
 					NavigationLink(value: TopLevel.search) {
