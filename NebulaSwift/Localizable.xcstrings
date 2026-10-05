@@ -270,6 +270,9 @@
     "Nebula" : {
       "shouldTranslate" : false
     },
+    "Nebula Plus" : {
+      "shouldTranslate" : false
+    },
     "NebulaSwift" : {
       "shouldTranslate" : false
     },
@@ -319,6 +322,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vorschau mit Ton"
+          }
+        }
+      }
+    },
+    "Refresh" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktualisieren"
           }
         }
       }

@@ -180,6 +180,7 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable & Sendable, Pre
 			try await refreshItems()
 		} label: {
 			Image(systemName: "arrow.clockwise")
+				.accessibilityLabel("Refresh")
 		}
 		.asyncButtonStyle(.progress(replacesLabel: true))
 		.keyboardShortcut("r", modifiers: .command)

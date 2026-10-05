@@ -121,6 +121,7 @@ struct Featured: View {
 			try await refreshFeatured(animated: true)
 		} label: {
 			Image(systemName: "arrow.clockwise")
+				.accessibilityLabel("Refresh")
 		}
 		.asyncButtonStyle(.progress(replacesLabel: true))
 		.keyboardShortcut("r", modifiers: .command)

@@ -117,6 +117,7 @@ struct VideoPreviewView: View {
 		VStack(alignment: .trailing) {
 			if video.engagement?.watchLater == true {
 				Image(systemName: "bookmark.fill")
+					.accessibilityLabel("Watch Later")
 					.padding(2)
 					.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
 			}
@@ -131,6 +132,7 @@ struct VideoPreviewView: View {
 					if video.attributes.contains(.isNebulaPlus) {
 						Image(systemName: "plus")
 							.foregroundColor(.accentColor)
+							.accessibilityLabel("Nebula Plus")
 					}
 					Text((Date.now ..< Date.now + Double(video.duration)).formatted(.timeDuration))
 				}
