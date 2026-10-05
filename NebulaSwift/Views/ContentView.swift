@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import Network
 import OSLog
 
 private let logger = Logger(category: "ContentView")
@@ -148,7 +149,29 @@ struct ContentView: View {
 				player.completePictureInPictureRestore()
 			}
 		}
+		.task {
+			await showDownloadsIfOffline()
+		}
 		.alertErrorHandling()
+	}
+	
+	/// Opens the downloads instead of the start page when the app opens without a connection, since they're all that works then.
+	private func showDownloadsIfOffline() async {
+		let startPage = selection
+		let isConnected = await withCheckedContinuation { continuation in
+			let monitor = NWPathMonitor()
+			monitor.pathUpdateHandler = { path in
+				// Only the first update matters
+				monitor.pathUpdateHandler = nil
+				monitor.cancel()
+				continuation.resume(returning: path.status == .satisfied)
+			}
+			monitor.start(queue: DispatchQueue(label: "de.melgu.NebulaSwift.ConnectionCheck"))
+		}
+		// Unless another page was picked meanwhile
+		guard !isConnected, selection == startPage else { return }
+		logger.log("Offline at launch, show downloads")
+		selection = .downloads
 	}
 
 	private func openVideo(_ video: Video) {
