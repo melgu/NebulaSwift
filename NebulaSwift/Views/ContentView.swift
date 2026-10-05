@@ -265,6 +265,7 @@ struct ContentView: View {
 				Color.clear
 			}
 			.frame(width: 32, height: 32)
+			.accessibilityHidden(true)
 			
 			Text(channel.title)
 				.lineLimit(1)

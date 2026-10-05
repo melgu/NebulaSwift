@@ -50,6 +50,7 @@ struct ChannelPreviewView: View {
 					} placeholder: {
 						EmptyView()
 					}
+					.accessibilityHidden(true)
 				}
 				.cornerRadius(8)
 			

@@ -58,6 +58,7 @@ struct HeroPreviewView: View {
 					} placeholder: {
 						EmptyView()
 					}
+					.accessibilityHidden(true)
 				}
 				.cornerRadius(8)
 			

@@ -42,6 +42,7 @@ struct PodcastPreviewView: View {
 					.aspectRatio(1, contentMode: .fit)
 			}
 			.cornerRadius(8)
+			.accessibilityHidden(true)
 			
 			Text(podcast.title)
 		}

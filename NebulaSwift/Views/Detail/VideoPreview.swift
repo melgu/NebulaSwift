@@ -84,6 +84,7 @@ struct VideoPreviewView: View {
 					} placeholder: {
 						EmptyView()
 					}
+					.accessibilityHidden(true)
 				}
 				.overlay(informationOverlay)
 				.cornerRadius(8)
@@ -99,6 +100,7 @@ struct VideoPreviewView: View {
 						.aspectRatio(1, contentMode: .fit)
 				}
 				.frame(width: 32, height: 32)
+				.accessibilityHidden(true)
 				// Cells of uneven height leave the grid pulled down after a slow pull to refresh.
 				VStack(alignment: .leading) {
 					Text(video.title)
@@ -163,6 +165,7 @@ struct VideoPreviewImage: View {
 					.controlSize(.large)
 			}
 		}
+		.accessibilityHidden(true)
 	}
 }
 

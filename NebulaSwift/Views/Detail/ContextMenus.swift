@@ -185,6 +185,7 @@ struct ChannelContextMenu: ViewModifier {
 							.controlSize(.large)
 					}
 				}
+				.accessibilityHidden(true)
 			}
 	}
 
@@ -239,6 +240,7 @@ struct PodcastContextMenu: ViewModifier {
 							.aspectRatio(1, contentMode: .fit)
 					}
 				}
+				.accessibilityHidden(true)
 				
 			}
 	}
@@ -276,6 +278,7 @@ struct HeroContextMenu: ViewModifier {
 					Color.black
 						.aspectRatio(1, contentMode: .fit)
 				}
+				.accessibilityHidden(true)
 			}
 	}
 }

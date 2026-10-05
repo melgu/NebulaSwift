@@ -155,6 +155,7 @@ struct VideoPage: View {
 						.aspectRatio(1, contentMode: .fit)
 				}
 				.frame(width: 64, height: 64)
+				.accessibilityHidden(true)
 				
 				Text(video.channelTitle)
 					.font(.headline)
