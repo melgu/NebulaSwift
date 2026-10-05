@@ -117,13 +117,20 @@ final class DownloadBackgroundActivity {
 					task.setTaskCompleted(success: true)
 					return
 				}
-				self.logger.debug("Continued processing task started")
+				self.logger.debug("Continued processing task started: \(identifier, privacy: .public)")
 				self.continuedTask = task
 				task.progress.totalUnitCount = 1000
 				self.report(to: task)
 				task.expirationHandler = { [weak self] in
+					// The app is ended soon after, so this can't wait for the main actor
+					task.updateTitle(task.title, subtitle: String(localized: "Paused. Open the app to continue."))
+					task.setTaskCompleted(success: false)
 					Task { @MainActor in
-						self?.expire()
+						guard let self, self.continuedTaskIdentifier == identifier else { return }
+						// Already completed
+						self.continuedTask = nil
+						self.continuedTaskIdentifier = nil
+						self.expire()
 					}
 				}
 			}

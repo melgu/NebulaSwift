@@ -183,6 +183,16 @@
         }
       }
     },
+    "Paused. Open the app to continue." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pausiert. Öffne die App, um fortzufahren."
+          }
+        }
+      }
+    },
     "%lld downloads failed" : {
       "localizations" : {
         "de" : {
