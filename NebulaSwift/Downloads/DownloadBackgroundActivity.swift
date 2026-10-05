@@ -60,13 +60,17 @@ final class DownloadBackgroundActivity {
 		#endif
 	}
 	
-	func end() {
+	/// - Parameter failure: Why downloads failed, which the system shows instead of a generic error.
+	func end(failure: String? = nil) {
 		guard isActive else { return }
 		isActive = false
 		#if canImport(UIKit)
 		if #available(iOS 26, *) {
 			if let task = continuedTask {
-				task.setTaskCompleted(success: true)
+				if let failure, let task = task as? BGContinuedProcessingTask {
+					task.updateTitle(title, subtitle: failure)
+				}
+				task.setTaskCompleted(success: failure == nil)
 			} else if let continuedTaskIdentifier {
 				// The system hasn't started it yet
 				BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: continuedTaskIdentifier)

@@ -310,10 +310,18 @@ final class DownloadManager {
 	
 	private func runQueue() async {
 		background.begin(title: String(localized: "Downloading Videos"), subtitle: "")
+		var failures: [String] = []
 		while !isPaused, let download = downloads.first(where: { $0.state == .waiting }) {
 			await run(download)
+			if case .failed(let message) = self.download(for: download.video)?.state {
+				failures.append(message)
+			}
 		}
-		background.end()
+		switch failures.count {
+		case 0: background.end()
+		case 1: background.end(failure: failures[0])
+		default: background.end(failure: String(localized: "\(failures.count) downloads failed"))
+		}
 	}
 	
 	/// Stops the running download where it is, to continue later.
