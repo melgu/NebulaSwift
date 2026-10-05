@@ -32,6 +32,17 @@ extension View {
 	}
 }
 
+extension EnvironmentValues {
+	/// Whether downloaded videos show their file's resolution and size.
+	@Entry var showsDownloadDetails: Bool = false
+}
+
+extension View {
+	func showDownloadDetails() -> some View {
+		environment(\.showsDownloadDetails, true)
+	}
+}
+
 // MARK: Video Preview
 
 struct VideoPreview: View {
@@ -70,6 +81,7 @@ struct VideoPreviewView: View {
 	
 	@Environment(Storage.self) private var storage
 	@Environment(DownloadManager.self) private var downloads
+	@Environment(\.showsDownloadDetails) private var showsDownloadDetails
 	
 	init(video: Video) {
 		self.video = video
@@ -122,6 +134,13 @@ struct VideoPreviewView: View {
 	private var informationOverlay: some View {
 		VStack(alignment: .trailing) {
 			HStack {
+				if let downloadDetails {
+					Text(downloadDetails)
+						.font(.caption)
+						.padding(2)
+						.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
+					Spacer()
+				}
 				if video.engagement?.watchLater == true {
 					Image(systemName: "bookmark.fill")
 						.accessibilityLabel("Watch Later")
@@ -152,6 +171,16 @@ struct VideoPreviewView: View {
 		}
 		.padding(8)
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+	}
+	
+	/// Like “1080p · 1.2 GB”.
+	private var downloadDetails: String? {
+		guard showsDownloadDetails, let details = downloads.fileDetails(for: video) else { return nil }
+		let parts = [
+			details.height.map { "\($0)p" },
+			details.size?.formatted(.byteCount(style: .file)),
+		].compactMap(\.self)
+		return parts.isEmpty ? nil : parts.joined(separator: " · ")
 	}
 }
 

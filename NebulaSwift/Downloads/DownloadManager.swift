@@ -137,6 +137,12 @@ final class DownloadManager {
 		return folder.appending(path: fileName)
 	}
 	
+	/// The downloaded file's resolution and size, as far as they're known.
+	func fileDetails(for video: Video) -> (height: Int?, size: Int64?)? {
+		guard let download = download(for: video), download.state == .finished else { return nil }
+		return (download.height, download.fileSize)
+	}
+	
 	/// The video's thumbnail, saved when it was downloaded.
 	func thumbnailURL(for video: Video) -> URL? {
 		guard download(for: video) != nil else { return nil }

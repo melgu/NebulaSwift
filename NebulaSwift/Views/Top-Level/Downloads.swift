@@ -10,13 +10,15 @@ import SwiftUI
 struct Downloads: View {
 	@Environment(DownloadManager.self) private var downloads
 	@Environment(Player.self) private var player
+	@Environment(\.handleError) private var handleError
+	
+	@State private var showDeleteConfirmation = false
 	
 	var body: some View {
 		content
 			.navigationTitle("Downloads")
-			#if os(macOS)
-			.navigationSubtitle(downloads.totalSize > 0 ? downloads.totalSize.formatted(.byteCount(style: .file)) : "")
 			.toolbar {
+				#if os(macOS)
 				ToolbarItem {
 					Button {
 						downloads.showInFinder()
@@ -24,8 +26,34 @@ struct Downloads: View {
 						Label("Show in Finder", systemImage: "folder")
 					}
 				}
+				#endif
+				if downloads.totalSize > 0 {
+					ToolbarItem {
+						Button {
+							showDeleteConfirmation = true
+						} label: {
+							Text(downloads.totalSize.formatted(.byteCount(style: .file)))
+						}
+						.accessibilityLabel("Used Space")
+						.accessibilityValue(downloads.totalSize.formatted(.byteCount(style: .file)))
+						.confirmationDialog("Do you really want to delete all downloads?", isPresented: $showDeleteConfirmation, titleVisibility: .visible) {
+							Button("Delete All Downloads", role: .destructive) {
+								do {
+									try downloads.deleteAll()
+								} catch {
+									handleError(error)
+								}
+							}
+						} message: {
+							#if os(macOS)
+							Text("Unfinished downloads are cancelled, and downloaded videos are moved to the Trash.")
+							#else
+							Text("Unfinished downloads are cancelled, and downloaded videos are deleted.")
+							#endif
+						}
+					}
+				}
 			}
-			#endif
 			.task {
 				downloads.refreshFiles()
 				await refreshEngagement()
@@ -50,15 +78,8 @@ struct Downloads: View {
 					section("Downloaded", videos: finished)
 				}
 				.padding()
-				#if os(iOS)
-				if downloads.totalSize > 0 {
-					Text("\(downloads.totalSize.formatted(.byteCount(style: .file))) in total")
-						.font(.footnote)
-						.foregroundStyle(.secondary)
-						.padding(.bottom)
-				}
-				#endif
 			}
+			.showDownloadDetails()
 			.animation(.default, value: downloads.downloads.map(\.id))
 		}
 	}
