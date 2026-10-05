@@ -150,26 +150,32 @@ struct DownloadCounts: View {
 	
 	var body: some View {
 		let downloading = downloads.downloads.filter { $0.state == .waiting }.count
+		let failed = downloads.downloads.filter { if case .failed = $0.state { true } else { false } }.count
 		let downloaded = downloads.downloads.filter { $0.state == .finished }.count
 		HStack(spacing: 4) {
 			if downloading > 0 {
 				CountBadge(count: downloading, color: .blue)
+			}
+			if failed > 0 {
+				// White on yellow is hard to read
+				CountBadge(count: failed, color: .yellow, textColor: .black)
 			}
 			if downloaded > 0 {
 				CountBadge(count: downloaded, color: .green)
 			}
 		}
 		.accessibilityElement(children: .ignore)
-		.accessibilityLabel(accessibilityLabel(downloading: downloading, downloaded: downloaded))
+		.accessibilityLabel(accessibilityLabel(downloading: downloading, failed: failed, downloaded: downloaded))
 	}
 	
-	private func accessibilityLabel(downloading: Int, downloaded: Int) -> Text {
-		switch (downloading > 0, downloaded > 0) {
-		case (true, true): Text("\(downloading) downloading, \(downloaded) downloaded")
-		case (true, false): Text("\(downloading) downloading")
-		case (false, true): Text("\(downloaded) downloaded")
-		case (false, false): Text(verbatim: "")
-		}
+	private func accessibilityLabel(downloading: Int, failed: Int, downloaded: Int) -> String {
+		[
+			downloading > 0 ? String(localized: "\(downloading) downloading") : nil,
+			failed > 0 ? String(localized: "\(failed) failed") : nil,
+			downloaded > 0 ? String(localized: "\(downloaded) downloaded") : nil,
+		]
+		.compactMap(\.self)
+		.joined(separator: ", ")
 	}
 }
 
@@ -177,11 +183,12 @@ struct DownloadCounts: View {
 private struct CountBadge: View {
 	let count: Int
 	let color: Color
+	var textColor: Color = .white
 	
 	var body: some View {
 		Text(count, format: .number)
 			.font(.caption.bold().monospacedDigit())
-			.foregroundStyle(.white)
+			.foregroundStyle(textColor)
 			.padding(.horizontal, 5)
 			.frame(minWidth: 20, minHeight: 20)
 			.background(color, in: RoundedRectangle(cornerRadius: 6, style: .continuous))

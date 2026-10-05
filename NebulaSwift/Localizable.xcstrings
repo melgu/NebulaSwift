@@ -173,12 +173,12 @@
         }
       }
     },
-    "%lld downloading, %lld downloaded" : {
+    "%lld failed" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld werden geladen, %2$lld geladen"
+            "value" : "%lld fehlgeschlagen"
           }
         }
       }
