@@ -70,6 +70,33 @@ extension View {
 	}
 }
 
+// MARK: - Loading Error
+
+extension Error {
+	/// Whether the error only reports that the work was cancelled, which is nothing to show.
+	var isCancellation: Bool {
+		if self is CancellationError { return true }
+		if let error = self as? URLError, error.code == .cancelled { return true }
+		return false
+	}
+}
+
+/// Takes the place of content that failed to load initially, and offers to load it again.
+struct LoadingErrorView: View {
+	let error: Error
+	let retry: () -> Void
+
+	var body: some View {
+		ContentUnavailableView {
+			Label("Couldn't Load", systemImage: "exclamationmark.triangle")
+		} description: {
+			Text(error.localizedDescription)
+		} actions: {
+			Button("Try Again", action: retry)
+		}
+	}
+}
+
 // MARK: - onTapGesture
 
 fileprivate struct OnTapGestureModifier: ViewModifier {

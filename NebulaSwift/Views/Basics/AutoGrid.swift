@@ -23,6 +23,8 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable & Sendable, Pre
 	private let loadingOffset = 4
 	
 	@State private var isInitialLoad = false
+	/// Why the first page couldn't be loaded, shown in place of the grid until a load succeeds.
+	@State private var loadError: Error?
 	@State private var items: [Item] = []
 	@State private var itemsCount = 0
 	@State private var page = 1
@@ -54,6 +56,9 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable & Sendable, Pre
 				ProgressView()
 					.controlSize(.large)
 					.frame(maxWidth: .infinity)
+					.containerRelativeFrame(.vertical)
+			} else if let loadError {
+				LoadingErrorView(error: loadError, retry: loadItems)
 					.containerRelativeFrame(.vertical)
 			} else {
 				VStack {
@@ -128,6 +133,7 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable & Sendable, Pre
 		logger.debug("Load items")
 		loading?.cancel()
 		isInitialLoad = true
+		loadError = nil
 		// A new list starts over from its first page.
 		page = 1
 		deepestIndex = -1
@@ -137,7 +143,10 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable & Sendable, Pre
 			} catch {
 				// A newer load cancelled this one and owns the state from here on.
 				guard !Task.isCancelled else { return }
-				handleError(error)
+				if !error.isCancellation {
+					logger.error("Initial load failed. Error: \(error)")
+					loadError = error
+				}
 			}
 			isInitialLoad = false
 			loading = nil
@@ -228,6 +237,7 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable & Sendable, Pre
 		}
 		// A newer load owns the state from here on.
 		try Task.checkCancellation()
+		loadError = nil
 		page = lastPage
 		onLastPage = reachedEnd
 		itemsCount = newItems.count

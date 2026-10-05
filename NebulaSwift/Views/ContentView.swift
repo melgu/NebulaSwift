@@ -16,6 +16,8 @@ struct ContentView: View {
 	@Environment(Player.self) private var player
 
 	@State private var myShows: [Channel]?
+	/// Why the channels couldn't be loaded initially, shown in their place until a load succeeds.
+	@State private var myShowsError: Error?
 	
 	@State private var selection: TopLevel? = TopLevel(StartPage.saved)
 	private enum TopLevel: Hashable {
@@ -182,6 +184,12 @@ struct ContentView: View {
 						.contextMenu(for: channel)
 					}
 				}
+			} else if let myShowsError {
+				Section("My Shows") {
+					LoadingErrorView(error: myShowsError) {
+						Task { await loadMyShows() }
+					}
+				}
 			}
 		}
 		.searchable(text: $searchTerm, placement: .sidebar, prompt: Text("Search My Shows"))
@@ -192,7 +200,7 @@ struct ContentView: View {
 		.listStyle(.sidebar)
 		.navigationTitle("Nebula")
 		.task {
-			try await refreshMyShows()
+			await loadMyShows()
 		}
 		.settingsSheet()
 	}
@@ -250,8 +258,21 @@ struct ContentView: View {
 		}
 	}
 
+	/// Loads the channels for the first time, showing a failure in their place instead of an alert.
+	private func loadMyShows() async {
+		myShowsError = nil
+		do {
+			try await refreshMyShows()
+		} catch {
+			guard !error.isCancellation else { return }
+			logger.error("Loading My Shows failed. Error: \(error)")
+			myShowsError = error
+		}
+	}
+
 	private func refreshMyShows() async throws {
 		myShows = try await api.libraryChannels(page: 1, pageSize: 200)
+		myShowsError = nil
 	}
 	
 	private func label(for channel: Channel) -> some View {

@@ -121,6 +121,16 @@
         }
       }
     },
+    "Couldn't Load" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laden fehlgeschlagen"
+          }
+        }
+      }
+    },
     "Demo" : {
       "shouldTranslate" : false
     },
@@ -485,6 +495,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Diese Funktion ist noch nicht verfügbar, kommt aber bald."
+          }
+        }
+      }
+    },
+    "Try Again" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erneut versuchen"
           }
         }
       }

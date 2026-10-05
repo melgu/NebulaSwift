@@ -13,8 +13,8 @@ struct Featured: View {
 	
 	@State private var featured: [Feature] = []
 	@State private var loading: Task<Void, Never>?
-	
-	@Environment(\.handleError) private var handleError
+	/// Why the features couldn't be loaded initially, shown in their place until a load succeeds.
+	@State private var loadError: Error?
 	
 	var body: some View {
 		ScrollView(.vertical) {
@@ -22,6 +22,9 @@ struct Featured: View {
 				ProgressView()
 					.controlSize(.large)
 					.frame(maxWidth: .infinity)
+					.containerRelativeFrame(.vertical)
+			} else if featured.isEmpty, let loadError {
+				LoadingErrorView(error: loadError, retry: loadFeatured)
 					.containerRelativeFrame(.vertical)
 			} else {
 				VStack(alignment: .leading, spacing: 32) {
@@ -55,12 +58,19 @@ struct Featured: View {
 			// Pushing this view cancels a `.task` mid-flight without ever starting it again, which
 			// leaves the page empty on iPhone, so the load outlives the view's appearance instead.
 			guard featured.isEmpty, loading == nil else { return }
-			loading = Task {
-				defer { loading = nil }
-				do {
-					try await refreshFeatured(animated: false)
-				} catch {
-					handleError(error)
+			loadFeatured()
+		}
+	}
+
+	private func loadFeatured() {
+		loadError = nil
+		loading = Task {
+			defer { loading = nil }
+			do {
+				try await refreshFeatured(animated: false)
+			} catch {
+				if !error.isCancellation {
+					loadError = error
 				}
 			}
 		}
@@ -129,6 +139,7 @@ struct Featured: View {
 	
 	private func refreshFeatured(animated: Bool) async throws {
 		let featured = try await api.featured()
+		loadError = nil
 		if featured != self.featured {
 			if animated {
 				withAnimation {
