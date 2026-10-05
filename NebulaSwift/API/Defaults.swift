@@ -21,4 +21,5 @@ extension Defaults {
 	static let removeFromWatchLaterAfterPlayback = "removeFromWatchLaterAfterPlayback"
 	static let previewTitleLines = "previewTitleLines"
 	static let startPage = "startPage"
+	static let downloadQuality = "downloadQuality"
 }

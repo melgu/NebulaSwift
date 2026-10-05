@@ -11,10 +11,13 @@ struct SettingsView: View {
 	@Environment(API.self) private var api
 	@Environment(Storage.self) private var storage
 	@Environment(Player.self) private var player
+	@Environment(DownloadManager.self) private var downloads
 	
 	@Environment(\.dismiss) private var dismiss
+	@Environment(\.handleError) private var handleError
 
 	@State private var showLogoutConfirmation = false
+	@State private var showDeleteDownloadsConfirmation = false
 
 	var body: some View {
 		#if os(iOS)
@@ -55,6 +58,51 @@ struct SettingsView: View {
 				}
 				#endif
 				Toggle("Remove from Watch Later after playback", isOn: $storage.removeFromWatchLaterAfterPlayback)
+			}
+			Section {
+				Picker("Quality", selection: $storage.downloadQuality) {
+					ForEach(DownloadQuality.allCases) { quality in
+						Text(quality.title)
+							.tag(quality)
+					}
+				}
+				#if os(macOS)
+				LabeledContent("Folder") {
+					Button {
+						downloads.showInFinder()
+					} label: {
+						Text(downloads.folder.lastPathComponent)
+					}
+				}
+				#endif
+				LabeledContent("Used Space", value: downloads.totalSize.formatted(.byteCount(style: .file)))
+				Button(role: .destructive) {
+					showDeleteDownloadsConfirmation = true
+				} label: {
+					Text("Delete All Downloads")
+				}
+				.disabled(downloads.downloads.isEmpty)
+				.confirmationDialog("Do you really want to delete all downloads?", isPresented: $showDeleteDownloadsConfirmation, titleVisibility: .visible) {
+					Button("Delete All Downloads", role: .destructive) {
+						do {
+							try downloads.deleteAll()
+						} catch {
+							handleError(error)
+						}
+					}
+				} message: {
+					#if os(macOS)
+					Text("Unfinished downloads are cancelled, and downloaded videos are moved to the Trash.")
+					#else
+					Text("Unfinished downloads are cancelled, and downloaded videos are deleted.")
+					#endif
+				}
+			} header: {
+				Text("Downloads")
+			} footer: {
+				#if os(iOS)
+				Text("Downloaded videos are also in the Files app, under On My iPhone › NebulaSwift.")
+				#endif
 			}
 			Section("Appearance") {
 				Stepper("Preview title lines: \(storage.previewTitleLines)", value: $storage.previewTitleLines, in: 1...3)
@@ -118,11 +166,13 @@ fileprivate struct SettingsSheet: ViewModifier {
 
 #Preview {
 	@Previewable @State var api = API()
-	@Previewable @State var player = Player(api: API(), storage: Storage())
+	@Previewable @State var downloads = DownloadManager(api: API(), storage: Storage())
+	@Previewable @State var player = Player(api: API(), storage: Storage(), downloads: DownloadManager(api: API(), storage: Storage()))
 	@Previewable @State var storage = Storage()
 	
 	SettingsView()
 		.environment(api)
 		.environment(player)
 		.environment(storage)
+		.environment(downloads)
 }

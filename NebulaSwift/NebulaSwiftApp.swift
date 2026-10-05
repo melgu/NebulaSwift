@@ -12,13 +12,16 @@ struct NebulaSwiftApp: App {
 	@State private var api: API
 	@State private var player: Player
 	@State private var storage: Storage
+	@State private var downloads: DownloadManager
 
 	init() {
 		let api = API()
 		let storage = Storage()
+		let downloads = DownloadManager(api: api, storage: storage)
 		self.api = api
 		self.storage = storage
-		self.player = Player(api: api, storage: storage)
+		self.downloads = downloads
+		self.player = Player(api: api, storage: storage, downloads: downloads)
 	}
 	
 	var body: some Scene {
@@ -26,7 +29,9 @@ struct NebulaSwiftApp: App {
 			ContentView()
 				.environment(api)
 				.environment(player)
-				.environment(storage)				.task { try await api.refreshConfiguration() }
+				.environment(storage)
+				.environment(downloads)
+				.task { try await api.refreshConfiguration() }
 		}
 		.commands {
 			CommandMenu("Account") {
@@ -42,6 +47,7 @@ struct NebulaSwiftApp: App {
 				.environment(api)
 				.environment(player)
 				.environment(storage)
+				.environment(downloads)
 		}
 		#endif
 	}

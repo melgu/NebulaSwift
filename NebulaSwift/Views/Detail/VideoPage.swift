@@ -15,6 +15,7 @@ struct VideoPage: View {
 	
 	@Environment(API.self) private var api
 	@Environment(Player.self) private var player
+	@Environment(DownloadManager.self) private var downloads
 	
 	@Environment(\.refresh) private var refresh
 	@Environment(\.dismiss) private var dismiss
@@ -62,6 +63,7 @@ struct VideoPage: View {
 							}
 						}
 					}
+					DownloadButton(video: video)
 					ShareLink(item: video.shareUrl)
 					Button {
 						player.startPiP()
@@ -106,6 +108,7 @@ struct VideoPage: View {
 				Text(video.title)
 					.font(.title)
 				Spacer()
+				DownloadButton(video: video)
 				ShareLink(item: video.shareUrl)
 			}
 			#endif
@@ -145,7 +148,7 @@ struct VideoPage: View {
 			openItem(channel)
 		} label: {
 			HStack(spacing: 16) {
-				AsyncImage(url: video.images.channelAvatar[128]) { image in
+				SavedAsyncImage(savedURL: downloads.channelAvatarURL(for: video), url: video.images.channelAvatar[128]) { image in
 					image
 						.resizable()
 						.scaledToFit()

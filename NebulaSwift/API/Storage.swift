@@ -27,6 +27,9 @@ class Storage {
 	var startPage: StartPage {
 		didSet { UserDefaults.standard.set(startPage.rawValue, forKey: Defaults.startPage) }
 	}
+	var downloadQuality: DownloadQuality {
+		didSet { UserDefaults.standard.set(downloadQuality.rawValue, forKey: Defaults.downloadQuality) }
+	}
 
 	init() {
 		let defaults = UserDefaults.standard
@@ -37,6 +40,33 @@ class Storage {
 		removeFromWatchLaterAfterPlayback = defaults.bool(forKey: Defaults.removeFromWatchLaterAfterPlayback)
 		previewTitleLines = defaults.optionalInt(forKey: Defaults.previewTitleLines) ?? 2
 		startPage = .saved
+		downloadQuality = defaults.optionalInt(forKey: Defaults.downloadQuality).flatMap(DownloadQuality.init(rawValue:)) ?? .best
+	}
+}
+
+/// The highest resolution to download videos in.
+enum DownloadQuality: Int, CaseIterable, Identifiable {
+	case best = 0
+	case p2160 = 2160
+	case p1440 = 1440
+	case p1080 = 1080
+	case p720 = 720
+	case p540 = 540
+	case p360 = 360
+	
+	var id: Self { self }
+	
+	/// `nil` for the best quality.
+	var maxHeight: Int? {
+		self == .best ? nil : rawValue
+	}
+	
+	var title: LocalizedStringKey {
+		switch self {
+		case .best: "Best"
+		case .p2160: "2160p (4K)"
+		default: "\(rawValue)p"
+		}
 	}
 }
 

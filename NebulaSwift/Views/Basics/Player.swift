@@ -15,6 +15,7 @@ class Player {
 	
 	private let api: API
 	private let storage: Storage
+	private let downloads: DownloadManager
 
 	/// Only the Picture in Picture controller renders into this layer, but it has to be in a window for Picture in Picture to start.
 	let pictureInPictureLayer: AVPlayerLayer
@@ -47,9 +48,10 @@ class Player {
 		restoreCompletion != nil
 	}
 	
-	init(api: API, storage: Storage) {
+	init(api: API, storage: Storage, downloads: DownloadManager) {
 		self.api = api
 		self.storage = storage
+		self.downloads = downloads
 
 		pictureInPictureLayer = AVPlayerLayer(player: player)
 		pipController = AVPictureInPictureController(playerLayer: pictureInPictureLayer)
@@ -222,7 +224,8 @@ class Player {
 		isPausedForPreview = false
 
 		task = Task {
-						let item = AVPlayerItem(url: try api.manifestURL(for: video))
+			// A downloaded video also plays without a connection
+			let item = AVPlayerItem(url: try downloads.fileURL(for: video) ?? api.manifestURL(for: video))
 			try Task.checkCancellation()
 			player.replaceCurrentItem(with: item)
 			if let progress = video.engagement?.progress {

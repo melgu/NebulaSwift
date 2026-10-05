@@ -21,6 +21,7 @@ struct VideoContextMenu: ViewModifier {
 	@Environment(API.self) private var api
 	@Environment(Player.self) private var player
 	@Environment(Storage.self) private var storage
+	@Environment(DownloadManager.self) private var downloads
 
 	@Environment(\.goToChannelEnabled) private var goToChannelEnabled
 	@Environment(\.isWatchLaterList) private var isWatchLaterList
@@ -66,11 +67,7 @@ struct VideoContextMenu: ViewModifier {
 					}
 				}
 				
-				AsyncButton {
-					throw Inop.comingSoon
-				} label: {
-					Label("Download", systemImage: "arrow.down")
-				}
+				DownloadMenuItems(video: video)
 				
 				if let engagement = video.engagement {
 					Divider()
@@ -107,8 +104,10 @@ struct VideoContextMenu: ViewModifier {
 						.environment(api)
 						.environment(player)
 						.environment(storage)
+						.environment(downloads)
 				} else {
 					VideoPreviewImage(video: video)
+						.environment(downloads)
 				}
 			}
 	}

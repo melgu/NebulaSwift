@@ -39,6 +39,7 @@ struct VideoPreview: View {
 	
 	@Environment(\.openItem) private var openItem
 	@Environment(Storage.self) private var storage
+	@Environment(DownloadManager.self) private var downloads
 
 	/// The drag preview is laid out without a size proposal, so it adopts the cell's width to match the grid.
 	@State private var width: CGFloat?
@@ -53,6 +54,7 @@ struct VideoPreview: View {
 					// The drag preview doesn't inherit the environment.
 					VideoPreviewView(video: video)
 						.environment(storage)
+						.environment(downloads)
 						.frame(width: width)
 						.background(Color.systemBackground)
 						.cornerRadius(8)
@@ -67,6 +69,7 @@ struct VideoPreviewView: View {
 	let video: Video
 	
 	@Environment(Storage.self) private var storage
+	@Environment(DownloadManager.self) private var downloads
 	
 	init(video: Video) {
 		self.video = video
@@ -77,7 +80,8 @@ struct VideoPreviewView: View {
 			Color.black
 				.aspectRatio(16/9, contentMode: .fit)
 				.overlay {
-					AsyncImage(url: video.images.thumbnail[480]) { image in
+					// Downloaded videos show without a connection
+					SavedAsyncImage(savedURL: downloads.thumbnailURL(for: video), url: video.images.thumbnail[480]) { image in
 						image
 							.resizable()
 							.scaledToFill()
@@ -90,7 +94,7 @@ struct VideoPreviewView: View {
 				.cornerRadius(8)
 			
 			HStack(alignment: .top) {
-				AsyncImage(url: video.images.channelAvatar[64]) { image in
+				SavedAsyncImage(savedURL: downloads.channelAvatarURL(for: video), url: video.images.channelAvatar[64]) { image in
 					image
 						.resizable()
 						.scaledToFit()
@@ -117,11 +121,14 @@ struct VideoPreviewView: View {
 	
 	private var informationOverlay: some View {
 		VStack(alignment: .trailing) {
-			if video.engagement?.watchLater == true {
-				Image(systemName: "bookmark.fill")
-					.accessibilityLabel("Watch Later")
-					.padding(2)
-					.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
+			HStack {
+				if video.engagement?.watchLater == true {
+					Image(systemName: "bookmark.fill")
+						.accessibilityLabel("Watch Later")
+						.padding(2)
+						.background(.regularMaterial, in: RoundedRectangle(cornerRadius: 4))
+				}
+				DownloadBadge(video: video)
 			}
 			Spacer()
 			HStack {
@@ -151,8 +158,11 @@ struct VideoPreviewView: View {
 struct VideoPreviewImage: View {
 	let video: Video
 	
+	@Environment(DownloadManager.self) private var downloads
+	
 	var body: some View {
-		AsyncImage(url: video.images.thumbnail[960]) { image in
+		// Downloaded videos show without a connection, which also gives the preview its size
+		SavedAsyncImage(savedURL: downloads.thumbnailURL(for: video), url: video.images.thumbnail[960]) { image in
 			image
 				.resizable()
 		} placeholder: {
@@ -175,6 +185,7 @@ struct LiveVideoPreviewView: View {
 	@Environment(API.self) private var api
 	@Environment(Player.self) private var mainPlayer
 	@Environment(Storage.self) private var storage
+	@Environment(DownloadManager.self) private var downloads
 	
 	@State private var player = AVPlayer()
 	@State private var isMuted = false
@@ -220,7 +231,7 @@ struct LiveVideoPreviewView: View {
 					}
 				
 				loadingTask = Task {
-										let item = AVPlayerItem(url: try api.manifestURL(for: video))
+					let item = AVPlayerItem(url: try downloads.fileURL(for: video) ?? api.manifestURL(for: video))
 					player.replaceCurrentItem(with: item)
 					if let progress = video.engagement?.progress {
 						await player.seek(to: CMTime(seconds: Double(progress), preferredTimescale: 1))

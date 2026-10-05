@@ -91,16 +91,6 @@
         }
       }
     },
-    "Coming soon…" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Demnächst verfügbar …"
-          }
-        }
-      }
-    },
     "Copy RSS URL" : {
       "localizations" : {
         "de" : {
@@ -153,6 +143,272 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herunterladen"
+          }
+        }
+      }
+    },
+    "%@ in total" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ insgesamt"
+          }
+        }
+      }
+    },
+    "%lldp" : {
+      "shouldTranslate" : false
+    },
+    "2160p (4K)" : {
+      "shouldTranslate" : false
+    },
+    "Access to the video was denied." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Zugriff auf das Video wurde verweigert."
+          }
+        }
+      }
+    },
+    "Best" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beste"
+          }
+        }
+      }
+    },
+    "Cancel Download" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download abbrechen"
+          }
+        }
+      }
+    },
+    "Delete Download" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download löschen"
+          }
+        }
+      }
+    },
+    "Delete All Downloads" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Downloads löschen"
+          }
+        }
+      }
+    },
+    "Do you really want to delete all downloads?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Möchtest du wirklich alle Downloads löschen?"
+          }
+        }
+      }
+    },
+    "Download Failed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download fehlgeschlagen"
+          }
+        }
+      }
+    },
+    "Download videos from their menu to watch them without a connection." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lade Videos über ihr Menü herunter, um sie ohne Verbindung anzusehen."
+          }
+        }
+      }
+    },
+    "Downloaded" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geladen"
+          }
+        }
+      }
+    },
+    "Downloaded videos are also in the Files app, under On My iPhone › NebulaSwift." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geladene Videos findest du auch in der Dateien-App unter „Auf meinem iPhone › NebulaSwift“."
+          }
+        }
+      }
+    },
+    "Downloading" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird geladen"
+          }
+        }
+      }
+    },
+    "Downloading Videos" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Videos werden geladen"
+          }
+        }
+      }
+    },
+    "Folder" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner"
+          }
+        }
+      }
+    },
+    "No Downloads" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Downloads"
+          }
+        }
+      }
+    },
+    "Processing Download" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download wird verarbeitet"
+          }
+        }
+      }
+    },
+    "Quality" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qualität"
+          }
+        }
+      }
+    },
+    "Remove Download" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download entfernen"
+          }
+        }
+      }
+    },
+    "Retry Download" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download wiederholen"
+          }
+        }
+      }
+    },
+    "Show in Finder" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Finder zeigen"
+          }
+        }
+      }
+    },
+    "The downloaded video couldn't be processed." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das geladene Video konnte nicht verarbeitet werden."
+          }
+        }
+      }
+    },
+    "This video's stream can't be downloaded." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Stream dieses Videos kann nicht geladen werden."
+          }
+        }
+      }
+    },
+    "Unfinished downloads are cancelled, and downloaded videos are deleted." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laufende Downloads werden abgebrochen und geladene Videos gelöscht."
+          }
+        }
+      }
+    },
+    "Unfinished downloads are cancelled, and downloaded videos are moved to the Trash." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laufende Downloads werden abgebrochen und geladene Videos in den Papierkorb gelegt."
+          }
+        }
+      }
+    },
+    "Used Space" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belegter Speicher"
+          }
+        }
+      }
+    },
+    "Waiting to Download" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wartet auf Download"
           }
         }
       }
@@ -485,16 +741,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zu Videos wechseln"
-          }
-        }
-      }
-    },
-    "This functionality is not yet implemented, but will be coming soon." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Diese Funktion ist noch nicht verfügbar, kommt aber bald."
           }
         }
       }
