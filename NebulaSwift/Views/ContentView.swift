@@ -15,6 +15,7 @@ private let logger = Logger(category: "ContentView")
 struct ContentView: View {
 	@Environment(API.self) private var api
 	@Environment(Player.self) private var player
+	@Environment(DownloadManager.self) private var downloads
 
 	@State private var myShows: [Channel]?
 	/// Why the channels couldn't be loaded initially, shown in their place until a load succeeds.
@@ -150,13 +151,19 @@ struct ContentView: View {
 			}
 		}
 		.task {
-			await showDownloadsIfOffline()
+			await showDownloadsIfNeeded()
 		}
 		.alertErrorHandling()
 	}
 	
-	/// Opens the downloads instead of the start page when the app opens without a connection, since they're all that works then.
-	private func showDownloadsIfOffline() async {
+	/// Opens the downloads instead of the start page when the app opens with downloads to continue or failed ones,
+	/// or without a connection, since they're all that works then.
+	private func showDownloadsIfNeeded() async {
+		if downloads.downloads.contains(where: { $0.state != .finished }) {
+			logger.log("Downloads unfinished or failed at launch, show downloads")
+			selection = .downloads
+			return
+		}
 		let startPage = selection
 		let isConnected = await withCheckedContinuation { continuation in
 			let monitor = NWPathMonitor()
@@ -334,10 +341,12 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
 	private static let api = API()
+	private static let downloads = DownloadManager(api: api, storage: Storage())
 	
 	static var previews: some View {
 		ContentView()
 			.environment(api)
-			.environment(Player(api: api, storage: Storage(), downloads: DownloadManager(api: api, storage: Storage())))
+			.environment(downloads)
+			.environment(Player(api: api, storage: Storage(), downloads: downloads))
 	}
 }
