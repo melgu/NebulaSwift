@@ -1,6 +1,78 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld downloaded" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld geladen"
+          }
+        }
+      }
+    },
+    "%lld downloading" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld werden geladen"
+          }
+        }
+      }
+    },
+    "%lld downloads failed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Downloads fehlgeschlagen"
+          }
+        }
+      }
+    },
+    "%lld failed" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld fehlgeschlagen"
+          }
+        }
+      }
+    },
+    "%lldp" : {
+      "shouldTranslate" : false
+    },
+    "^[%lld videos](inflect: true)\nTotal duration: %@ h" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "^[%1$lld Videos](inflect: true)\nGesamtdauer: %2$@ h"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "^[%1$lld videos](inflect: true)\nTotal duration: %2$@ h"
+          }
+        }
+      }
+    },
+    "2160p (4K)" : {
+      "shouldTranslate" : false
+    },
+    "Access to the video was denied." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Zugriff auf das Video wurde verweigert."
+          }
+        }
+      }
+    },
     "Account" : {
       "localizations" : {
         "de" : {
@@ -41,12 +113,32 @@
         }
       }
     },
+    "Best" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beste"
+          }
+        }
+      }
+    },
     "Browse" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Entdecken"
+          }
+        }
+      }
+    },
+    "Cancel Download" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download abbrechen"
           }
         }
       }
@@ -91,6 +183,19 @@
         }
       }
     },
+    "Coming soon…" : {
+
+    },
+    "Converting…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird konvertiert …"
+          }
+        }
+      }
+    },
     "Copy RSS URL" : {
       "localizations" : {
         "de" : {
@@ -121,11 +226,41 @@
         }
       }
     },
+    "Delete All Downloads" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Downloads löschen"
+          }
+        }
+      }
+    },
+    "Delete Download" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download löschen"
+          }
+        }
+      }
+    },
     "Demo" : {
       "shouldTranslate" : false
     },
     "Destination" : {
       "shouldTranslate" : false
+    },
+    "Do you really want to delete all downloads?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Möchtest du wirklich alle Downloads löschen?"
+          }
+        }
+      }
     },
     "Do you really want to log out?" : {
       "localizations" : {
@@ -143,122 +278,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herunterladen"
-          }
-        }
-      }
-    },
-    "%lldp" : {
-      "shouldTranslate" : false
-    },
-    "2160p (4K)" : {
-      "shouldTranslate" : false
-    },
-    "%lld downloaded" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld geladen"
-          }
-        }
-      }
-    },
-    "%lld downloading" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld werden geladen"
-          }
-        }
-      }
-    },
-    "%lld failed" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld fehlgeschlagen"
-          }
-        }
-      }
-    },
-    "Paused. Open the app to continue." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pausiert. Öffne die App, um fortzufahren."
-          }
-        }
-      }
-    },
-    "%lld downloads failed" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld Downloads fehlgeschlagen"
-          }
-        }
-      }
-    },
-    "Access to the video was denied." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Der Zugriff auf das Video wurde verweigert."
-          }
-        }
-      }
-    },
-    "Best" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Beste"
-          }
-        }
-      }
-    },
-    "Cancel Download" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Download abbrechen"
-          }
-        }
-      }
-    },
-    "Delete Download" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Download löschen"
-          }
-        }
-      }
-    },
-    "Delete All Downloads" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alle Downloads löschen"
-          }
-        }
-      }
-    },
-    "Do you really want to delete all downloads?" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Möchtest du wirklich alle Downloads löschen?"
           }
         }
       }
@@ -323,146 +342,6 @@
         }
       }
     },
-    "Folder" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ordner"
-          }
-        }
-      }
-    },
-    "No Downloads" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keine Downloads"
-          }
-        }
-      }
-    },
-    "Converting…" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wird konvertiert …"
-          }
-        }
-      }
-    },
-    "Processing Download" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Download wird verarbeitet"
-          }
-        }
-      }
-    },
-    "Quality" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Qualität"
-          }
-        }
-      }
-    },
-    "Remove Download" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Download entfernen"
-          }
-        }
-      }
-    },
-    "Retry Download" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Download wiederholen"
-          }
-        }
-      }
-    },
-    "Show in Finder" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Im Finder zeigen"
-          }
-        }
-      }
-    },
-    "The downloaded video couldn't be processed." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Das geladene Video konnte nicht verarbeitet werden."
-          }
-        }
-      }
-    },
-    "This video's stream can't be downloaded." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Der Stream dieses Videos kann nicht geladen werden."
-          }
-        }
-      }
-    },
-    "Unfinished downloads are cancelled, and downloaded videos are deleted." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Laufende Downloads werden abgebrochen und geladene Videos gelöscht."
-          }
-        }
-      }
-    },
-    "Unfinished downloads are cancelled, and downloaded videos are moved to the Trash." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Laufende Downloads werden abgebrochen und geladene Videos in den Papierkorb gelegt."
-          }
-        }
-      }
-    },
-    "Used Space" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Belegter Speicher"
-          }
-        }
-      }
-    },
-    "Waiting to Download" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wartet auf Download"
-          }
-        }
-      }
-    },
     "Downloads" : {
       "localizations" : {
         "de" : {
@@ -473,12 +352,32 @@
         }
       }
     },
+    "email" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail"
+          }
+        }
+      }
+    },
     "Featured" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Highlights"
+          }
+        }
+      }
+    },
+    "Folder" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner"
           }
         }
       }
@@ -602,12 +501,42 @@
         }
       }
     },
+    "No Downloads" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Downloads"
+          }
+        }
+      }
+    },
     "OK" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        }
+      }
+    },
+    "password" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort"
+          }
+        }
+      }
+    },
+    "Paused. Open the app to continue." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pausiert. Öffne die App, um fortzufahren."
           }
         }
       }
@@ -642,12 +571,42 @@
         }
       }
     },
+    "Processing Download" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download wird verarbeitet"
+          }
+        }
+      }
+    },
+    "Quality" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qualität"
+          }
+        }
+      }
+    },
     "Refresh" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktualisieren"
+          }
+        }
+      }
+    },
+    "Remove Download" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download entfernen"
           }
         }
       }
@@ -681,6 +640,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zeitüberschreitung bei der Anfrage. URL: %@"
+          }
+        }
+      }
+    },
+    "Retry Download" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download wiederholen"
           }
         }
       }
@@ -731,6 +700,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kanal anzeigen"
+          }
+        }
+      }
+    },
+    "Show in Finder" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Finder zeigen"
           }
         }
       }
@@ -795,6 +774,26 @@
         }
       }
     },
+    "The downloaded video couldn't be processed." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das geladene Video konnte nicht verarbeitet werden."
+          }
+        }
+      }
+    },
+    "This video's stream can't be downloaded." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Stream dieses Videos kann nicht geladen werden."
+          }
+        }
+      }
+    },
     "Try Again" : {
       "localizations" : {
         "de" : {
@@ -805,12 +804,42 @@
         }
       }
     },
+    "Unfinished downloads are cancelled, and downloaded videos are deleted." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laufende Downloads werden abgebrochen und geladene Videos gelöscht."
+          }
+        }
+      }
+    },
+    "Unfinished downloads are cancelled, and downloaded videos are moved to the Trash." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laufende Downloads werden abgebrochen und geladene Videos in den Papierkorb gelegt."
+          }
+        }
+      }
+    },
     "Unfollow" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nicht mehr folgen"
+          }
+        }
+      }
+    },
+    "Used Space" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belegter Speicher"
           }
         }
       }
@@ -845,6 +874,16 @@
         }
       }
     },
+    "Waiting to Download" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wartet auf Download"
+          }
+        }
+      }
+    },
     "Watch Later" : {
       "localizations" : {
         "de" : {
@@ -861,42 +900,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Welchen Kanal möchtest du anzeigen?"
-          }
-        }
-      }
-    },
-    "^[%lld videos](inflect: true)\nTotal duration: %@ h" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "^[%1$lld Videos](inflect: true)\nGesamtdauer: %2$@ h"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "^[%1$lld videos](inflect: true)\nTotal duration: %2$@ h"
-          }
-        }
-      }
-    },
-    "email" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "E-Mail"
-          }
-        }
-      }
-    },
-    "password" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Passwort"
           }
         }
       }
