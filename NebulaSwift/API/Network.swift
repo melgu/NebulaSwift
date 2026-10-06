@@ -31,6 +31,12 @@ extension APIError {
 			return String(localized: "Missing engagement information")
 		}
 	}
+	
+	/// Whether the server rejected the request's authorization, which it does with either 401 or 403.
+	var isUnauthorized: Bool {
+		guard case .invalidServerResponse(let code) = self else { return false }
+		return code == 401 || code == 403
+	}
 }
 
 extension API {
@@ -99,7 +105,7 @@ extension API {
 		do {
 			return try await execute(request: request)
 		} catch let error as APIError {
-			if case .invalidServerResponse(let code) = error, code == 403 {
+			if error.isUnauthorized {
 				switch authorization {
 				case .token:
 					logout()
@@ -108,7 +114,7 @@ extension API {
 					do {
 						try await refreshAuthorization()
 					} catch let refreshError as APIError {
-						// A refresh rejected with 403 already logs out via the
+						// A refresh rejected with 401 or 403 already logs out via the
 						// `.token` case above. Only a completely missing token
 						// needs handling here; network issues must not log out.
 						if case .missingToken = refreshError {
@@ -123,7 +129,7 @@ extension API {
 				do {
 					return try await execute(request: request)
 				} catch let retryError as APIError {
-					if case .invalidServerResponse(let retryCode) = retryError, retryCode == 403 {
+					if retryError.isUnauthorized {
 						logout()
 					}
 					throw retryError
