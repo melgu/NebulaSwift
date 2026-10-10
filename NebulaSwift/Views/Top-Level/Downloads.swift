@@ -79,7 +79,6 @@ struct Downloads: View {
 				}
 				.padding()
 			}
-			.showDownloadDetails()
 			.animation(.default, value: downloads.downloads.map(\.id))
 		}
 	}

@@ -32,17 +32,6 @@ extension View {
 	}
 }
 
-extension EnvironmentValues {
-	/// Whether downloaded videos show their file's resolution and size.
-	@Entry var showsDownloadDetails: Bool = false
-}
-
-extension View {
-	func showDownloadDetails() -> some View {
-		environment(\.showsDownloadDetails, true)
-	}
-}
-
 // MARK: Video Preview
 
 struct VideoPreview: View {
@@ -81,7 +70,6 @@ struct VideoPreviewView: View {
 	
 	@Environment(Storage.self) private var storage
 	@Environment(DownloadManager.self) private var downloads
-	@Environment(\.showsDownloadDetails) private var showsDownloadDetails
 	
 	init(video: Video) {
 		self.video = video
@@ -175,7 +163,6 @@ struct VideoPreviewView: View {
 	
 	/// Like “1080p · 1.2 GB”, or the remaining time while downloading.
 	private var downloadDetails: String? {
-		guard showsDownloadDetails else { return nil }
 		if let completion = downloads.estimatedCompletion(for: video) {
 			return remainingTime(until: completion)
 		}
