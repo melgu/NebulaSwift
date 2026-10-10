@@ -161,8 +161,11 @@ struct VideoPreviewView: View {
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
 	}
 	
-	/// Like “1080p · 1.2 GB”, or the remaining time while downloading.
+	/// Like “1080p · 1.2 GB”, or the remaining time while downloading, or that it's being converted.
 	private var downloadDetails: String? {
+		if case .processing = downloads.status(of: video) {
+			return String(localized: "Converting…")
+		}
 		if let completion = downloads.estimatedCompletion(for: video) {
 			return remainingTime(until: completion)
 		}
