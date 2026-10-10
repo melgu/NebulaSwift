@@ -139,13 +139,24 @@ extension API {
 	/// The watched videos, most recently watched first.
 	func historyVideos(page: Int, pageSize: Int = 24) async throws -> [Video] {
 		// Without `progress_updated_after`, the list holds the videos of the followed channels instead.
+		try await videosWithProgress(filter: "progress_updated_after=2000-01-01T00:00:00Z", page: page, pageSize: pageSize)
+	}
+	
+	/// The started videos that aren't finished yet, most recently watched first.
+	func continueVideos(page: Int, pageSize: Int = 24) async throws -> [Video] {
+		// Leaves out videos stopped just before their end, too.
+		try await videosWithProgress(filter: "progress=in_progress", page: page, pageSize: pageSize)
+	}
+	
+	/// The videos whose engagement matches the filter, most recently watched first.
+	private func videosWithProgress(filter: String, page: Int, pageSize: Int) async throws -> [Video] {
 		// `-progress` orders by the progress' date, and puts cleared progress last.
 		let offset = (page - 1) * pageSize
-		let engagementURL = try URL(string: "https://content.api.nebula.app/video_episodes/engagement/?offset=\(offset)&page_size=\(pageSize)&progress_updated_after=2000-01-01T00:00:00Z&ordering=-progress").require()
+		let engagementURL = try URL(string: "https://content.api.nebula.app/video_episodes/engagement/?offset=\(offset)&page_size=\(pageSize)&\(filter)&ordering=-progress").require()
 		let engagements: ListContainer<EpisodeEngagement> = try await request(.get, url: engagementURL, authorization: .bearer)
 		let watched = engagements.results.filter { $0.progress != nil }
 		guard !watched.isEmpty else { return [] }
-
+		
 		let ids = watched.map(\.id).joined(separator: ",")
 		let videosURL = try URL(string: "https://content.api.nebula.app/video_episodes/?ids=\(ids)&page_size=\(watched.count)").require()
 		let videos: ListContainer<Video> = try await request(.get, url: videosURL, authorization: .bearer)
@@ -157,7 +168,7 @@ extension API {
 			return video
 		}
 	}
-
+	
 	/// The video endpoints no longer embed engagement, so it has to be fetched separately.
 	func withEngagement(_ videos: [Video]) async throws -> [Video] {
 		var engagements: [String: EpisodeEngagement] = [:]
