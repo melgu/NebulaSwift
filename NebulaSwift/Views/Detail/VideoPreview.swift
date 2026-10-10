@@ -173,14 +173,27 @@ struct VideoPreviewView: View {
 		.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
 	}
 	
-	/// Like “1080p · 1.2 GB”.
+	/// Like “1080p · 1.2 GB”, or the remaining time while downloading.
 	private var downloadDetails: String? {
-		guard showsDownloadDetails, let details = downloads.fileDetails(for: video) else { return nil }
+		guard showsDownloadDetails else { return nil }
+		if let completion = downloads.estimatedCompletion(for: video) {
+			return remainingTime(until: completion)
+		}
+		guard let details = downloads.fileDetails(for: video) else { return nil }
 		let parts = [
 			details.height.map { "\($0)p" },
 			details.size?.formatted(.byteCount(style: .file)),
 		].compactMap(\.self)
 		return parts.isEmpty ? nil : parts.joined(separator: " · ")
+	}
+	
+	/// Like “3 min left”, in whole minutes, or in tens of seconds within the last minute, since the estimate is rough.
+	private func remainingTime(until completion: Date) -> String {
+		let seconds = max(completion.timeIntervalSinceNow, 0)
+		let remaining = seconds < 60
+			? Duration.seconds((seconds / 10).rounded(.up) * 10).formatted(.units(allowed: [.seconds], width: .abbreviated))
+			: Duration.seconds((seconds / 60).rounded() * 60).formatted(.units(allowed: [.hours, .minutes], width: .abbreviated))
+		return String(localized: "\(remaining) left")
 	}
 }
 

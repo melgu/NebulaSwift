@@ -8,8 +8,8 @@
 import Foundation
 
 enum DownloadProgress: Equatable, Sendable {
-	/// With the bytes downloaded so far, without those of an earlier attempt.
-	case downloading(Double, bytes: Int64)
+	/// With the bytes downloaded so far, without those of an earlier attempt, and an estimate of those still to come once there is one.
+	case downloading(Double, bytes: Int64, remainingBytes: Int64?)
 	/// Putting the downloaded renditions into one file.
 	case processing(Double)
 }
@@ -89,7 +89,7 @@ struct HLSDownloader: VideoDownloader {
 			return subtitles.sorted { $0.0 < $1.0 }.map(\.1)
 		}
 		
-		let counter = ProgressCounter(total: plans.reduce(0) { $0 + $1.urls.count }, progress: progress)
+		let counter = ProgressCounter(total: plans.reduce(0) { $0 + $1.urls.count }, trackCount: plans.count, progress: progress)
 		try await withThrowingTaskGroup(of: Void.self) { group in
 			for plan in plans {
 				group.addTask {
@@ -125,7 +125,7 @@ struct HLSDownloader: VideoDownloader {
 			state = TrackState(path: plan.track.path)
 		}
 		var file = try FragmentedMP4File(url: plan.track.fileURL(in: directory), size: state.size, fragmentCount: state.fragments)
-		await counter.add(state.segments)
+		await counter.start(plan.track.name, segments: plan.urls.count, saved: state.segments)
 		
 		try await withThrowingTaskGroup(of: (Int, Data).self) { group in
 			var nextToFetch = state.segments
@@ -144,7 +144,7 @@ struct HLSDownloader: VideoDownloader {
 			
 			fetchMore()
 			while let (index, data) = try await group.next() {
-				await counter.received(data.count)
+				await counter.received(data.count, track: plan.track.name)
 				fetched[index] = data
 				while let data = fetched.removeValue(forKey: state.segments) {
 					try file.append(data)
@@ -228,14 +228,33 @@ private extension HLSDownloader {
 	}
 	
 	actor ProgressCounter {
+		/// A track's segments, to estimate how much of it is left.
+		private struct TrackCount {
+			let total: Int
+			/// From an earlier attempt.
+			let saved: Int
+			var received = 0
+			var receivedBytes: Int64 = 0
+		}
+		
 		private let total: Int
+		private let trackCount: Int
 		private var completed = 0
 		private var bytes: Int64 = 0
+		private var tracks: [String: TrackCount] = [:]
 		private let progress: @Sendable (DownloadProgress) -> Void
 		
-		init(total: Int, progress: @escaping @Sendable (DownloadProgress) -> Void) {
+		init(total: Int, trackCount: Int, progress: @escaping @Sendable (DownloadProgress) -> Void) {
 			self.total = total
+			self.trackCount = trackCount
 			self.progress = progress
+		}
+		
+		/// Counts the segments an earlier attempt saved. They're reported along with the first ones to arrive,
+		/// so all tracks' are in by then, and none of them look like they just downloaded.
+		func start(_ track: String, segments: Int, saved: Int) {
+			tracks[track] = TrackCount(total: segments, saved: saved)
+			completed += saved
 		}
 		
 		/// Counts segments once they're saved, since only those are kept when the download continues later.
@@ -246,14 +265,30 @@ private extension HLSDownloader {
 		}
 		
 		/// Counts bytes as soon as they arrive, so the speed is how fast they do, even while a slower segment holds up saving.
-		func received(_ bytes: Int) {
+		func received(_ bytes: Int, track: String) {
 			self.bytes += Int64(bytes)
+			tracks[track]?.received += 1
+			tracks[track]?.receivedBytes += Int64(bytes)
 			report()
 		}
 		
 		private func report() {
 			guard total > 0 else { return }
-			progress(.downloading(Double(completed) / Double(total), bytes: bytes))
+			progress(.downloading(Double(completed) / Double(total), bytes: bytes, remainingBytes: remainingBytes))
+		}
+		
+		/// From the average size of each track's segments so far, since an audio segment is much smaller than a video one.
+		private var remainingBytes: Int64? {
+			guard tracks.count == trackCount else { return nil }
+			var remaining: Int64 = 0
+			for track in tracks.values {
+				let left = track.total - track.saved - track.received
+				guard left > 0 else { continue }
+				// The first can be the tiny initialization segment
+				guard track.received >= 3 else { return nil }
+				remaining += track.receivedBytes / Int64(track.received) * Int64(left)
+			}
+			return remaining
 		}
 	}
 }

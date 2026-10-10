@@ -52,6 +52,8 @@ final class DownloadManager {
 	private var activeProgress: DownloadProgress?
 	/// How fast the running download downloads, in bytes per second, once that's known.
 	private(set) var bytesPerSecond: Double?
+	/// When the running download is expected to be downloaded, not counting its conversion, once that's known.
+	private var estimatedCompletion: Date?
 	/// The running download's bytes over the last seconds, which the speed is averaged over.
 	private var speedSamples: [(date: Date, bytes: Int64)] = []
 	
@@ -139,6 +141,11 @@ final class DownloadManager {
 	func fileURL(for video: Video) -> URL? {
 		guard let download = download(for: video), download.state == .finished, let fileName = download.fileName else { return nil }
 		return folder.appending(path: fileName)
+	}
+	
+	/// When the video is expected to be downloaded, while it's downloading.
+	func estimatedCompletion(for video: Video) -> Date? {
+		activeID == video.episodeId ? estimatedCompletion : nil
 	}
 	
 	/// The downloaded file's resolution and size, as far as they're known.
@@ -351,12 +358,13 @@ final class DownloadManager {
 		let video = download.video
 		logger.log("Download \(video.title)")
 		activeID = id
-		activeProgress = .downloading(0, bytes: 0)
+		activeProgress = .downloading(0, bytes: 0, remainingBytes: nil)
 		background.update(subtitle: video.title, fraction: 0)
 		defer {
 			activeID = nil
 			activeProgress = nil
 			bytesPerSecond = nil
+			estimatedCompletion = nil
 			speedSamples = []
 			activeTask = nil
 			if pausedID == id {
@@ -438,21 +446,36 @@ final class DownloadManager {
 		updateSpeed(with: progress)
 	}
 	
-	/// Averages over a few seconds, since segments arrive in bursts.
+	/// Averages the speed over a few seconds, since segments arrive in bursts,
+	/// and the one the remaining time comes from over longer, so the time doesn't jump around.
 	private func updateSpeed(with progress: DownloadProgress) {
-		guard case .downloading(_, let bytes) = progress else {
+		guard case .downloading(_, let bytes, let remainingBytes) = progress else {
 			bytesPerSecond = nil
+			estimatedCompletion = nil
 			speedSamples = []
 			return
 		}
 		let now = Date.now
 		speedSamples.append((now, bytes))
-		// Keeps one sample from before the window, so the window is filled
-		while speedSamples.count > 2, now.timeIntervalSince(speedSamples[1].date) > 5 {
+		// Keeps one sample from before the longer window, so it's filled
+		while speedSamples.count > 2, now.timeIntervalSince(speedSamples[1].date) > 30 {
 			speedSamples.removeFirst()
 		}
-		guard let first = speedSamples.first, case let interval = now.timeIntervalSince(first.date), interval >= 1 else { return }
-		bytesPerSecond = Double(bytes - first.bytes) / interval
+		if let speed = speed(over: 5, until: now, bytes: bytes) {
+			bytesPerSecond = speed
+		}
+		if let remainingBytes, let speed = speed(over: 30, until: now, bytes: bytes), speed > 0 {
+			estimatedCompletion = now + Double(remainingBytes) / speed
+		}
+	}
+	
+	/// - Returns: Nothing within the first second.
+	private func speed(over window: TimeInterval, until now: Date, bytes: Int64) -> Double? {
+		// The latest sample from before the window, or else the earliest
+		guard let start = speedSamples.last(where: { now.timeIntervalSince($0.date) >= window }) ?? speedSamples.first else { return nil }
+		let interval = now.timeIntervalSince(start.date)
+		guard interval >= 1 else { return nil }
+		return Double(bytes - start.bytes) / interval
 	}
 	
 	private func finish(_ video: Video, from outputURL: URL, height: Int) throws {
@@ -554,7 +577,7 @@ private extension DownloadProgress {
 	/// How far the whole download got. Downloading takes most of the time, processing the rest.
 	var overallFraction: Double {
 		switch self {
-		case .downloading(let fraction, _): fraction * 0.9
+		case .downloading(let fraction, _, _): fraction * 0.9
 		case .processing(let fraction): 0.9 + fraction * 0.1
 		}
 	}
