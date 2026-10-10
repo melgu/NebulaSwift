@@ -9,6 +9,11 @@ import SwiftUI
 
 @main
 struct NebulaSwiftApp: App {
+	#if os(macOS)
+	/// In the environment, since it's `Observable`.
+	@NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
+	#endif
+
 	@State private var api: API
 	@State private var player: Player
 	@State private var storage: Storage

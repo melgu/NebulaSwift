@@ -81,7 +81,7 @@ enum StartPage: String, CaseIterable, Identifiable {
 		UserDefaults.standard.string(forKey: Defaults.startPage).flatMap(StartPage.init(rawValue:)) ?? .myShows
 	}
 
-	var title: LocalizedStringKey {
+	var title: LocalizedStringResource {
 		switch self {
 		case .featured: "Featured"
 		case .myShows: "My Shows"

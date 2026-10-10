@@ -16,6 +16,9 @@ struct ContentView: View {
 	@Environment(API.self) private var api
 	@Environment(Player.self) private var player
 	@Environment(DownloadManager.self) private var downloads
+	#if os(macOS)
+	@Environment(AppDelegate.self) private var appDelegate
+	#endif
 
 	@State private var myShows: [Channel]?
 	/// Why the channels couldn't be loaded initially, shown in their place until a load succeeds.
@@ -81,8 +84,19 @@ struct ContentView: View {
 				case "channel":
 					// nebulaswift://channel/slug
 					guard let slug = url.pathComponents.last else { return }
-					let channel = try await api.channel(for: slug)
-					navigationPath.append(channel)
+					if let channel = myShows?.first(where: { $0.slug == slug }) {
+						selection = .channel(channel)
+					} else {
+						let channel = try await api.channel(for: slug)
+						navigationPath.append(channel)
+					}
+				case "page":
+					// nebulaswift://page/history
+					guard let page = url.pathComponents.last.flatMap(StartPage.init(rawValue:)) else { return }
+					selection = TopLevel(page)
+				case "search":
+					// nebulaswift://search
+					selection = .search
 				default:
 					logger.debug("Unknown type: \(url.host() ?? "nil")")
 				}
@@ -155,6 +169,13 @@ struct ContentView: View {
 		.task {
 			await showDownloadsIfNeeded()
 		}
+		#if os(macOS)
+		.onChange(of: myShows, initial: true) {
+			appDelegate.myShows = myShows
+		}
+		// Open URLs, like the ones from the Dock menu, in a window that's already open
+		.handlesExternalEvents(preferring: ["*"], allowing: ["*"])
+		#endif
 		.alertErrorHandling()
 	}
 	
@@ -200,12 +221,12 @@ struct ContentView: View {
 						NavigationLink(value: TopLevel(page)) {
 							if page == .downloads {
 								HStack {
-									Label(page.title, systemImage: page.systemImage)
+									Label(String(localized: page.title), systemImage: page.systemImage)
 									Spacer()
 									DownloadCounts()
 								}
 							} else {
-								Label(page.title, systemImage: page.systemImage)
+								Label(String(localized: page.title), systemImage: page.systemImage)
 							}
 						}
 					}
@@ -354,5 +375,8 @@ struct ContentView_Previews: PreviewProvider {
 			.environment(api)
 			.environment(downloads)
 			.environment(Player(api: api, storage: Storage(), downloads: downloads))
+			#if os(macOS)
+			.environment(AppDelegate())
+			#endif
 	}
 }

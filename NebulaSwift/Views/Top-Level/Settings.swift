@@ -129,7 +129,7 @@ struct SettingsView: View {
 
 	private var startPageOptions: some View {
 		ForEach(StartPage.allCases) { page in
-			Label(page.title, systemImage: page.systemImage)
+			Label(String(localized: page.title), systemImage: page.systemImage)
 				.tag(page)
 		}
 	}

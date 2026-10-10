@@ -44,22 +44,6 @@
     "%lldp" : {
       "shouldTranslate" : false
     },
-    "^[%lld videos](inflect: true)\nTotal duration: %@ h" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "^[%1$lld Videos](inflect: true)\nGesamtdauer: %2$@ h"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "^[%1$lld videos](inflect: true)\nTotal duration: %2$@ h"
-          }
-        }
-      }
-    },
     "2160p (4K)" : {
       "shouldTranslate" : false
     },
@@ -362,16 +346,6 @@
         }
       }
     },
-    "email" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "E-Mail"
-          }
-        }
-      }
-    },
     "Featured" : {
       "localizations" : {
         "de" : {
@@ -492,6 +466,16 @@
         }
       }
     },
+    "My Channels" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meine Kanäle"
+          }
+        }
+      }
+    },
     "My Shows" : {
       "localizations" : {
         "de" : {
@@ -537,16 +521,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
-          }
-        }
-      }
-    },
-    "password" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Passwort"
           }
         }
       }
@@ -920,6 +894,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Welchen Kanal möchtest du anzeigen?"
+          }
+        }
+      }
+    },
+    "^[%lld videos](inflect: true)\nTotal duration: %@ h" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "^[%1$lld Videos](inflect: true)\nGesamtdauer: %2$@ h"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "^[%1$lld videos](inflect: true)\nTotal duration: %2$@ h"
+          }
+        }
+      }
+    },
+    "email" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail"
+          }
+        }
+      }
+    },
+    "password" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort"
           }
         }
       }
