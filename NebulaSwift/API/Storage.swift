@@ -72,7 +72,7 @@ enum DownloadQuality: Int, CaseIterable, Identifiable {
 
 /// The page the app opens on.
 enum StartPage: String, CaseIterable, Identifiable {
-	case featured, myShows, browse, watchLater, downloads
+	case featured, myShows, browse, watchLater, history, downloads
 
 	var id: Self { self }
 
@@ -87,6 +87,7 @@ enum StartPage: String, CaseIterable, Identifiable {
 		case .myShows: "My Shows"
 		case .browse: "Browse"
 		case .watchLater: "Watch Later"
+		case .history: "History"
 		case .downloads: "Downloads"
 		}
 	}
@@ -97,6 +98,7 @@ enum StartPage: String, CaseIterable, Identifiable {
 		case .myShows: "suit.heart"
 		case .browse: "list.dash"
 		case .watchLater: "bookmark"
+		case .history: "clock.arrow.circlepath"
 		case .downloads: "arrow.down.circle"
 		}
 	}

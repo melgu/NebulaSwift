@@ -136,6 +136,28 @@ extension API {
 		return try await withEngagement([video]).first ?? video
 	}
 	
+	/// The watched videos, most recently watched first.
+	func historyVideos(page: Int, pageSize: Int = 24) async throws -> [Video] {
+		// Without `progress_updated_after`, the list holds the videos of the followed channels instead.
+		// `-progress` orders by the progress' date, and puts cleared progress last.
+		let offset = (page - 1) * pageSize
+		let engagementURL = try URL(string: "https://content.api.nebula.app/video_episodes/engagement/?offset=\(offset)&page_size=\(pageSize)&progress_updated_after=2000-01-01T00:00:00Z&ordering=-progress").require()
+		let engagements: ListContainer<EpisodeEngagement> = try await request(.get, url: engagementURL, authorization: .bearer)
+		let watched = engagements.results.filter { $0.progress != nil }
+		guard !watched.isEmpty else { return [] }
+
+		let ids = watched.map(\.id).joined(separator: ",")
+		let videosURL = try URL(string: "https://content.api.nebula.app/video_episodes/?ids=\(ids)&page_size=\(watched.count)").require()
+		let videos: ListContainer<Video> = try await request(.get, url: videosURL, authorization: .bearer)
+		// The videos come back in their own order.
+		let videosByID = Dictionary(videos.results.map { ($0.episodeId, $0) }, uniquingKeysWith: { first, _ in first })
+		return watched.compactMap { engagement in
+			guard var video = videosByID[engagement.id] else { return nil }
+			video.engagement = engagement.engagement(forSlug: video.slug)
+			return video
+		}
+	}
+
 	/// The video endpoints no longer embed engagement, so it has to be fetched separately.
 	func withEngagement(_ videos: [Video]) async throws -> [Video] {
 		var engagements: [String: EpisodeEngagement] = [:]

@@ -23,7 +23,7 @@ struct ContentView: View {
 	
 	@State private var selection: TopLevel? = TopLevel(StartPage.saved)
 	private enum TopLevel: Hashable {
-		case featured, myShows, browse, watchLater, downloads, search, channel(Channel)
+		case featured, myShows, browse, watchLater, history, downloads, search, channel(Channel)
 
 		init(_ page: StartPage) {
 			switch page {
@@ -31,6 +31,7 @@ struct ContentView: View {
 			case .myShows: self = .myShows
 			case .browse: self = .browse
 			case .watchLater: self = .watchLater
+			case .history: self = .history
 			case .downloads: self = .downloads
 			}
 		}
@@ -268,6 +269,8 @@ struct ContentView: View {
 					Browse()
 				case .watchLater:
 					WatchLater()
+				case .history:
+					History()
 				case .downloads:
 					Downloads()
 				case .search:
