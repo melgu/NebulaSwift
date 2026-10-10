@@ -219,6 +219,10 @@ extension API {
 	
 	func clearProgress(for video: Video) async throws {
 		let url = try URL(string: "https://content.api.nebula.app/engagement/video/progress/\(video.slug)/").require()
-		return try await request(.delete, url: url, authorization: .bearer)
+		do {
+			try await request(.delete, url: url, authorization: .bearer)
+		} catch APIError.invalidServerResponse(errorCode: 404) {
+			// The video has no progress, so there's nothing left to clear.
+		}
 	}
 }
