@@ -18,6 +18,8 @@ struct ContentView: View {
 	@Environment(DownloadManager.self) private var downloads
 	#if os(macOS)
 	@Environment(AppDelegate.self) private var appDelegate
+	#else
+	@EnvironmentObject private var sceneDelegate: SceneDelegate
 	#endif
 
 	@State private var myShows: [Channel]?
@@ -74,34 +76,16 @@ struct ContentView: View {
 		}
 		.onOpenURL { url in
 			logger.debug("Open URL: \(url)")
-			Task {
-				switch url.host() {
-				case "video":
-					// nebulaswift://video/slug
-					guard let slug = url.pathComponents.last else { return }
-					let video = try await api.video(for: slug)
-					openVideo(video)
-				case "channel":
-					// nebulaswift://channel/slug
-					guard let slug = url.pathComponents.last else { return }
-					if let channel = myShows?.first(where: { $0.slug == slug }) {
-						selection = .channel(channel)
-					} else {
-						let channel = try await api.channel(for: slug)
-						navigationPath.append(channel)
-					}
-				case "page":
-					// nebulaswift://page/history
-					guard let page = url.pathComponents.last.flatMap(StartPage.init(rawValue:)) else { return }
-					selection = TopLevel(page)
-				case "search":
-					// nebulaswift://search
-					selection = .search
-				default:
-					logger.debug("Unknown type: \(url.host() ?? "nil")")
-				}
-			}
+			open(url)
 		}
+		#if os(iOS)
+		.onChange(of: sceneDelegate.quickActionURL, initial: true) { _, url in
+			guard let url else { return }
+			logger.debug("Open quick action: \(url)")
+			sceneDelegate.quickActionURL = nil
+			open(url)
+		}
+		#endif
 		.onContinueUserActivity("de.melgu.NebulaSwift.video") { activity in
 			if let video = try? activity.typedPayload(Video.self) {
 				logger.debug("Continue User Activity. Video: \(video.title)")
@@ -182,6 +166,8 @@ struct ContentView: View {
 	/// Opens the downloads instead of the start page when the app opens with downloads to continue or failed ones,
 	/// or without a connection, since they're all that works then.
 	private func showDownloadsIfNeeded() async {
+		// Opened with another page, like from a quick action
+		guard selection == TopLevel(StartPage.saved) else { return }
 		if downloads.downloads.contains(where: { $0.state != .finished }) {
 			logger.log("Downloads unfinished or failed at launch, show downloads")
 			selection = .downloads
@@ -202,6 +188,36 @@ struct ContentView: View {
 		guard !isConnected, selection == startPage else { return }
 		logger.log("Offline at launch, show downloads")
 		selection = .downloads
+	}
+
+	private func open(_ url: URL) {
+		Task {
+			switch url.host() {
+			case "video":
+				// nebulaswift://video/slug
+				guard let slug = url.pathComponents.last else { return }
+				let video = try await api.video(for: slug)
+				openVideo(video)
+			case "channel":
+				// nebulaswift://channel/slug
+				guard let slug = url.pathComponents.last else { return }
+				if let channel = myShows?.first(where: { $0.slug == slug }) {
+					selection = .channel(channel)
+				} else {
+					let channel = try await api.channel(for: slug)
+					navigationPath.append(channel)
+				}
+			case "page":
+				// nebulaswift://page/history
+				guard let page = url.pathComponents.last.flatMap(StartPage.init(rawValue:)) else { return }
+				selection = TopLevel(page)
+			case "search":
+				// nebulaswift://search
+				selection = .search
+			default:
+				logger.debug("Unknown type: \(url.host() ?? "nil")")
+			}
+		}
 	}
 
 	private func openVideo(_ video: Video) {
@@ -377,6 +393,8 @@ struct ContentView_Previews: PreviewProvider {
 			.environment(Player(api: api, storage: Storage(), downloads: downloads))
 			#if os(macOS)
 			.environment(AppDelegate())
+			#else
+			.environmentObject(SceneDelegate())
 			#endif
 	}
 }

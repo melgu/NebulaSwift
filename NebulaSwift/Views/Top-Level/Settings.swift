@@ -49,6 +49,23 @@ struct SettingsView: View {
 					}
 				}
 			}
+			#if os(iOS)
+			Section {
+				ForEach(storage.quickActions) { action in
+					Label(action.title, systemImage: action.systemImage)
+				}
+				.onDelete { storage.quickActions.remove(atOffsets: $0) }
+				.onMove { storage.quickActions.move(fromOffsets: $0, toOffset: $1) }
+				NavigationLink("Add…") {
+					QuickActionPicker()
+				}
+				.disabled(storage.quickActions.count >= QuickAction.limit)
+			} header: {
+				Text("Quick Actions")
+			} footer: {
+				Text("Shown when you touch and hold the app icon on the Home Screen.")
+			}
+			#endif
 			Section("Playback") {
 				#if os(iOS) // No way to automatically enter fullscreen on macOS (without crashing the OS)
 				Toggle("Automatic Fullscreen", isOn: $storage.automaticFullscreen)

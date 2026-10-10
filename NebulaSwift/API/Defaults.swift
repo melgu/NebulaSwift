@@ -22,4 +22,5 @@ extension Defaults {
 	static let previewTitleLines = "previewTitleLines"
 	static let startPage = "startPage"
 	static let downloadQuality = "downloadQuality"
+	static let quickActions = "quickActions"
 }

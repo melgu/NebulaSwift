@@ -30,6 +30,14 @@ class Storage {
 	var downloadQuality: DownloadQuality {
 		didSet { UserDefaults.standard.set(downloadQuality.rawValue, forKey: Defaults.downloadQuality) }
 	}
+	#if os(iOS)
+	var quickActions: [QuickAction] {
+		didSet {
+			UserDefaults.standard.set(try? JSONEncoder().encode(quickActions), forKey: Defaults.quickActions)
+			applyQuickActions()
+		}
+	}
+	#endif
 
 	init() {
 		let defaults = UserDefaults.standard
@@ -41,7 +49,25 @@ class Storage {
 		previewTitleLines = defaults.optionalInt(forKey: Defaults.previewTitleLines) ?? 2
 		startPage = .saved
 		downloadQuality = defaults.optionalInt(forKey: Defaults.downloadQuality).flatMap(DownloadQuality.init(rawValue:)) ?? .best
+		#if os(iOS)
+		quickActions = defaults.data(forKey: Defaults.quickActions).flatMap { try? JSONDecoder().decode([QuickAction].self, from: $0) } ?? QuickAction.defaults
+		#endif
 	}
+
+	#if os(iOS)
+	/// Hands the quick actions to the Home Screen, which keeps them while the app is closed.
+	/// Also needed at launch, for the defaults and for titles in another language.
+	func applyQuickActions() {
+		UIApplication.shared.shortcutItems = quickActions.map { action in
+			UIApplicationShortcutItem(
+				type: action.url.absoluteString,
+				localizedTitle: action.title,
+				localizedSubtitle: nil,
+				icon: UIApplicationShortcutIcon(systemImageName: action.systemImage)
+			)
+		}
+	}
+	#endif
 }
 
 /// The highest resolution to download videos in.
@@ -71,7 +97,7 @@ enum DownloadQuality: Int, CaseIterable, Identifiable {
 }
 
 /// The page the app opens on.
-enum StartPage: String, CaseIterable, Identifiable {
+enum StartPage: String, CaseIterable, Identifiable, Codable {
 	case featured, myShows, browse, watchLater, continueWatching, history, downloads
 
 	var id: Self { self }

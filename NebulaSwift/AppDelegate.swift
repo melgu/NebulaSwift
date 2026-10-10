@@ -51,4 +51,33 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 		NSWorkspace.shared.open(url)
 	}
 }
+#else
+import UIKit
+
+final class AppDelegate: NSObject, UIApplicationDelegate {
+	func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+		let configuration = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
+		configuration.delegateClass = SceneDelegate.self
+		return configuration
+	}
+}
+
+/// In the environment of its scene, since it's an `ObservableObject`.
+final class SceneDelegate: NSObject, UIWindowSceneDelegate, ObservableObject {
+	/// The URL of the quick action that the window should open.
+	@Published var quickActionURL: URL?
+
+	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+		// Opened from a quick action while the app wasn't running
+		if let shortcutItem = connectionOptions.shortcutItem {
+			quickActionURL = URL(string: shortcutItem.type)
+		}
+	}
+
+	func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem) async -> Bool {
+		guard let url = URL(string: shortcutItem.type) else { return false }
+		quickActionURL = url
+		return true
+	}
+}
 #endif

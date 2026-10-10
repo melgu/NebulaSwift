@@ -12,6 +12,9 @@ struct NebulaSwiftApp: App {
 	#if os(macOS)
 	/// In the environment, since it's `Observable`.
 	@NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
+	#else
+	/// Sets up the scene delegate for the quick actions.
+	@UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
 	#endif
 
 	@State private var api: API
@@ -37,6 +40,9 @@ struct NebulaSwiftApp: App {
 				.environment(storage)
 				.environment(downloads)
 				.task { try await api.refreshConfiguration() }
+				#if os(iOS)
+				.onAppear { storage.applyQuickActions() }
+				#endif
 		}
 		.commands {
 			CommandMenu("Account") {
