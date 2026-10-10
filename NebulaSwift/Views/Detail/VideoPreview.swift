@@ -51,10 +51,10 @@ struct VideoPreview: View {
 	@Environment(\.openItem) private var openItem
 	@Environment(Storage.self) private var storage
 	@Environment(DownloadManager.self) private var downloads
-
+	
 	/// The drag preview is laid out without a size proposal, so it adopts the cell's width to match the grid.
 	@State private var width: CGFloat?
-
+	
 	var body: some View {
 		Button {
 			openItem(video)
@@ -292,7 +292,7 @@ struct LiveVideoPreviewView: View {
 				mainPlayer.endPreview(muted: isMuted)
 			}
 	}
-
+	
 	/// Picks subtitles in the video's original language, falling back to the first full subtitle track.
 	private func showSubtitles(for item: AVPlayerItem) async {
 		guard let group = try? await item.asset.loadMediaSelectionGroup(for: .legible) else { return }
@@ -304,7 +304,7 @@ struct LiveVideoPreviewView: View {
 		guard let option = original.first ?? options.first else { return }
 		item.select(option, in: group)
 	}
-
+	
 	/// The language of the audio track marked as original, or else of the default audio track.
 	private func originalLanguage(of item: AVPlayerItem) async -> String? {
 		guard let group = try? await item.asset.loadMediaSelectionGroup(for: .audible) else { return nil }
@@ -317,14 +317,14 @@ struct LiveVideoPreviewView: View {
 /// Plays a preview without taking over Now Playing, which confuses other apps resuming their audio afterwards.
 private struct PreviewVideoPlayer: UIViewControllerRepresentable {
 	let player: AVPlayer
-
+	
 	func makeUIViewController(context: Context) -> AVPlayerViewController {
 		let playerViewController = AVPlayerViewController()
 		playerViewController.player = player
 		playerViewController.updatesNowPlayingInfoCenter = false
 		return playerViewController
 	}
-
+	
 	func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {}
 }
 #else
