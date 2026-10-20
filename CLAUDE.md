@@ -8,7 +8,8 @@ NebulaSwift is an unofficial SwiftUI client for the Nebula streaming service, fo
 
 - **Build check:** Xcode MCP `BuildProject` on the `NebulaSwift.xcodeproj` workspace (`XcodeListWorkspaces` for its id, `XcodeOpenWorkspace` if missing). Prefer it over `xcodebuild`: only Xcode's own build extracts new strings into `NebulaSwift/Localizable.xcstrings`.
 - **Command line, if needed:** `xcodebuild -project NebulaSwift.xcodeproj -scheme NebulaSwift -destination 'generic/platform=iOS' build` (or `-destination 'platform=macOS'`). Build both platforms when touching `#if os(...)` code.
-- **Deploy:** `./deploy.sh` builds Debug and installs (without launching) on every reachable paired iOS device via `devicectl`. A stray "error: the following command failed with exit code 0 but produced no further output" line from its device discovery is harmless when the installs report "App installed". If the script can't be used, deploy with the Xcode MCP (`BuildProject`/`RunProject`) instead.
+- **Deploy:** `./deploy.sh` builds Debug and installs (without launching) on every reachable paired iOS device via `devicectl`. A stray "error: the following command failed with exit code 0 but produced no further output" line from its device discovery is harmless when the installs report "App installed". If the script can't be used, deploy with the Xcode MCP (`BuildProject`/`RunProject`) instead. That includes a locked login keychain: the script then stops at a password prompt that only a real terminal can answer, while Xcode builds in a session where the keychain is already unlocked. Alternatively ask the user to run `./deploy.sh` themselves.
+- **Logs:** every `Logger` is created with `Logger(category:)` (`API/Logger.swift`), subsystem `de.melgu.NebulaSwift`; filter device logs with `log stream --predicate 'subsystem == "de.melgu.NebulaSwift"'`.
 
 Settings that shape the code: Swift 6 with `SWIFT_STRICT_CONCURRENCY = complete`, iOS 17 / macOS 14 deployment targets (newer APIs behind `#available`, e.g. `BGContinuedProcessingTask` on iOS 26). The `NebulaSwift/` folder is a synchronized group, so new files are picked up without editing `project.pbxproj`.
 
@@ -24,7 +25,7 @@ Languages are English (source) and German. `Localizable.xcstrings` holds UI stri
 - `DownloadManager` (`Downloads/`) – offline downloads, see below.
 - `Player` (`Views/Basics/Player.swift`) – the single `AVPlayer`, Picture in Picture, audio session handling for hover/peek previews, and progress reporting through `ProgressSync`, which saves watch progress locally before sending it so it survives being offline.
 
-**Navigation.** `ContentView` is the root: `Login` when logged out, otherwise a `NavigationSplitView` whose sidebar picks a `TopLevel` page (the `StartPage` cases, search, or a channel from My Shows), each in a `NavigationStack`. Everything that opens content funnels into a few paths there:
+**Navigation.** `ContentView` is the root: `Login` when logged out, otherwise a `NavigationSplitView` whose sidebar picks a `TopLevel` page (the `StartPage` cases, search, or a channel from My Shows), each in a `NavigationStack`. When there's no connection at launch and no other page was picked meanwhile, it switches to Downloads. Everything that opens content funnels into a few paths there:
 - the `openItem` environment action (`Views/Basics/Navigation.swift`) – a `Video` opens the player, anything else is pushed on the stack;
 - `nebulaswift://video|channel|page|search/...` URLs, used by App Intents (`Intents/`), Home Screen quick actions (`QuickAction`, `SceneDelegate` in `AppDelegate.swift`) and the macOS Dock menu;
 - Handoff user activities `de.melgu.NebulaSwift.video` / `.channel`.
