@@ -223,6 +223,16 @@
         }
       }
     },
+    "Close video after playback" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Video nach Wiedergabe schließen"
+          }
+        }
+      }
+    },
     "Coming soon…" : {
 
     },

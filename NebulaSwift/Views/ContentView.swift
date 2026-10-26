@@ -15,6 +15,7 @@ private let logger = Logger(category: "ContentView")
 struct ContentView: View {
 	@Environment(API.self) private var api
 	@Environment(Player.self) private var player
+	@Environment(Storage.self) private var storage
 	@Environment(DownloadManager.self) private var downloads
 	#if os(macOS)
 	@Environment(AppDelegate.self) private var appDelegate
@@ -148,6 +149,21 @@ struct ContentView: View {
 			} else {
 				// The page is still open, or another video replaces it
 				player.completePictureInPictureRestore()
+			}
+		}
+		.onChange(of: player.playbackEnd) { _, end in
+			guard storage.closeVideoAfterPlayback, let end else { return }
+			if playerVideo?.slug == end.slug {
+				logger.debug("Close player after playback")
+				player.reset()
+				playerVideo = nil
+			} else if pictureInPictureVideo?.slug == end.slug {
+				logger.debug("Close Picture in Picture after playback")
+				// Without a video, Picture in Picture stops without asking to show the page again
+				pictureInPictureVideo = nil
+				player.reset()
+				player.stopPiP()
+				playerDidDismiss()
 			}
 		}
 		.task {

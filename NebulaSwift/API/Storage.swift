@@ -21,6 +21,9 @@ class Storage {
 	var removeFromWatchLaterAfterPlayback: Bool {
 		didSet { UserDefaults.standard.set(removeFromWatchLaterAfterPlayback, forKey: Defaults.removeFromWatchLaterAfterPlayback) }
 	}
+	var closeVideoAfterPlayback: Bool {
+		didSet { UserDefaults.standard.set(closeVideoAfterPlayback, forKey: Defaults.closeVideoAfterPlayback) }
+	}
 	var previewTitleLines: Int {
 		didSet { UserDefaults.standard.set(previewTitleLines, forKey: Defaults.previewTitleLines) }
 	}
@@ -46,6 +49,7 @@ class Storage {
 		videoPreview = defaults.optionalBool(forKey: Defaults.videoPreview) ?? true
 		videoPreviewWithSound = defaults.optionalBool(forKey: Defaults.videoPreviewWithSound) ?? true
 		removeFromWatchLaterAfterPlayback = defaults.bool(forKey: Defaults.removeFromWatchLaterAfterPlayback)
+		closeVideoAfterPlayback = defaults.bool(forKey: Defaults.closeVideoAfterPlayback)
 		previewTitleLines = defaults.optionalInt(forKey: Defaults.previewTitleLines) ?? 2
 		startPage = .saved
 		downloadQuality = defaults.optionalInt(forKey: Defaults.downloadQuality).flatMap(DownloadQuality.init(rawValue:)) ?? .best

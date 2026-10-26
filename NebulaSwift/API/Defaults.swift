@@ -19,6 +19,7 @@ extension Defaults {
 	static let videoPreview = "videoPreview"
 	static let videoPreviewWithSound = "videoPreviewWithSound"
 	static let removeFromWatchLaterAfterPlayback = "removeFromWatchLaterAfterPlayback"
+	static let closeVideoAfterPlayback = "closeVideoAfterPlayback"
 	static let previewTitleLines = "previewTitleLines"
 	static let startPage = "startPage"
 	static let downloadQuality = "downloadQuality"

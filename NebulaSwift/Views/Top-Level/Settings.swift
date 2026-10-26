@@ -75,6 +75,7 @@ struct SettingsView: View {
 				}
 				#endif
 				Toggle("Remove from Watch Later after playback", isOn: $storage.removeFromWatchLaterAfterPlayback)
+				Toggle("Close video after playback", isOn: $storage.closeVideoAfterPlayback)
 			}
 			Section {
 				Picker("Quality", selection: $storage.downloadQuality) {

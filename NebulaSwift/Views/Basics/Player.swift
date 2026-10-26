@@ -35,6 +35,8 @@ class Player {
 
 	/// The latest video removed from Watch Later because it played to the end.
 	private(set) var watchLaterRemoval: WatchLaterRemoval?
+	/// The latest video that played to the end.
+	private(set) var playbackEnd: PlaybackEnd?
 
 	private let logger = Logger(category: "Player")
 	
@@ -261,8 +263,10 @@ class Player {
 	}
 
 	private func didPlayToEnd() {
+		guard let video = video else { return }
+		playbackEnd = PlaybackEnd(slug: video.slug)
 		// The video's engagement is from when it was opened, so it may not know about later Watch Later changes.
-		guard storage.removeFromWatchLaterAfterPlayback, let video = video else { return }
+		guard storage.removeFromWatchLaterAfterPlayback else { return }
 		logger.log("Remove \(video.title) from Watch Later after playback")
 		enqueueUpdate { [api] in
 			try await api.removeVideoFromWatchLater(video)
@@ -324,6 +328,17 @@ extension Player {
 		/// Tells apart removals of the same video, in case it was added back and played again.
 		private let id = UUID()
 
+		init(slug: String) {
+			self.slug = slug
+		}
+	}
+	
+	/// A video that played to the end.
+	struct PlaybackEnd: Equatable {
+		let slug: String
+		/// Tells apart endings of the same video, in case it was played again.
+		private let id = UUID()
+		
 		init(slug: String) {
 			self.slug = slug
 		}
