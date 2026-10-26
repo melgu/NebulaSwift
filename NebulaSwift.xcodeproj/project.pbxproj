@@ -6,9 +6,16 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		B0904FD2308F8BE500E8CCF9 /* CLAUDE.md in Resources */ = {isa = PBXBuildFile; fileRef = B0904FD1308F8BE500E8CCF9 /* CLAUDE.md */; };
+		B0904FD4308F8BEF00E8CCF9 /* deploy.sh in Resources */ = {isa = PBXBuildFile; fileRef = B0904FD3308F8BEF00E8CCF9 /* deploy.sh */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		B00B64A3288D78BF00E72AB8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B079EF2826853A57009EFBAA /* NebulaSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NebulaSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0904FD1308F8BE500E8CCF9 /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
+		B0904FD3308F8BEF00E8CCF9 /* deploy.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = deploy.sh; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -47,6 +54,8 @@
 			isa = PBXGroup;
 			children = (
 				B00B64A3288D78BF00E72AB8 /* README.md */,
+				B0904FD1308F8BE500E8CCF9 /* CLAUDE.md */,
+				B0904FD3308F8BEF00E8CCF9 /* deploy.sh */,
 				B0322A682CD5A02D00B9664E /* NebulaSwift */,
 				B079EF2926853A57009EFBAA /* Products */,
 			);
@@ -127,6 +136,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0904FD4308F8BEF00E8CCF9 /* deploy.sh in Resources */,
+				B0904FD2308F8BE500E8CCF9 /* CLAUDE.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
