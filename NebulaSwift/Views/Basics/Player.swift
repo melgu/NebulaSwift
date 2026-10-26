@@ -274,7 +274,7 @@ class Player {
 		// Before the seek, the position is 0 and would clear the saved progress
 		guard let video = video, player.currentItem != nil, isAtSavedProgress else { return }
 		let seconds = Int(player.currentTime().seconds)
-		let state = WatchState(seconds: seconds, duration: video.duration)
+		let state = WatchState(seconds: seconds, duration: video.duration, durationToComplete: video.durationToComplete)
 		enqueueUpdate { [progressSync] in
 			await progressSync.submit(state, seconds: seconds, for: video)
 		}
@@ -300,18 +300,18 @@ extension Player {
 		case unwatched
 		case inProgress
 		case watched
-
-		/// How close to the start or end a position counts as unwatched or watched.
+		
+		/// How close to the start a position counts as unwatched.
 		static let margin = 10
-
-		init(seconds: Int, duration: Int) {
-			if duration < 2 * Self.margin {
-				// The margins would overlap, so the closer end wins
-				self = seconds * 2 < duration ? .unwatched : .watched
+		
+		/// A video counts as watched from its `durationToComplete` on, the same point at which Nebula marks it completed.
+		init(seconds: Int, duration: Int, durationToComplete: Int?) {
+			// Videos from older endpoints lack it, but it's always the duration minus 2 %, at least 10 seconds
+			let completion = durationToComplete ?? duration - max(10, duration / 50)
+			if seconds >= completion {
+				self = .watched
 			} else if seconds < Self.margin {
 				self = .unwatched
-			} else if duration - seconds < Self.margin {
-				self = .watched
 			} else {
 				self = .inProgress
 			}
