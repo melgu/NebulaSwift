@@ -23,6 +23,12 @@ struct AppConfig: Codable {
 //	let minimumOSVersion: String
 //	let recommendedVersion: String
 //	let minimumOSVersionMessage: String
+	
+	// The snake_case conversion turns `auth_base_url` into `authBaseUrl`
+	enum CodingKeys: String, CodingKey {
+		case authBaseURL = "authBaseUrl"
+		case contentBaseURL = "contentBaseUrl"
+	}
 }
 
 extension API {
