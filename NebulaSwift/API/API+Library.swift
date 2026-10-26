@@ -9,9 +9,9 @@ import Foundation
 
 extension API {
 	func libraryVideos(offset: Int, pageSize: Int = 24) async throws -> [Video] {
-		let url = try URL(string: "https://content.watchnebula.com/library/video/?offset=\(offset)&page_size=\(pageSize)").require()
+		let url = try URL(string: "https://content.api.nebula.app/video_episodes/?following=true&offset=\(offset)&page_size=\(pageSize)").require()
 		let response: ListContainer<Video> = try await request(.get, url: url, authorization: .bearer)
-		return response.results
+		return try await withEngagement(response.results)
 	}
 	
 	@available(*, deprecated, message: "Use `libraryVideos(offset:pageSize:)` instead")

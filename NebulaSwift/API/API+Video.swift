@@ -12,40 +12,61 @@ import Foundation
 struct Video: Codable, Equatable, Sendable {
 	/// The API's own identifier, e.g. `video_episode:<uuid>`. Engagement is keyed by it.
 	let episodeId: String
+	/// The kind of content, `video_episode` for videos.
+	///
+	/// This and the other optional fields below are missing from the older endpoints, such as the
+	/// playlists, and from downloads stored before they were added.
+	let type: String?
 	let slug: String
 	let title: String
 	let description: String
 	let shortDescription: String
 	let duration: Int
+	/// The seconds after which the video counts as watched, a bit before its end.
+	let durationToComplete: Int?
 	let publishedAt: Date
+	/// The channel's identifier, e.g. `video_channel:<uuid>`.
+	let channelId: String?
 	let channelSlug: String
 	let channelSlugs: [String]?
 	let channelTitle: String
+	/// `default` or `episodic`.
+	let channelType: String?
 	/// Full episodes come with `category_slugs`, the trimmed ones in featured rails with `categories`.
 	private let ownCategorySlugs: [String]?
 	private let categories: [String]?
 	let images: Images
 	let attributes: [Attribute]
 	let shareUrl: URL
+	/// The video's path on the website, e.g. `videos/<slug>`.
+	let appPath: String?
+	/// Whether the video can be watched without logging in.
+	let unauthenticated: Bool?
 //	let channel: NSNull
 	var engagement: Engagement?
 	
 	enum CodingKeys: String, CodingKey {
 		case episodeId = "id"
+		case type
 		case slug
 		case title
 		case description
 		case shortDescription
 		case duration
+		case durationToComplete
 		case publishedAt
+		case channelId
 		case channelSlug
 		case channelSlugs
 		case channelTitle
+		case channelType
 		case ownCategorySlugs = "categorySlugs"
 		case categories
 		case images
 		case attributes
 		case shareUrl
+		case appPath
+		case unauthenticated
 		case engagement
 	}
 }
