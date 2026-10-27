@@ -651,6 +651,16 @@
         }
       }
     },
+    "Previews" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorschauen"
+          }
+        }
+      }
+    },
     "Processing Download" : {
       "localizations" : {
         "de" : {

@@ -69,14 +69,18 @@ struct SettingsView: View {
 			Section("Playback") {
 				#if os(iOS) // No way to automatically enter fullscreen on macOS (without crashing the OS)
 				Toggle("Automatic Fullscreen", isOn: $storage.automaticFullscreen)
-				Toggle("Video Preview", isOn: $storage.videoPreview)
-				if storage.videoPreview {
-					Toggle("Preview with sound", isOn: $storage.videoPreviewWithSound)
-				}
 				#endif
 				Toggle("Remove from Watch Later after playback", isOn: $storage.removeFromWatchLaterAfterPlayback)
 				Toggle("Close video after playback", isOn: $storage.closeVideoAfterPlayback)
 			}
+			#if os(iOS)
+			Section("Previews") {
+				Toggle("Video Preview", isOn: $storage.videoPreview)
+				if storage.videoPreview {
+					Toggle("Preview with sound", isOn: $storage.videoPreviewWithSound)
+				}
+			}
+			#endif
 			Section {
 				Picker("Quality", selection: $storage.downloadQuality) {
 					ForEach(DownloadQuality.allCases) { quality in
