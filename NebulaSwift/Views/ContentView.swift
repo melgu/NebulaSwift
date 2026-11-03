@@ -355,6 +355,10 @@ struct ContentView: View {
 	}
 
 	private func playerDidDismiss() {
+		// Closing the sheet with Escape on macOS bypasses the close button
+		if playerVideo == nil && pictureInPictureVideo == nil {
+			player.reset()
+		}
 		Task {
 			// The refresh should already see the progress and Watch Later changes from playback.
 			await player.waitForPendingUpdates()

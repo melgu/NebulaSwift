@@ -21,7 +21,7 @@ private struct NavigationBarCloseButtonModifier: ViewModifier {
 	func body(content: Content) -> some View {
 		content
 			.toolbar {
-				ToolbarItem(placement: .primaryAction) {
+				ToolbarItem(placement: placement) {
 					Button {
 						action()
 						dismiss()
@@ -30,6 +30,15 @@ private struct NavigationBarCloseButtonModifier: ViewModifier {
 					}
 				}
 			}
+	}
+	
+	private var placement: ToolbarItemPlacement {
+		#if os(macOS)
+		// Sheets on macOS don't show primary actions
+		.cancellationAction
+		#else
+		.primaryAction
+		#endif
 	}
 }
 
