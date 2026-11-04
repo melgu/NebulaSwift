@@ -38,10 +38,10 @@ struct VideoPage: View {
 				.padding()
 			}
 			.navigationTitle(video.title)
+			#if canImport(UIKit)
 			.navigationBarCloseButton {
 				player.reset()
 			}
-			#if canImport(UIKit)
 			.toolbar {
 				ToolbarItemGroup(placement: .navigationBarTrailing) {
 					if let watchLater = watchLater {
@@ -65,10 +65,24 @@ struct VideoPage: View {
 					}
 					DownloadButton(video: video)
 					ShareLink(item: video.shareUrl)
-					Button {
-						player.startPiP()
-					} label: {
-						Label("Start Picture in Picture", systemImage: "chevron.down")
+					pictureInPictureButton
+				}
+			}
+			#else
+			.toolbar {
+				// A sheet shows only one view of its cancellation item, so both buttons share one
+				ToolbarItem(placement: .cancellationAction) {
+					HStack {
+						pictureInPictureButton
+							// Escape would otherwise go to the item's first button
+							.keyboardShortcut(nil)
+						Button {
+							player.reset()
+							dismiss()
+						} label: {
+							Label("Close", systemImage: "xmark.circle.fill")
+						}
+						.keyboardShortcut(.cancelAction)
 					}
 				}
 			}
@@ -86,12 +100,18 @@ struct VideoPage: View {
 		}
 	}
 	
+	private var pictureInPictureButton: some View {
+		Button {
+			player.startPiP()
+		} label: {
+			Label("Start Picture in Picture", systemImage: "chevron.down")
+		}
+	}
+	
 	private var videoPlayer: some View {
 		Color.black
 			.aspectRatio(16/9, contentMode: .fit)
-			#if canImport(UIKit)
 			.overlay(PictureInPictureSource())
-			#endif
 			.overlay(CustomVideoPlayer())
 			.task {
 				logger.debug("Load Video Stream Info")

@@ -93,6 +93,41 @@ struct CustomVideoPlayer: NSViewRepresentable {
 	
 	func updateNSView(_ nsView: NSViewType, context: Context) {}
 }
+
+/// Puts the Picture in Picture layer into the window, since Picture in Picture can't start otherwise.
+///
+/// Meant to sit behind ``CustomVideoPlayer``, so it isn't seen.
+struct PictureInPictureSource: NSViewRepresentable {
+	@Environment(Player.self) private var player
+	
+	func makeNSView(context: Context) -> some NSView {
+		PlayerLayerView(playerLayer: player.pictureInPictureLayer)
+	}
+	
+	func updateNSView(_ nsView: NSViewType, context: Context) {}
+}
+	
+/// Hosts a player layer that may move on to a newer player page.
+private class PlayerLayerView: NSView {
+	private let playerLayer: AVPlayerLayer
+	
+	init(playerLayer: AVPlayerLayer) {
+		self.playerLayer = playerLayer
+		super.init(frame: .zero)
+		wantsLayer = true
+		layer?.addSublayer(playerLayer)
+	}
+	
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
+	override func layout() {
+		super.layout()
+		guard playerLayer.superlayer === layer else { return }
+		playerLayer.frame = bounds
+	}
+}
 #endif
 
 struct CustomVideoPlayer_Previews: PreviewProvider {
