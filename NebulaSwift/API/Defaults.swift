@@ -10,7 +10,9 @@ import Foundation
 enum Defaults {}
 
 extension Defaults {
+	/// Also the Keychain account. Older versions kept the login in UserDefaults under this key.
 	static let token = "token"
+	/// Also the Keychain account. Older versions kept the authorization in UserDefaults under this key.
 	static let bearer = "bearer"
 	static let authBaseURL = "authBaseURL"
 	static let contentBaseURL = "contentBaseURL"
