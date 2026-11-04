@@ -33,7 +33,8 @@ struct NebulaSwiftApp: App {
 	}
 	
 	var body: some Scene {
-		WindowGroup {
+		// Without an id, the saved window frame is keyed by the content's type, whose name changes with every launch
+		WindowGroup(id: "main") {
 			ContentView()
 				.environment(api)
 				.environment(player)
