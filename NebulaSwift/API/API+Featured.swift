@@ -97,7 +97,6 @@ extension Feature {
 		case videos([Video])
 		case channels([Channel])
 		case podcasts([Podcast])
-		case classes
 	}
 }
 
@@ -141,7 +140,6 @@ extension API {
 	
 	/// The contents of a rail, or `nil` if there are none to show.
 	private func items(for rail: Rail) async throws -> Feature.Content? {
-		guard rail.contentType != .classes else { return .classes }
 		guard let collection = rail.collection else { return nil }
 		
 		switch rail.contentType {
@@ -159,6 +157,7 @@ extension API {
 			guard !podcasts.isEmpty else { return nil }
 			return .podcasts(podcasts)
 		case .classes, .unsupported:
+			// Classes aren't supported yet, so their rail is hidden like unknown ones
 			return nil
 		}
 	}

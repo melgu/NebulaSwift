@@ -114,8 +114,6 @@ struct Featured: View {
 							PodcastPreview(podcast: item)
 								.frame(width: 200)
 						}
-					case .classes:
-						Text("Coming soon…")
 					}
 				}
 				.padding()
