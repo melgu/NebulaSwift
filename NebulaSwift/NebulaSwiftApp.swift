@@ -36,6 +36,8 @@ struct NebulaSwiftApp: App {
 		// Without an id, the saved window frame is keyed by the content's type, whose name changes with every launch
 		WindowGroup(id: "main") {
 			ContentView()
+				// Outside of ContentView, so it can report its own errors through handleError
+				.alertErrorHandling()
 				.environment(api)
 				.environment(player)
 				.environment(storage)

@@ -17,6 +17,7 @@ struct ContentView: View {
 	@Environment(Player.self) private var player
 	@Environment(Storage.self) private var storage
 	@Environment(DownloadManager.self) private var downloads
+	@Environment(\.handleError) private var handleError
 	#if os(macOS)
 	@Environment(AppDelegate.self) private var appDelegate
 	#else
@@ -93,7 +94,7 @@ struct ContentView: View {
 				openVideo(video)
 			} else {
 				logger.debug("Continue User Activity. Video URL: \(activity.webpageURL?.absoluteString ?? "nil")")
-				Task {
+				runReportingErrors {
 					guard let url = activity.webpageURL else { return }
 					let slug = url.lastPathComponent
 					guard !slug.isEmpty else { return }
@@ -118,7 +119,7 @@ struct ContentView: View {
 				if let channel = myShows?.first(where: { $0.slug == slug }) {
 					selection = .channel(channel)
 				} else {
-					Task {
+					runReportingErrors {
 						let channel = try await api.channel(for: slug)
 						navigationPath.append(channel)
 					}
@@ -176,7 +177,6 @@ struct ContentView: View {
 		// Open URLs, like the ones from the Dock menu, in a window that's already open
 		.handlesExternalEvents(preferring: ["*"], allowing: ["*"])
 		#endif
-		.alertErrorHandling()
 	}
 	
 	/// Opens the downloads instead of the start page when the app opens with downloads to continue or failed ones,
@@ -207,7 +207,7 @@ struct ContentView: View {
 	}
 
 	private func open(_ url: URL) {
-		Task {
+		runReportingErrors {
 			switch url.host() {
 			case "video":
 				// nebulaswift://video/slug
@@ -235,7 +235,20 @@ struct ContentView: View {
 			}
 		}
 	}
-
+	
+	/// Runs work that opens something from outside the app, like a link or Handoff, and shows an alert when it fails,
+	/// as there's no view to show the error in yet.
+	private func runReportingErrors(_ operation: @escaping @MainActor () async throws -> Void) {
+		Task {
+			do {
+				try await operation()
+			} catch {
+				guard !error.isCancellation else { return }
+				handleError(error)
+			}
+		}
+	}
+	
 	private func openVideo(_ video: Video) {
 		if pictureInPictureVideo != nil {
 			logger.debug("Stop Picture in Picture for another video")
