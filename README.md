@@ -8,6 +8,25 @@ Originally started due to the lack of picture-in-picture support in the official
 
 
 
+## Download
+
+On the Mac, the easiest way is [Homebrew](https://brew.sh), which also takes care of the steps below:
+
+```sh
+brew install --cask melgu/tap/nebulaswift
+```
+
+Or download the latest version [here](https://github.com/melgu/NebulaSwift/releases).
+After downloading and unpacking the NebulaSwift.zip, move the app to the Applications folder. Because the app is unsigned (I refuse to give current Apple money), you need to explicitly allow the app after the first start in the Privacy system settings. Alternatively, you can execute this:
+
+```sh
+xattr -d com.apple.quarantine /Applications/NebulaSwift.app
+```
+
+On the iPhone and iPad, build and run the app from Xcode.
+
+
+
 ## Impressions
 
 ### My Shows
