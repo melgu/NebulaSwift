@@ -69,3 +69,7 @@ Works on iPhone, iPad and Mac.
 ![My Shows iPad](README.assets/My-Shows-iPad.PNG)
 
 ![My Shows Mac](README.assets/My-Shows-Mac.PNG)
+
+## License
+
+NebulaSwift is licensed under the [GNU General Public License v3.0](LICENSE).
