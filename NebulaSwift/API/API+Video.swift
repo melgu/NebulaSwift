@@ -242,7 +242,7 @@ extension API {
 		let url = try URL(string: "https://content.api.nebula.app/engagement/video/progress/\(video.slug)/").require()
 		do {
 			try await request(.delete, url: url, authorization: .bearer)
-		} catch APIError.invalidServerResponse(errorCode: 404) {
+		} catch APIError.invalidServerResponse(errorCode: 404, _) {
 			// The video has no progress, so there's nothing left to clear.
 		}
 	}

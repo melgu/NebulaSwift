@@ -171,7 +171,7 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable & Sendable, Pre
 						itemsCount = items.count
 						page += 1
 					}
-				} catch APIError.invalidServerResponse(errorCode: 404) {
+				} catch APIError.invalidServerResponse(errorCode: 404, _) {
 					logger.debug("Last page")
 					onLastPage = true
 				} catch {
@@ -210,7 +210,7 @@ struct AutoGrid<Value: Equatable, Item: Identifiable & Equatable & Sendable, Pre
 				group.addTask {
 					do {
 						return (pageNumber, try await fetch(pageNumber))
-					} catch APIError.invalidServerResponse(errorCode: 404) {
+					} catch APIError.invalidServerResponse(errorCode: 404, _) {
 						return (pageNumber, [])
 					}
 				}

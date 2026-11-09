@@ -8,7 +8,8 @@
 import Foundation
 
 enum APIError: LocalizedError {
-	case invalidServerResponse(errorCode: Int)
+	/// `message` is the reason the server gave, if any.
+	case invalidServerResponse(errorCode: Int, message: String?)
 	case networkIssues
 	case requestTimedOut(url: URL?)
 	case missingToken
@@ -19,8 +20,9 @@ enum APIError: LocalizedError {
 extension APIError {
 	var errorDescription: String? {
 		switch self {
-		case .invalidServerResponse(let errorCode):
-			return String(localized: "Invalid server response. Error code \(errorCode)")
+		case .invalidServerResponse(let errorCode, let message):
+			// The server's own reason, like wrong login details, says more than the code
+			return message ?? String(localized: "Invalid server response. Error code \(errorCode)")
 		case .networkIssues:
 			return String(localized: "Network issues")
 		case .requestTimedOut(let url):
@@ -34,7 +36,7 @@ extension APIError {
 	
 	/// Whether the server rejected the request's authorization, which it does with either 401 or 403.
 	var isUnauthorized: Bool {
-		guard case .invalidServerResponse(let code) = self else { return false }
+		guard case .invalidServerResponse(let code, _) = self else { return false }
 		return code == 401 || code == 403
 	}
 }
@@ -81,12 +83,23 @@ extension API {
 				throw APIError.networkIssues
 			}
 			guard httpResponse.statusCode == 200 else {
-				throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode)
+				throw APIError.invalidServerResponse(errorCode: httpResponse.statusCode, message: Self.serverMessage(in: data))
 			}
 			return data
 		} catch URLError.timedOut {
 			throw APIError.requestTimedOut(url: request.url)
 		}
+	}
+	
+	/// The reason in an error response, as Django REST framework writes it: a `detail` text, or lists of messages
+	/// per field, with `non_field_errors` for the request as a whole.
+	private static func serverMessage(in data: Data) -> String? {
+		guard let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
+		if let detail = object["detail"] as? String {
+			return detail
+		}
+		let messages = object.keys.sorted().flatMap { object[$0] as? [String] ?? [] }
+		return messages.isEmpty ? nil : messages.joined(separator: "\n")
 	}
 	
 	private func _request(_ method: HTTPMethod, url: URL, headerFields: [String: String], body: Data?, authorization: AuthorizationType?) async throws -> Data {
