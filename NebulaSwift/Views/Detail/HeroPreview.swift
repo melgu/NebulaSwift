@@ -60,6 +60,23 @@ struct HeroPreviewView: View {
 					}
 					.accessibilityHidden(true)
 				}
+				.overlay {
+					if let titleLogo = hero.images.titleLogo {
+						GeometryReader { proxy in
+							AsyncImage(url: titleLogo[960]) { image in
+								image
+									.resizable()
+									.scaledToFit()
+							} placeholder: {
+								EmptyView()
+							}
+							.frame(maxWidth: proxy.size.width * 0.4, maxHeight: proxy.size.height / 2, alignment: .leading)
+							.padding(.leading, proxy.size.height / 8)
+							.frame(maxHeight: .infinity, alignment: .center)
+						}
+						.accessibilityHidden(true)
+					}
+				}
 				.cornerRadius(8)
 			
 			Text(hero.title)
