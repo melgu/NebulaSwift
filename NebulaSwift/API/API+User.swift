@@ -14,14 +14,14 @@ struct UserResponse: Decodable {
 	let name: String
 	let accountType: String
 	let promoExpiration: String?
-	let optInToCommunications: Bool
 	let collectVideoAnalytics: Bool
 //	let agreedToTerms: NSNull
 	let trialCancelled: Bool
 	let isSubscribed: Bool
 	let isPasswordSet: Bool
 	let hasCuriositystreamSubscription: Bool
-	let zobjectUserID: String
+	// The snake_case conversion turns `zobject_user_id` into `zobjectUserId`
+	let zobjectUserId: String
 //	let zypeConsumer: NSNull
 //	let zypeAuthInfo: NSNull
 	let promotion: String?
