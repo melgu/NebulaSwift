@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-NebulaSwift is an unofficial SwiftUI client for the Nebula streaming service, for iPhone, iPad and Mac (native macOS, not Catalyst). One target, one scheme (`NebulaSwift`), no Swift packages, no test target, no linter.
+NebulaSwift is an unofficial SwiftUI client for the Nebula streaming service, for iPhone, iPad and Mac (native macOS, not Catalyst). One app target plus two test targets, one shared scheme (`NebulaSwift`), no Swift packages, no linter.
 
 ## Building and deploying
 
@@ -10,6 +10,9 @@ NebulaSwift is an unofficial SwiftUI client for the Nebula streaming service, fo
 - **Command line, if needed:** `xcodebuild -project NebulaSwift.xcodeproj -scheme NebulaSwift -destination 'generic/platform=iOS' build` (or `-destination 'platform=macOS'`). Build both platforms when touching `#if os(...)` code.
 - **Deploy:** `./deploy.sh` builds Debug and installs (without launching) on every reachable paired iOS device via `devicectl`. A stray "error: the following command failed with exit code 0 but produced no further output" line from its device discovery is harmless when the installs report "App installed". If the script can't be used, deploy with the Xcode MCP (`BuildProject`/`RunProject`) instead. That includes a locked login keychain: the script then stops at a password prompt that only a real terminal can answer, while Xcode builds in a session where the keychain is already unlocked. Alternatively ask the user to run `./deploy.sh` themselves.
 - **Release:** `./release.sh` releases the macOS app: it builds both platforms, asks for the release notes in the editor, archives, tags `version-build`, creates the GitHub release with `NebulaSwift.zip`, updates the cask in `../homebrew-tap` (creating it on the first release) and installs to `/Applications`. Bump the version in a commit first. `--dry-run` stops before publishing. It's interactive, so the user runs it.
+- **Tests:** Swift Testing, hosted in the app, which starts as an empty `TestHostApp` while tests run (`NebulaSwiftApp.swift`). Run them on macOS, which needs no simulator. The scheme has two test plans:
+  - `NebulaSwift` (default, `⌘U`) runs `NebulaSwiftTests`: logic that needs no network, i.e. the HLS, WebVTT and fMP4 code of the downloader, model decoding and error parsing. `xcodebuild test -project NebulaSwift.xcodeproj -scheme NebulaSwift -testPlan NebulaSwift -destination 'platform=macOS'`, or Xcode MCP `RunSomeTests`/`RunAllTests`.
+  - `NebulaSwiftLive` runs `NebulaSwiftLiveTests` against the real Nebula API, to notice when it no longer matches the models. They need a login: the first run copies the app's login token to its own Keychain item, service `de.melgu.NebulaSwift.tests`, so a test that logs out can't touch the app's login. Delete that item to copy the login again. Tests that change the account are in `WritingTests.swift`, disabled. Pass `-testPlan NebulaSwiftLive`.
 - **Logs:** every `Logger` is created with `Logger(category:)` (`API/Logger.swift`), subsystem `de.melgu.NebulaSwift`; filter device logs with `log stream --predicate 'subsystem == "de.melgu.NebulaSwift"'`.
 
 Settings that shape the code: Swift 6 with `SWIFT_STRICT_CONCURRENCY = complete`, iOS 17 / macOS 14 deployment targets (newer APIs behind `#available`, e.g. `BGContinuedProcessingTask` on iOS 26). The `NebulaSwift/` folder is a synchronized group, so new files are picked up without editing `project.pbxproj`.

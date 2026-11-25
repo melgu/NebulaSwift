@@ -24,13 +24,16 @@ class API {
 		return encoder
 	}()
 	
+	/// The Keychain service that holds the login.
+	let keychainService: String
+	
 	/// The login token, kept in the Keychain.
 	@ObservationIgnored var token: String? {
-		didSet { Self.store(token, account: Defaults.token) }
+		didSet { store(token, account: Defaults.token) }
 	}
 	/// The authorization for the content API, kept in the Keychain.
 	@ObservationIgnored var bearer: String? {
-		didSet { Self.store(bearer, account: Defaults.bearer) }
+		didSet { store(bearer, account: Defaults.bearer) }
 	}
 	
 	/// Does **not** contain trailing "/" from my experience.
@@ -43,9 +46,11 @@ class API {
 	
 	let logger = Logger(category: "API")
 	
-	init() {
-		token = Self.load(account: Defaults.token)
-		bearer = Self.load(account: Defaults.bearer)
+	/// - Parameter keychainService: Where the login is kept. The live tests pass their own, so they can't touch the app's login.
+	init(keychainService: String = Keychain.appService) {
+		self.keychainService = keychainService
+		token = Self.load(account: Defaults.token, service: keychainService)
+		bearer = Self.load(account: Defaults.bearer, service: keychainService)
 		logger.debug("Token: \(self.token ?? "nil")")
 		logger.debug("Authorization: \(self.bearer ?? "nil")")
 		
@@ -53,9 +58,9 @@ class API {
 	}
 	
 	/// Reads a value from the Keychain, moving it there from UserDefaults where older versions kept it.
-	private static func load(account: String) -> String? {
+	private static func load(account: String, service: String) -> String? {
 		do {
-			if let value = try Keychain.load(account: account) {
+			if let value = try Keychain.load(account: account, service: service) {
 				return value
 			}
 		} catch {
@@ -63,6 +68,8 @@ class API {
 			return nil
 		}
 		
+		// Only the app's own login predates the Keychain
+		guard service == Keychain.appService else { return nil }
 		guard let legacyValue = UserDefaults.standard.string(forKey: account) else { return nil }
 		// Keep the value in UserDefaults if moving fails, so the login isn't lost
 		do {
@@ -74,18 +81,20 @@ class API {
 		return legacyValue
 	}
 	
-	private static func store(_ value: String?, account: String) {
+	private func store(_ value: String?, account: String) {
 		do {
 			if let value {
-				try Keychain.save(value, account: account)
+				try Keychain.save(value, account: account, service: keychainService)
 			} else {
-				try Keychain.delete(account: account)
+				try Keychain.delete(account: account, service: keychainService)
 			}
 		} catch {
-			Logger(category: "API").error("Couldn't update \(account) in Keychain. Error: \(error)")
+			logger.error("Couldn't update \(account) in Keychain. Error: \(error)")
 		}
 		// Older versions kept it there
-		UserDefaults.standard.removeObject(forKey: account)
+		if keychainService == Keychain.appService {
+			UserDefaults.standard.removeObject(forKey: account)
+		}
 	}
 	
 	func refreshConfiguration() async throws {

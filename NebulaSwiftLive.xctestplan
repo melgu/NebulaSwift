@@ -1,0 +1,28 @@
+{
+  "configurations" : [
+    {
+      "id" : "9E2B4C6D-8A1F-4E3B-B5C7-1D9F2A4E6B8C",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:NebulaSwift.xcodeproj",
+      "identifier" : "B079EF2726853A57009EFBAA",
+      "name" : "NebulaSwift"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:NebulaSwift.xcodeproj",
+        "identifier" : "B0A1A9C430B6D3160041EC46",
+        "name" : "NebulaSwiftLiveTests"
+      }
+    }
+  ],
+  "version" : 1
+}

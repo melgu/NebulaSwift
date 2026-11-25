@@ -93,7 +93,7 @@ extension API {
 	
 	/// The reason in an error response, as Django REST framework writes it: a `detail` text, or lists of messages
 	/// per field, with `non_field_errors` for the request as a whole.
-	private static func serverMessage(in data: Data) -> String? {
+	static func serverMessage(in data: Data) -> String? {
 		guard let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
 		if let detail = object["detail"] as? String {
 			return detail

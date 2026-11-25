@@ -139,7 +139,7 @@ extension API {
 	}
 	
 	/// The contents of a rail, or `nil` if there are none to show.
-	private func items(for rail: Rail) async throws -> Feature.Content? {
+	func items(for rail: Rail) async throws -> Feature.Content? {
 		guard let collection = rail.collection else { return nil }
 		
 		switch rail.contentType {

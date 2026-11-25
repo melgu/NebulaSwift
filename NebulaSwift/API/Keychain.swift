@@ -19,9 +19,10 @@ struct KeychainError: Error, CustomStringConvertible {
 /// Generic password items of the app, in the login keychain on macOS.
 /// Doesn't use the data protection keychain there, as that needs a provisioning profile.
 enum Keychain {
-	private static let service = Bundle.main.bundleIdentifier ?? "de.melgu.NebulaSwift"
+	/// Where the app keeps its login. The live tests keep their own copy under another service.
+	static let appService = Bundle.main.bundleIdentifier ?? "de.melgu.NebulaSwift"
 	
-	private static func baseQuery(account: String) -> [String: Any] {
+	private static func baseQuery(account: String, service: String) -> [String: Any] {
 		[
 			kSecClass as String: kSecClassGenericPassword,
 			kSecAttrService as String: service,
@@ -30,8 +31,8 @@ enum Keychain {
 	}
 	
 	/// Returns nil if the item doesn't exist.
-	static func load(account: String) throws -> String? {
-		var query = baseQuery(account: account)
+	static func load(account: String, service: String = appService) throws -> String? {
+		var query = baseQuery(account: account, service: service)
 		query[kSecReturnData as String] = true
 		query[kSecMatchLimit as String] = kSecMatchLimitOne
 		
@@ -46,9 +47,9 @@ enum Keychain {
 		return (result as? Data).flatMap { String(data: $0, encoding: .utf8) }
 	}
 	
-	static func save(_ value: String, account: String) throws {
+	static func save(_ value: String, account: String, service: String = appService) throws {
 		let data = Data(value.utf8)
-		let query = baseQuery(account: account)
+		let query = baseQuery(account: account, service: service)
 		let status = SecItemUpdate(query as CFDictionary, [kSecValueData as String: data] as CFDictionary)
 		if status == errSecItemNotFound {
 			var item = query
@@ -64,8 +65,8 @@ enum Keychain {
 		}
 	}
 	
-	static func delete(account: String) throws {
-		let status = SecItemDelete(baseQuery(account: account) as CFDictionary)
+	static func delete(account: String, service: String = appService) throws {
+		let status = SecItemDelete(baseQuery(account: account, service: service) as CFDictionary)
 		guard status == errSecSuccess || status == errSecItemNotFound else {
 			throw KeychainError(status: status)
 		}

@@ -7,7 +7,36 @@
 
 import SwiftUI
 
+/// Starts the app, or an empty one while it hosts the unit tests.
+///
+/// The tests run inside the app, which would otherwise log in, load content, resume downloads and send watch progress next to them.
 @main
+enum Main {
+	@MainActor
+	static func main() {
+		if ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+			TestHostApp.main()
+		} else {
+			NebulaSwiftApp.main()
+		}
+	}
+}
+
+private struct TestHostApp: App {
+	var body: some Scene {
+		#if os(macOS)
+		// Opens no window
+		Settings {
+			EmptyView()
+		}
+		#else
+		WindowGroup {
+			EmptyView()
+		}
+		#endif
+	}
+}
+
 struct NebulaSwiftApp: App {
 	#if os(macOS)
 	/// In the environment, since it's `Observable`.

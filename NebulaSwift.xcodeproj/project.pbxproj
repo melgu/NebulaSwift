@@ -11,11 +11,30 @@
 		B0904FD4308F8BEF00E8CCF9 /* deploy.sh in Resources */ = {isa = PBXBuildFile; fileRef = B0904FD3308F8BEF00E8CCF9 /* deploy.sh */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		B0A1A9CB30B6D3200041EC46 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B079EF1C26853A57009EFBAA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B079EF2726853A57009EFBAA;
+			remoteInfo = NebulaSwift;
+		};
+		B0A1A9CD30B6D3200041EC46 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B079EF1C26853A57009EFBAA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B079EF2726853A57009EFBAA;
+			remoteInfo = NebulaSwift;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		B00B64A3288D78BF00E72AB8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B079EF2826853A57009EFBAA /* NebulaSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NebulaSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0904FD1308F8BE500E8CCF9 /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
 		B0904FD3308F8BEF00E8CCF9 /* deploy.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = deploy.sh; sourceTree = "<group>"; };
+		B0A1A9BA30B6D3110041EC46 /* NebulaSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NebulaSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0A1A9C530B6D3160041EC46 /* NebulaSwiftLiveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NebulaSwiftLiveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -37,10 +56,34 @@
 			path = NebulaSwift;
 			sourceTree = "<group>";
 		};
+		B0A1A9BB30B6D3110041EC46 /* NebulaSwiftTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = NebulaSwiftTests;
+			sourceTree = "<group>";
+		};
+		B0A1A9C630B6D3160041EC46 /* NebulaSwiftLiveTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = NebulaSwiftLiveTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		B079EF2526853A57009EFBAA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B0A1A9B730B6D3110041EC46 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B0A1A9C230B6D3160041EC46 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -57,6 +100,8 @@
 				B0904FD1308F8BE500E8CCF9 /* CLAUDE.md */,
 				B0904FD3308F8BEF00E8CCF9 /* deploy.sh */,
 				B0322A682CD5A02D00B9664E /* NebulaSwift */,
+				B0A1A9BB30B6D3110041EC46 /* NebulaSwiftTests */,
+				B0A1A9C630B6D3160041EC46 /* NebulaSwiftLiveTests */,
 				B079EF2926853A57009EFBAA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -65,6 +110,8 @@
 			isa = PBXGroup;
 			children = (
 				B079EF2826853A57009EFBAA /* NebulaSwift.app */,
+				B0A1A9BA30B6D3110041EC46 /* NebulaSwiftTests.xctest */,
+				B0A1A9C530B6D3160041EC46 /* NebulaSwiftLiveTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -94,6 +141,52 @@
 			productReference = B079EF2826853A57009EFBAA /* NebulaSwift.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B0A1A9B930B6D3110041EC46 /* NebulaSwiftTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B0A1A9C030B6D3110041EC46 /* Build configuration list for PBXNativeTarget "NebulaSwiftTests" */;
+			buildPhases = (
+				B0A1A9B630B6D3110041EC46 /* Sources */,
+				B0A1A9B730B6D3110041EC46 /* Frameworks */,
+				B0A1A9B830B6D3110041EC46 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B0A1A9CC30B6D3200041EC46 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B0A1A9BB30B6D3110041EC46 /* NebulaSwiftTests */,
+			);
+			name = NebulaSwiftTests;
+			packageProductDependencies = (
+			);
+			productName = NebulaSwiftTests;
+			productReference = B0A1A9BA30B6D3110041EC46 /* NebulaSwiftTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		B0A1A9C430B6D3160041EC46 /* NebulaSwiftLiveTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B0A1A9C930B6D3160041EC46 /* Build configuration list for PBXNativeTarget "NebulaSwiftLiveTests" */;
+			buildPhases = (
+				B0A1A9C130B6D3160041EC46 /* Sources */,
+				B0A1A9C230B6D3160041EC46 /* Frameworks */,
+				B0A1A9C330B6D3160041EC46 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B0A1A9CE30B6D3200041EC46 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				B0A1A9C630B6D3160041EC46 /* NebulaSwiftLiveTests */,
+			);
+			name = NebulaSwiftLiveTests;
+			packageProductDependencies = (
+			);
+			productName = NebulaSwiftLiveTests;
+			productReference = B0A1A9C530B6D3160041EC46 /* NebulaSwiftLiveTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -101,11 +194,19 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1300;
+				LastSwiftUpdateCheck = 2720;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					B079EF2726853A57009EFBAA = {
 						CreatedOnToolsVersion = 13.0;
+					};
+					B0A1A9B930B6D3110041EC46 = {
+						CreatedOnToolsVersion = 27.2;
+						TestTargetID = B079EF2726853A57009EFBAA;
+					};
+					B0A1A9C430B6D3160041EC46 = {
+						CreatedOnToolsVersion = 27.2;
+						TestTargetID = B079EF2726853A57009EFBAA;
 					};
 				};
 			};
@@ -127,6 +228,8 @@
 			projectRoot = "";
 			targets = (
 				B079EF2726853A57009EFBAA /* NebulaSwift */,
+				B0A1A9B930B6D3110041EC46 /* NebulaSwiftTests */,
+				B0A1A9C430B6D3160041EC46 /* NebulaSwiftLiveTests */,
 			);
 		};
 /* End PBXProject section */
@@ -141,6 +244,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B0A1A9B830B6D3110041EC46 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B0A1A9C330B6D3160041EC46 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -151,7 +268,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B0A1A9B630B6D3110041EC46 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B0A1A9C130B6D3160041EC46 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B0A1A9CC30B6D3200041EC46 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B079EF2726853A57009EFBAA /* NebulaSwift */;
+			targetProxy = B0A1A9CB30B6D3200041EC46 /* PBXContainerItemProxy */;
+		};
+		B0A1A9CE30B6D3200041EC46 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B079EF2726853A57009EFBAA /* NebulaSwift */;
+			targetProxy = B0A1A9CD30B6D3200041EC46 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		B079EF3526853A57009EFBAA /* Debug */ = {
@@ -394,6 +538,116 @@
 			};
 			name = Release;
 		};
+		B0A1A9BE30B6D3110041EC46 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.melgu.NebulaSwiftTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NebulaSwift.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NebulaSwift";
+			};
+			name = Debug;
+		};
+		B0A1A9BF30B6D3110041EC46 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.melgu.NebulaSwiftTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NebulaSwift.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NebulaSwift";
+			};
+			name = Release;
+		};
+		B0A1A9CA30B6D3160041EC46 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.melgu.NebulaSwiftLiveTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NebulaSwift.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NebulaSwift";
+			};
+			name = Debug;
+		};
+		B0A1A9CB30B6D3160041EC46 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.melgu.NebulaSwiftLiveTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NebulaSwift.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NebulaSwift";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -411,6 +665,24 @@
 			buildConfigurations = (
 				B079EF3826853A57009EFBAA /* Debug */,
 				B079EF3926853A57009EFBAA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B0A1A9C030B6D3110041EC46 /* Build configuration list for PBXNativeTarget "NebulaSwiftTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B0A1A9BE30B6D3110041EC46 /* Debug */,
+				B0A1A9BF30B6D3110041EC46 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B0A1A9C930B6D3160041EC46 /* Build configuration list for PBXNativeTarget "NebulaSwiftLiveTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B0A1A9CA30B6D3160041EC46 /* Debug */,
+				B0A1A9CB30B6D3160041EC46 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
